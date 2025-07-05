@@ -361,7 +361,7 @@
             showMessage('正在初始化 Google Sheets...', 'info');
             
             try {
-                const success = await syncService.initializeGoogleSheets();
+                const success = await window.syncService.initializeGoogleSheets();
                 if (success) {
                     showMessage('Google Sheets 初始化成功！', 'success');
                 } else {
@@ -379,7 +379,7 @@
             showMessage('正在測試連線...', 'info');
             
             try {
-                const status = await syncService.checkServiceStatus();
+                const status = await window.syncService.checkServiceStatus();
                 
                 if (status.status === 'online') {
                     showMessage('連線測試成功！服務正常運作', 'success');
@@ -396,7 +396,7 @@
             showMessage('正在檢查狀態...', 'info');
             
             try {
-                const status = await syncService.checkServiceStatus();
+                const status = await window.syncService.checkServiceStatus();
                 
                 let message = `狀態: ${status.status}\n訊息: ${status.message}`;
                 if (status.data) {
@@ -415,7 +415,7 @@
             if (confirm('確定要重置所有設定嗎？此操作無法復原。')) {
                 localStorage.removeItem('syncConfig');
                 
-                syncService.setConfig({
+                window.syncService.setConfig({
                     gasApiUrl: '',
                     gasApiKey: '',
                     syncIntervalMs: 30000,
@@ -430,7 +430,7 @@
         
         // 更新狀態顯示
         function updateStatus() {
-            const status = syncService.getSyncStatus();
+            const status = window.syncService.getSyncStatus();
             
             const statusHtml = `
                 <div class="status ${status.isOnline ? 'success' : 'error'}">
