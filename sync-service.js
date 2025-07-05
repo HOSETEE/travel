@@ -12,7 +12,7 @@ class TravelSyncService {
             retryAttempts: 3,
             retryDelayMs: 5000,
             // Google Apps Script 設定
-            gasApiUrl: 'https://script.google.com/macros/s/AKfycbyRALsCw3JCm7xZ_WV3iQPM6Oob_0XtUpt4DGz-3ns22t0C25mXzkW3AKXdNb2wRLps/exec', // 請填入您的 Google Apps Script Web App URL
+            gasApiUrl: 'https://script.google.com/macros/s/AKfycbyYE1O0wk_m1NxGqkCc0bq_R45198AOqyb8yCYVIwn17u7v1tIumq3Gj-nSYK6L60fa/exec', // 請填入您的 Google Apps Script Web App URL
             gasApiKey: '', // 可選：API 金鑰
             enableWebhook: false, // 是否啟用 Webhook
             webhookUrl: '' // Webhook URL（用於即時通知）
