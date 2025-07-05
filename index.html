@@ -527,6 +527,31 @@
             color: #34495e;
             line-height: 1.4;
         }
+
+        /* 未讀留言指示器動畫 */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .unread-indicator {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 12px;
+            animation: pulse 2s infinite;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -539,6 +564,26 @@
                 <button class="btn btn-primary" onclick="showUpdateForm()" style="display: none;">📝 更新行程</button>
                 <button class="btn btn-success" onclick="toggleDiscussion()" style="display: none;">💬 家庭討論</button>
                 <button class="btn btn-warning" onclick="clearInviteCodeVerification()" title="清除邀請碼驗證狀態" style="display: none;">🔐 重置邀請碼</button>
+                
+                <!-- 同步設定按鈕 -->
+                <a href="sync-config.html" id="syncConfigBtn" class="btn" style="
+                    background: #3498db;
+                    color: white;
+                    text-decoration: none;
+                    display: none;
+                " title="設定 Google Sheets 同步">🔄 同步設定</a>
+                
+                <button id="syncStatusBtn" class="btn" onclick="showSyncStatus()" style="
+                    background: #9b59b6;
+                    color: white;
+                    display: none;
+                " title="查看同步狀態">📊 同步狀態</button>
+                
+                <button id="manualSyncBtn" class="btn" onclick="manualSync()" style="
+                    background: #27ae60;
+                    color: white;
+                    display: none;
+                " title="手動觸發同步">🔄 手動同步</button>
             </div>
         </div>
 
@@ -1064,6 +1109,80 @@
             localStorage.setItem(key, JSON.stringify(data));
         }
 
+        // 檢查活動是否有未讀留言
+        function hasUnreadComments(activityId) {
+            const lastViewTime = getLastViewTime(activityId);
+            const comments = activityComments[activityId] || [];
+            
+            // 檢查是否有新留言或回復
+            for (let comment of comments) {
+                if (new Date(comment.timestamp) > lastViewTime) {
+                    return true;
+                }
+                // 檢查回復
+                if (comment.replies) {
+                    for (let reply of comment.replies) {
+                        if (new Date(reply.timestamp) > lastViewTime) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        // 獲取最後查看時間
+        function getLastViewTime(activityId) {
+            const viewTimes = JSON.parse(localStorage.getItem('activityViewTimes') || '{}');
+            return viewTimes[activityId] ? new Date(viewTimes[activityId]) : new Date(0);
+        }
+
+        // 更新最後查看時間
+        function updateLastViewTime(activityId) {
+            const viewTimes = JSON.parse(localStorage.getItem('activityViewTimes') || '{}');
+            viewTimes[activityId] = new Date().toISOString();
+            localStorage.setItem('activityViewTimes', JSON.stringify(viewTimes));
+            updateUnreadIndicators();
+        }
+
+        // 更新所有未讀指示器
+        function updateUnreadIndicators() {
+            // 查找所有討論按鈕並更新未讀指示器
+            document.querySelectorAll('button[onclick*="toggleActivityDiscussion"]').forEach(button => {
+                const onclickAttr = button.getAttribute('onclick');
+                const match = onclickAttr.match(/toggleActivityDiscussion\('([^']+)'\)/);
+                if (match) {
+                    const activityId = match[1];
+                    updateUnreadIndicator(activityId, button);
+                }
+            });
+        }
+
+        // 更新單個未讀指示器
+        function updateUnreadIndicator(activityId, button) {
+            // 移除現有的未讀指示器
+            const existingIndicator = button.querySelector('.unread-indicator');
+            if (existingIndicator) {
+                existingIndicator.remove();
+            }
+
+            // 如果有未讀留言，添加指示器
+            if (hasUnreadComments(activityId)) {
+                const indicator = document.createElement('span');
+                indicator.className = 'unread-indicator';
+                indicator.innerHTML = '🔴';
+                indicator.style.cssText = `
+                    position: absolute;
+                    top: -5px;
+                    right: -5px;
+                    font-size: 12px;
+                    animation: pulse 2s infinite;
+                `;
+                button.style.position = 'relative';
+                button.appendChild(indicator);
+            }
+        }
+
         // 切換活動討論區顯示
         function toggleActivityDiscussion(activityId) {
             const discussionDiv = document.getElementById(activityId);
@@ -1073,6 +1192,8 @@
                 discussionDiv.style.display = 'block';
                 initActivityDiscussion(activityId);
                 loadActivityComments(activityId);
+                // 更新最後查看時間
+                updateLastViewTime(activityId);
             } else {
                 // 隱藏討論區
                 discussionDiv.style.display = 'none';
@@ -1155,6 +1276,9 @@
             
             saveToLocalStorage('activityComments', activityComments);
             renderActivityComments(activityId);
+            
+            // 更新未讀指示器
+            updateUnreadIndicators();
             
             // 清空表單
             const textElementClear = document.getElementById(`activity-text-${activityId}`);
@@ -1290,6 +1414,10 @@
                 saveToLocalStorage('activityComments', activityComments);
                 renderActivityComments(activityId);
                 hideActivityReplyForm(activityId, commentId);
+                
+                // 更新未讀指示器
+                updateUnreadIndicators();
+                
                 showNotification('回復已發表！');
             } else {
                 showNotification('找不到原留言', 'error');
@@ -1323,6 +1451,11 @@
             if (savedActivityComments) {
                 activityComments = JSON.parse(savedActivityComments);
             }
+            
+            // 初始化未讀指示器
+            setTimeout(() => {
+                updateUnreadIndicators();
+            }, 500);
             
             // 載入打包清單狀態
             const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
@@ -1549,6 +1682,9 @@
             // 更新用戶顯示
             updateCurrentUserDisplay();
             
+            // 顯示同步相關按鈕
+            showSyncButtons();
+            
             showNotification(`歡迎 ${userName}！您現在可以開始使用個人旅行手冊了。`);
         }
         
@@ -1577,6 +1713,22 @@
                     element.textContent = currentUser.name;
                 }
             });
+            
+            // 如果用戶已登入，顯示同步按鈕
+            if (currentUser) {
+                showSyncButtons();
+            }
+        }
+        
+        // 顯示同步相關按鈕
+        function showSyncButtons() {
+            const syncConfigBtn = document.getElementById('syncConfigBtn');
+            const syncStatusBtn = document.getElementById('syncStatusBtn');
+            const manualSyncBtn = document.getElementById('manualSyncBtn');
+            
+            if (syncConfigBtn) syncConfigBtn.style.display = 'inline-block';
+            if (syncStatusBtn) syncStatusBtn.style.display = 'inline-block';
+            if (manualSyncBtn) manualSyncBtn.style.display = 'inline-block';
         }
         
         // 清除邀請碼驗證狀態
@@ -1589,6 +1741,125 @@
                     location.reload();
                 }, 2000);
             }
+        }
+    </script>
+    
+    <!-- 同步服務整合 -->
+    <script src="sync-service.js"></script>
+    <script>
+        // 初始化同步服務
+        let travelSyncService;
+        
+        // 在頁面載入完成後初始化同步服務
+        window.addEventListener('load', function() {
+            // 載入儲存的同步設定
+            const savedConfig = localStorage.getItem('syncConfig');
+            if (savedConfig) {
+                try {
+                    const config = JSON.parse(savedConfig);
+                    travelSyncService = new TravelSyncService();
+                    travelSyncService.setConfig(config);
+                    
+                    // 如果已設定 API URL，啟動同步
+                    if (config.gasApiUrl) {
+                        console.log('同步服務已啟動，API URL:', config.gasApiUrl);
+                        
+                        // 立即進行一次同步
+                        setTimeout(() => {
+                            travelSyncService.syncFromCloud();
+                        }, 2000);
+                    }
+                } catch (error) {
+                    console.error('載入同步設定失敗:', error);
+                }
+            } else {
+                // 創建預設同步服務
+                travelSyncService = new TravelSyncService();
+                console.log('同步服務已創建（未設定）');
+            }
+        });
+        
+        // 包裝原有的新增留言函數，加入同步功能
+        const originalAddComment = addComment;
+        addComment = function(activityId) {
+            const result = originalAddComment(activityId);
+            
+            // 如果同步服務已初始化且設定完成，添加到同步列表
+            if (travelSyncService && travelSyncService.config && travelSyncService.config.gasApiUrl) {
+                try {
+                    const comments = JSON.parse(localStorage.getItem(`comments_${activityId}`) || '[]');
+                    if (comments.length > 0) {
+                        const latestComment = comments[comments.length - 1];
+                        travelSyncService.addCommentToSync(activityId, latestComment);
+                        console.log('留言已加入同步列表:', latestComment);
+                    }
+                } catch (error) {
+                    console.error('同步留言失敗:', error);
+                }
+            }
+            
+            return result;
+        };
+        
+        // 包裝原有的回復函數，加入同步功能
+        const originalAddReply = addReply;
+        addReply = function(activityId, commentId) {
+            const result = originalAddReply(activityId, commentId);
+            
+            // 如果同步服務已初始化且設定完成，添加到同步列表
+            if (travelSyncService && travelSyncService.config && travelSyncService.config.gasApiUrl) {
+                try {
+                    const comments = JSON.parse(localStorage.getItem(`comments_${activityId}`) || '[]');
+                    const comment = comments.find(c => c.id === commentId);
+                    if (comment && comment.replies.length > 0) {
+                        const latestReply = comment.replies[comment.replies.length - 1];
+                        travelSyncService.addReplyToSync(activityId, commentId, latestReply);
+                        console.log('回復已加入同步列表:', latestReply);
+                    }
+                } catch (error) {
+                    console.error('同步回復失敗:', error);
+                }
+            }
+            
+            return result;
+        };
+        
+        // 添加同步狀態顯示功能
+        function showSyncStatus() {
+            if (!travelSyncService) {
+                alert('同步服務未初始化');
+                return;
+            }
+            
+            const status = travelSyncService.getSyncStatus();
+            const message = `
+同步狀態資訊：
+
+🌐 網路狀態: ${status.isOnline ? '已連線' : '離線'}
+⚙️ 服務狀態: ${status.isRunning ? '運行中' : '已停止'}
+📅 最後同步: ${new Date(status.lastSyncTime).toLocaleString('zh-TW')}
+📝 待同步項目: ${status.pendingChanges} 項
+🔗 API 設定: ${status.config.gasApiUrl ? '已設定' : '未設定'}
+🔄 準即時更新: ${status.webhookEnabled ? '已啟用' : '已停用'}
+            `;
+            
+            alert(message);
+        }
+        
+        // 手動觸發同步
+        function manualSync() {
+            if (!travelSyncService) {
+                alert('同步服務未初始化');
+                return;
+            }
+            
+            if (!travelSyncService.config.gasApiUrl) {
+                alert('請先設定 Google Apps Script API URL');
+                return;
+            }
+            
+            travelSyncService.manualSync();
+            showNotification('手動同步已觸發', 'info');
         }
     </script>
 </body>
