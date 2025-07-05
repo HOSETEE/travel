@@ -3,48 +3,63 @@
 // 網址：https://script.google.com/
 
 // 設定區域 - 請修改這些值
-const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID'; // 替換為您的 Google Sheets ID
-const SHEET_NAME = 'TravelComments'; // 工作表名稱
+const SHEET_ID = '1_ax48j5hlPf7f9mfDx3sXBIjwLozTETSmPpcGYTIKkY'; // 替換為您的 Google Sheets ID
+const SHEET_NAME = '工作表1'; // 工作表名稱
 const WEBHOOK_URL = ''; // 可選：用於即時通知的 Webhook URL
 
 // 主要處理函數
 function doGet(e) {
+  e = e || { parameter: {} };
   const action = e.parameter.action;
-  
   try {
+    let result;
     switch (action) {
       case 'getComments':
-        return getComments(e.parameter.lastSync);
+        result = getComments(e.parameter.lastSync);
+        break;
       case 'getStatus':
-        return getStatus();
+        result = getStatus();
+        break;
       default:
-        return createResponse(false, '未知的操作');
+        result = createResponse(false, '未知的操作');
     }
+    return setCorsHeaders(result);
   } catch (error) {
     console.error('GET 請求錯誤:', error);
-    return createResponse(false, error.toString());
+    return setCorsHeaders(createResponse(false, error.toString()));
   }
 }
 
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
+    let result;
     const action = data.action;
-    
     switch (action) {
       case 'updateComments':
-        return updateComments(data.changes, data.timestamp);
+        result = updateComments(data.changes, data.timestamp);
+        break;
       case 'initializeSheet':
-        return initializeSheet();
+        result = initializeSheet();
+        break;
       default:
-        return createResponse(false, '未知的操作');
+        result = createResponse(false, '未知的操作');
     }
+    return setCorsHeaders(result);
   } catch (error) {
     console.error('POST 請求錯誤:', error);
-    return createResponse(false, error.toString());
+    return setCorsHeaders(createResponse(false, error.toString()));
   }
 }
 
+function setCorsHeaders(output) {
+  if (typeof output.setHeader === 'function') {
+    return output.setHeader('Access-Control-Allow-Origin', '*')
+                 .setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+                 .setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  }
+  return output;
+}
 // 獲取留言資料
 function getComments(lastSyncTime) {
   try {
@@ -272,4 +287,12 @@ function cleanupOldData(daysToKeep = 30) {
   } catch (error) {
     console.error('清理錯誤:', error);
   }
+}
+
+function doOptions(e) {
+  return ContentService.createTextOutput("")
+    .setMimeType(ContentService.MimeType.JSON)
+    .setHeader('Access-Control-Allow-Origin', '*')
+    .setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    .setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
