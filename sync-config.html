@@ -331,7 +331,10 @@
         
         // 載入設定
         function loadConfig() {
-            const config = window.syncService.getSyncStatus().config;
+            if (!window.syncService || !window.syncService.getSyncStatus) return;
+            const status = window.syncService.getSyncStatus();
+            if (!status || !status.config) return;
+            const config = status.config;
             document.getElementById('gasApiUrl').value = config.gasApiUrl || '';
             document.getElementById('gasApiKey').value = config.gasApiKey || '';
             document.getElementById('syncInterval').value = (config.syncIntervalMs / 1000).toString();
@@ -430,8 +433,9 @@
         
         // 更新狀態顯示
         function updateStatus() {
+            if (!window.syncService || !window.syncService.getSyncStatus) return;
             const status = window.syncService.getSyncStatus();
-            
+            if (!status) return;
             const statusHtml = `
                 <div class="status ${status.isOnline ? 'success' : 'error'}">
                     <strong>網路狀態:</strong> ${status.isOnline ? '🟢 已連線' : '🔴 離線'}
@@ -452,7 +456,6 @@
                     <strong>準即時更新:</strong> ${status.webhookEnabled ? '🟢 已啟用' : '⚪ 已停用'}
                 </div>
             `;
-            
             document.getElementById('syncStatus').innerHTML = statusHtml;
         }
         
