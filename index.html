@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日月潭旅行手冊 | 8/8-8/10</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header .date {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* 響應式設計 - 平板和手機 */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .quick-actions {
+                gap: 10px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+            
+            .activity {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .activity-links {
+                gap: 8px;
+            }
+            
+            .link-btn {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+            
+            /* 特斯拉按鈕響應式優化 */
+            .tesla-btn {
+                width: 36px !important;
+                height: 28px !important;
+                min-width: 36px;
+            }
+            
+            .tesla-btn img {
+                width: 16px !important;
+                height: 16px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .header .date {
+                font-size: 1em;
+            }
+            
+            .quick-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .activity-time {
+                font-size: 1em;
+            }
+            
+            .activity-title {
+                font-size: 1.1em;
+            }
+            
+            .activity-links {
+                justify-content: flex-start;
+            }
+            
+            /* 小螢幕特斯拉按鈕優化 */
+            .tesla-btn {
+                width: 32px !important;
+                height: 26px !important;
+                min-width: 32px;
+            }
+            
+            .tesla-btn img {
+                width: 14px !important;
+                height: 14px !important;
+            }
+            
+            .link-btn {
+                 padding: 5px 10px;
+                 font-size: 10px;
+             }
+             
+             /* 觸控優化 */
+             .activity-links {
+                 margin-top: 10px;
+             }
+             
+             .btn {
+                 min-height: 44px; /* iOS 建議的最小觸控目標 */
+             }
+         }
+         
+         /* 通用特斯拉按鈕樣式 */
+         .tesla-btn {
+             transition: all 0.3s ease;
+             border-radius: 6px;
+         }
+         
+         .tesla-btn:hover {
+             background: #c0392b !important;
+             transform: translateY(-1px);
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+         }
+         
+         .tesla-btn:active {
+             transform: translateY(0);
+         }
+         
+         /* 高解析度螢幕優化 */
+         @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+             .tesla-btn img {
+                 image-rendering: -webkit-optimize-contrast;
+                 image-rendering: crisp-edges;
+             }
+         }
+
+        .itinerary-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .day-tab {
+            display: flex;
+            margin-bottom: 30px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .day-tab button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .day-tab button.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .day-content {
+            display: none;
+        }
+
+        .day-content.active {
+            display: block;
+        }
+
+        .activity {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 0 10px 10px 0;
+            position: relative;
+        }
+
+        .activity-time {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .activity-title {
+            font-size: 1.2em;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+        .activity-details {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .activity-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .link-btn {
+            padding: 8px 16px;
+            background: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .link-btn:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .discussion-section {
+            margin-top: 30px;
+        }
+
+        .comment-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+
+        .comment-form textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .comments-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .comment {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 3px solid #3498db;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .comment-time {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .update-form {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .update-form h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: #27ae60;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .weather-widget {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .weather-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .checklist input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .emergency-contact {
+            background: #fee;
+            border: 1px solid #fcc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .emergency-contact h4 {
+            color: #c0392b;
+            margin-bottom: 10px;
+        }
+
+        .activity-discussion {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .activity-comment-form {
+            margin-bottom: 15px;
+        }
+
+        .activity-comment-form input,
+        .activity-comment-form textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .activity-comment-form textarea {
+            height: 60px;
+            resize: vertical;
+        }
+
+        .activity-comments {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .activity-comment {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 2px solid #3498db;
+            font-size: 14px;
+        }
+
+        .activity-comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .activity-comment-author {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+
+        .activity-comment-time {
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+
+        .activity-comment-text {
+            color: #34495e;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 標題區域 -->
+        <div class="header">
+            <h1>🏔️ 日月潭旅行手冊</h1>
+            <div class="date">📅 2024年8月8日 - 8月10日</div>
+            <div class="quick-actions">
+                <button class="btn btn-primary" onclick="showUpdateForm()" style="display: none;">📝 更新行程</button>
+                <button class="btn btn-success" onclick="toggleDiscussion()" style="display: none;">💬 家庭討論</button>
+                <button class="btn btn-warning" onclick="clearInviteCodeVerification()" title="清除邀請碼驗證狀態" style="display: none;">🔐 重置邀請碼</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- 主要行程區域 -->
+            <div class="itinerary-section">
+                <h2>🗓️ 旅行行程</h2>
+                
+                <!-- 日期切換標籤 -->
+                <div class="day-tab">
+                    <button class="active" onclick="showDay(1)">8/8 (五)</button>
+                    <button onclick="showDay(2)">8/9 (六)</button>
+                    <button onclick="showDay(3)">8/10 (日)</button>
+                </div>
+
+                <!-- 第一天行程 -->
+                <div id="day1" class="day-content active">
+                    <div class="activity">
+                        <div class="activity-time">09:00</div>
+                        <div class="activity-title">🚗 高雄出發</div>
+                        <div class="activity-details">開始我們的日月潭之旅！</div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity1')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day1-activity1" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">12:00</div>
+                        <div class="activity-title">🍜 午餐 - 竹香園</div>
+                        <div class="activity-details">路程約1小時45分鐘</div>
+                        <div class="activity-links">
+                            <a href="https://maps.app.goo.gl/Z4FwX1HCSUiFjLgW8" target="_blank" class="link-btn">🧭 導航</a>
+                            <a href="https://maps.app.goo.gl/J3GT86WiSKWocXieA" target="_blank" class="link-btn tesla-btn" style="background: #e74c3c; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 32px; padding: 0;"><img src="img/Tesla.svg" alt="Tesla" style="width: 20px; height: 20px; filter: brightness(0) invert(1);"></a>
+                        </div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity2')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day1-activity2" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">15:00</div>
+                        <div class="activity-title">🥾 步道健走</div>
+                        <div class="activity-details">地點待確認，享受大自然的美景</div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity3')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day1-activity3" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">18:00</div>
+                        <div class="activity-title">🍽️ 晚餐 - 民宿</div>
+                        <div class="activity-details">
+                            選項：市區買現成食物（燒烤、鹹酥雞）或火鍋（全聯食材）<br>
+                            飲品：紅酒、啤酒、小孩無酒精飲料
+                        </div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity4')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day1-activity4" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- 第二天行程 -->
+                <div id="day2" class="day-content">
+                    <div class="activity">
+                        <div class="activity-time">09:00</div>
+                        <div class="activity-title">🏄‍♀️ 日月潭立槳SUP體驗</div>
+                        <div class="activity-details">路程約10分鐘，體驗水上運動的樂趣</div>
+                        <div class="activity-links">
+                            <a href="https://maps.app.goo.gl/YiyeqhiqPpJHWoxD6" target="_blank" class="link-btn">🧭 導航</a>
+                            <a href="https://maps.app.goo.gl/JoViJpmjYGrQbKRL6" target="_blank" class="link-btn tesla-btn" style="background: #e74c3c; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 32px; padding: 0;"><img src="img/Tesla.svg" alt="Tesla" style="width: 20px; height: 20px; filter: brightness(0) invert(1);"></a>
+                        </div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity1')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day2-activity1" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">12:00</div>
+                        <div class="activity-title">🍱 午餐 + 盥洗</div>
+                        <div class="activity-details">回飯店盥洗，路上隨便買回飯店吃</div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity2')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day2-activity2" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">15:00</div>
+                        <div class="activity-title">☕ 下午茶 - 鹿篙咖啡莊園</div>
+                        <div class="activity-details">路程約15分鐘，享受山景咖啡</div>
+                        <div class="activity-links">
+                            <a href="https://maps.app.goo.gl/st5HA5XjiPttuzMB7" target="_blank" class="link-btn">🧭 導航</a>
+                            <a href="https://maps.app.goo.gl/jFBJEradwCgeQ7QZ6" target="_blank" class="link-btn tesla-btn" style="background: #e74c3c; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 32px; padding: 0;"><img src="img/Tesla.svg" alt="Tesla" style="width: 20px; height: 20px; filter: brightness(0) invert(1);"></a>
+                        </div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity3')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day2-activity3" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">19:00</div>
+                        <div class="activity-title">🍽️ 晚餐</div>
+                        <div class="activity-details">餐廳待訂</div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity4')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day2-activity4" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- 第三天行程 -->
+                <div id="day3" class="day-content">
+                    <div class="activity">
+                        <div class="activity-time">06:30</div>
+                        <div class="activity-title">🥐 民宿早餐</div>
+                        <div class="activity-details">享用民宿提供的早餐</div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity1')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day3-activity1" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">07:00</div>
+                        <div class="activity-title">🚴‍♀️ 單車環湖日月潭</div>
+                        <div class="activity-details">路程約10分鐘，自由參加，沒參加的人可以睡晚一點</div>
+                        <div class="activity-links">
+                            <a href="https://maps.app.goo.gl/yKeRJjKdjiHf5nT5A" target="_blank" class="link-btn">🧭 導航</a>
+                            <a href="https://maps.app.goo.gl/8ANMfrNSWh1BnKUK7" target="_blank" class="link-btn tesla-btn" style="background: #e74c3c; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 32px; padding: 0;"><img src="img/Tesla.svg" alt="Tesla" style="width: 20px; height: 20px; filter: brightness(0) invert(1);"></a>
+                        </div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity2')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day3-activity2" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">11:00</div>
+                        <div class="activity-title">🏨 退房</div>
+                        <div class="activity-details">整理行李，準備離開</div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity3')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day3-activity3" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">12:00</div>
+                        <div class="activity-title">🍜 午餐</div>
+                        <div class="activity-details">餐廳待訂</div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity4')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day3-activity4" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">14:00</div>
+                        <div class="activity-title">👋 解散</div>
+                        <div class="activity-details">結束愉快的旅程，各自回家</div>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity5')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <div id="day3-activity5" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- 討論區域 -->
+                <div id="discussion" class="discussion-section" style="display: none;">
+                    <h3>💬 家庭討論區</h3>
+                    <div class="comment-form">
+                        <div style="margin-bottom: 10px; padding: 8px; background: #f8f9fa; border-radius: 5px; color: #2c3e50; font-weight: bold;">
+                            發表者：<span id="currentUserDisplay">載入中...</span>
+                        </div>
+                        <textarea id="commentText" placeholder="分享你的想法、建議或問題..."></textarea>
+                        <button class="btn btn-primary" onclick="addComment()">發表留言</button>
+                    </div>
+                    <div id="commentsList" class="comments-list">
+                        <!-- 留言會動態載入到這裡 -->
+                    </div>
+                </div>
+
+                <!-- 更新表單 -->
+                <div id="updateForm" class="update-form" style="display: none;">
+                    <h3>📝 更新行程</h3>
+                    <input type="text" id="updateTitle" placeholder="更新標題">
+                    <textarea id="updateContent" placeholder="描述你想要的更新內容..."></textarea>
+                    <button class="btn btn-success" onclick="submitUpdate()">提交更新</button>
+                    <button class="btn" onclick="hideUpdateForm()" style="background: #95a5a6; color: white; margin-left: 10px;">取消</button>
+                </div>
+            </div>
+
+            <!-- 側邊欄 -->
+            <div class="sidebar">
+                <!-- 住宿資訊 -->
+                <div class="info-card">
+                    <h3>🏨 住宿資訊</h3>
+                    <h4>3JD.HOME</h4>
+                    <a href="https://maps.app.goo.gl/pYVRDqcJJx61gBGP8" target="_blank" class="link-btn">🧭 導航</a>
+                    
+                    <div class="emergency-contact">
+                        <h4>🚨 緊急聯絡</h4>
+                        <p>民宿電話：0978-201-007</p>
+                        <p>LINE：@rtk2718v</p>
+                        <p>緊急聯絡人：老闆</p>
+                    </div>
+                </div>
+
+                <!-- 附近美食 -->
+                <div class="info-card">
+                    <h3>🍴 附近美食</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 10px;">
+                            <strong>魚光窯烤麵包</strong><br>
+                            <a href="https://maps.app.goo.gl/wWTSEYKu9f2rxVrq5" target="_blank" class="link-btn">🧭 導航</a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <strong>走路擼貓</strong><br>
+                            <a href="https://maps.app.goo.gl/bEACb3WmXziVFp9H8" target="_blank" class="link-btn">🧭 導航</a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <strong>素食餐廳</strong><br>
+                            <a href="https://maps.app.goo.gl/fJxANeiLY4oF7MpZ9" target="_blank" class="link-btn">🧭 導航</a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <strong>日月潭紅茶館（義大利麵）</strong><br>
+                            <a href="https://maps.app.goo.gl/szkuNrdFYWckuBJ66" target="_blank" class="link-btn">🧭 導航</a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <strong>全聯</strong><br>
+                            <a href="https://maps.app.goo.gl/wHReMsvXB2ByosJw8" target="_blank" class="link-btn">🧭 導航</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 天氣資訊 -->
+                <div class="info-card weather-widget">
+                    <h3>🌤️ 天氣預報</h3>
+                    <div class="weather-icon">☀️</div>
+                    <p>日月潭地區</p>
+                    <p>溫度：25-30°C</p>
+                    <p>建議攜帶防曬用品</p>
+                </div>
+
+                <!-- 打包清單 -->
+                <div class="info-card">
+                    <h3>🎒 打包清單</h3>
+                    <ul class="checklist">
+                        <li><input type="checkbox" id="item1"> <label for="item1">換洗衣物</label></li>
+                        <li><input type="checkbox" id="item2"> <label for="item2">防曬用品</label></li>
+                        <li><input type="checkbox" id="item3"> <label for="item3">相機/充電器</label></li>
+                        <li><input type="checkbox" id="item4"> <label for="item4">個人藥品</label></li>
+                        <li><input type="checkbox" id="item5"> <label for="item5">泳衣（SUP用）</label></li>
+                        <li><input type="checkbox" id="item6"> <label for="item6">運動鞋</label></li>
+                        <li><input type="checkbox" id="item7"> <label for="item7">雨具</label></li>
+                        <li><input type="checkbox" id="item8"> <label for="item8">零食飲料</label></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通知訊息 -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // 全域變數
+        let comments = [];
+        let updates = [];
+        let activityComments = {};
+        let userProfiles = [];
+        let currentUser = null;
+
+        // 顯示特定天數的行程
+        function showDay(dayNumber) {
+            // 隱藏所有天數內容
+            document.querySelectorAll('.day-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 移除所有按鈕的active狀態
+            document.querySelectorAll('.day-tab button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // 顯示選中的天數
+            document.getElementById(`day${dayNumber}`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // 切換討論區顯示
+        function toggleDiscussion() {
+            const discussion = document.getElementById('discussion');
+            if (discussion.style.display === 'none') {
+                discussion.style.display = 'block';
+                loadComments();
+            } else {
+                discussion.style.display = 'none';
+            }
+        }
+
+        // 顯示更新表單
+        function showUpdateForm() {
+            document.getElementById('updateForm').style.display = 'block';
+        }
+
+        // 隱藏更新表單
+        function hideUpdateForm() {
+            document.getElementById('updateForm').style.display = 'none';
+            document.getElementById('updateTitle').value = '';
+            document.getElementById('updateContent').value = '';
+        }
+
+        // 新增留言
+        function addComment(replyToId = null) {
+            const text = document.getElementById('commentText').value.trim();
+            
+            if (!currentUser) {
+                showNotification('請先設定個人ID', 'error');
+                return;
+            }
+            
+            if (!text) {
+                showNotification('請填寫留言內容', 'error');
+                return;
+            }
+            
+            const author = currentUser.name;
+            
+            const comment = {
+                id: Date.now(),
+                author: author,
+                text: text,
+                timestamp: new Date().toLocaleString('zh-TW'),
+                replyTo: replyToId,
+                replies: []
+            };
+            
+            if (replyToId) {
+                // 找到被回復的留言並添加回復
+                const parentComment = findCommentById(comments, replyToId);
+                if (parentComment) {
+                    parentComment.replies.push(comment);
+                }
+            } else {
+                // 新的主留言
+                comments.unshift(comment);
+            }
+            
+            saveToLocalStorage('comments', comments);
+            renderComments();
+            
+            // 清空表單
+            document.getElementById('commentText').value = '';
+            showNotification('留言已發表！');
+        }
+
+        // 查找留言的輔助函數
+        function findCommentById(commentsList, id) {
+            for (let comment of commentsList) {
+                if (comment.id === id) {
+                    return comment;
+                }
+                // 遞迴搜尋回復中的留言
+                const found = findCommentById(comment.replies || [], id);
+                if (found) return found;
+            }
+            return null;
+        }
+        
+        // 渲染留言列表
+        function renderComments() {
+            const commentsList = document.getElementById('commentsList');
+            commentsList.innerHTML = '';
+            
+            comments.forEach(comment => {
+                renderComment(comment, commentsList, 0);
+            });
+        }
+        
+        // 渲染單個留言（支援巢狀回復）
+        function renderComment(comment, container, depth = 0) {
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment';
+            commentDiv.style.marginLeft = `${depth * 20}px`;
+            if (depth > 0) {
+                commentDiv.style.borderLeft = '3px solid #3498db';
+                commentDiv.style.paddingLeft = '15px';
+                commentDiv.style.backgroundColor = '#f8f9fa';
+            }
+            
+            commentDiv.innerHTML = `
+                <div class="comment-header">
+                    <span class="comment-author">${comment.author}</span>
+                    <span class="comment-time">${comment.timestamp}</span>
+                    <button class="reply-btn" onclick="showReplyForm(${comment.id})" style="margin-left: 10px; font-size: 12px; padding: 2px 8px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;">回復</button>
+                </div>
+                <div class="comment-text">${comment.text}</div>
+                <div id="reply-form-${comment.id}" class="reply-form" style="display: none; margin-top: 10px; padding: 10px; background: #ecf0f1; border-radius: 5px;">
+                    <div style="margin-bottom: 8px; padding: 5px; background: #f8f9fa; border-radius: 3px; color: #2c3e50; font-size: 12px;">
+                        回覆者：<span class="current-user-name">${currentUser ? currentUser.name : '未登入'}</span>
+                    </div>
+                    <textarea id="reply-text-${comment.id}" placeholder="回復 ${comment.author} 的留言..." style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 3px; resize: vertical; min-height: 60px;"></textarea>
+                    <div style="margin-top: 8px;">
+                        <button onclick="submitReply(${comment.id})" style="padding: 5px 12px; background: #27ae60; color: white; border: none; border-radius: 3px; cursor: pointer; margin-right: 5px;">發表回復</button>
+                        <button onclick="hideReplyForm(${comment.id})" style="padding: 5px 12px; background: #95a5a6; color: white; border: none; border-radius: 3px; cursor: pointer;">取消</button>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(commentDiv);
+            
+            // 更新新建立的用戶顯示
+            setTimeout(() => {
+                updateCurrentUserDisplay();
+            }, 0);
+            
+            // 渲染回復
+            if (comment.replies && comment.replies.length > 0) {
+                comment.replies.forEach(reply => {
+                    renderComment(reply, container, depth + 1);
+                });
+            }
+        }
+
+        // 載入留言
+        function loadComments() {
+            const savedComments = localStorage.getItem('comments');
+            if (savedComments) {
+                comments = JSON.parse(savedComments);
+                // 確保舊留言相容新的串文結構
+                comments.forEach(comment => {
+                    if (!comment.replies) {
+                        comment.replies = [];
+                    }
+                });
+                renderComments();
+            }
+        }
+        
+        // 顯示回復表單
+        function showReplyForm(commentId) {
+            // 隱藏所有其他回復表單
+            document.querySelectorAll('.reply-form').forEach(form => {
+                form.style.display = 'none';
+            });
+            
+            // 顯示指定的回復表單
+            const replyForm = document.getElementById(`reply-form-${commentId}`);
+            if (replyForm) {
+                replyForm.style.display = 'block';
+                document.getElementById(`reply-text-${commentId}`).focus();
+            }
+        }
+        
+        // 隱藏回復表單
+        function hideReplyForm(commentId) {
+            const replyForm = document.getElementById(`reply-form-${commentId}`);
+            if (replyForm) {
+                replyForm.style.display = 'none';
+                // 清空表單
+                document.getElementById(`reply-text-${commentId}`).value = '';
+            }
+        }
+        
+        // 提交回復
+        function submitReply(commentId) {
+            const text = document.getElementById(`reply-text-${commentId}`).value.trim();
+            
+            if (!currentUser) {
+                showNotification('請先設定個人ID', 'error');
+                return;
+            }
+            
+            if (!text) {
+                showNotification('請填寫回復內容', 'error');
+                return;
+            }
+            
+            const author = currentUser.name;
+            
+            const reply = {
+                id: Date.now(),
+                author: author,
+                text: text,
+                timestamp: new Date().toLocaleString('zh-TW'),
+                replyTo: commentId,
+                replies: []
+            };
+            
+            // 找到被回復的留言並添加回復
+            const parentComment = findCommentById(comments, commentId);
+            if (parentComment) {
+                parentComment.replies.push(reply);
+                saveToLocalStorage('comments', comments);
+                renderComments();
+                hideReplyForm(commentId);
+                showNotification('回復已發表！');
+            } else {
+                showNotification('找不到原留言', 'error');
+            }
+        }
+
+        // 提交更新
+        function submitUpdate() {
+            const title = document.getElementById('updateTitle').value.trim();
+            const content = document.getElementById('updateContent').value.trim();
+            
+            if (!title || !content) {
+                showNotification('請填寫更新標題和內容', 'error');
+                return;
+            }
+            
+            const update = {
+                id: Date.now(),
+                title: title,
+                content: content,
+                timestamp: new Date().toLocaleString('zh-TW')
+            };
+            
+            updates.unshift(update);
+            saveToLocalStorage('updates', updates);
+            hideUpdateForm();
+            showNotification('更新請求已提交！');
+        }
+
+
+
+        // 顯示通知
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 儲存到本地存儲
+        function saveToLocalStorage(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        // 切換活動討論區顯示
+        function toggleActivityDiscussion(activityId) {
+            const discussionDiv = document.getElementById(activityId);
+            
+            if (discussionDiv.style.display === 'none') {
+                // 顯示討論區並初始化內容
+                discussionDiv.style.display = 'block';
+                initActivityDiscussion(activityId);
+                loadActivityComments(activityId);
+            } else {
+                // 隱藏討論區
+                discussionDiv.style.display = 'none';
+            }
+        }
+
+        // 初始化活動討論區
+        function initActivityDiscussion(activityId) {
+            const discussionDiv = document.getElementById(activityId);
+            
+            if (discussionDiv.innerHTML === '') {
+                discussionDiv.innerHTML = `
+                     <h4 style="margin-bottom: 15px; color: #2c3e50; font-size: 16px;">💬 針對此行程的討論</h4>
+                     <div class="activity-comment-form">
+                         <div style="margin-bottom: 10px; padding: 8px; background: #f8f9fa; border-radius: 5px; color: #2c3e50; font-weight: bold; font-size: 14px;">
+                             發表者：<span class="current-user-name">${currentUser ? currentUser.name : '未登入'}</span>
+                         </div>
+                         <textarea id="activity-text-${activityId}" placeholder="對這個行程有什麼想法或建議？"></textarea>
+                         <button class="btn btn-success" onclick="addActivityComment('${activityId}')" style="font-size: 12px; padding: 6px 12px;">發表留言</button>
+                     </div>
+                     <div id="${activityId}-comments" class="activity-comments">
+                         <!-- 留言會動態載入到這裡 -->
+                     </div>
+                 `;
+                 
+                 // 更新新建立的用戶顯示
+                 setTimeout(() => {
+                     updateCurrentUserDisplay();
+                 }, 0);
+            }
+        }
+
+        // 新增活動留言
+        function addActivityComment(activityId, replyToId = null) {
+            const textElement = document.getElementById(`activity-text-${activityId}`);
+            
+            if (!textElement) {
+                showNotification('找不到表單元素', 'error');
+                return;
+            }
+            
+            if (!currentUser) {
+                showNotification('請先設定個人ID', 'error');
+                return;
+            }
+            
+            const text = textElement.value.trim();
+            
+            if (!text) {
+                showNotification('請填寫留言內容', 'error');
+                return;
+            }
+            
+            const author = currentUser.name;
+            
+            const comment = {
+                id: Date.now(),
+                author: author,
+                text: text,
+                timestamp: new Date().toLocaleString('zh-TW'),
+                replyTo: replyToId,
+                replies: []
+            };
+            
+            // 初始化活動留言陣列（如果不存在）
+            if (!activityComments[activityId]) {
+                activityComments[activityId] = [];
+            }
+            
+            if (replyToId) {
+                // 找到被回復的留言並添加回復
+                const parentComment = findCommentById(activityComments[activityId], replyToId);
+                if (parentComment) {
+                    parentComment.replies.push(comment);
+                }
+            } else {
+                // 新的主留言
+                activityComments[activityId].unshift(comment);
+            }
+            
+            saveToLocalStorage('activityComments', activityComments);
+            renderActivityComments(activityId);
+            
+            // 清空表單
+            const textElementClear = document.getElementById(`activity-text-${activityId}`);
+            if (textElementClear) textElementClear.value = '';
+            showNotification('留言已發表！');
+        }
+
+        // 渲染活動留言列表
+        function renderActivityComments(activityId) {
+            const commentsList = document.getElementById(`${activityId}-comments`);
+            const comments = activityComments[activityId] || [];
+            
+            commentsList.innerHTML = '';
+            
+            if (comments.length === 0) {
+                commentsList.innerHTML = '<p style="color: #7f8c8d; font-style: italic; text-align: center; padding: 20px;">還沒有人討論這個行程，快來留下第一個意見吧！</p>';
+                return;
+            }
+            
+            comments.forEach(comment => {
+                renderActivityComment(comment, commentsList, activityId, 0);
+            });
+        }
+        
+        // 渲染單個活動留言（支援巢狀回復）
+        function renderActivityComment(comment, container, activityId, depth = 0) {
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'activity-comment';
+            commentDiv.style.marginLeft = `${depth * 15}px`;
+            if (depth > 0) {
+                commentDiv.style.borderLeft = '2px solid #3498db';
+                commentDiv.style.paddingLeft = '10px';
+                commentDiv.style.backgroundColor = '#f8f9fa';
+            }
+            
+            commentDiv.innerHTML = `
+                <div class="activity-comment-header">
+                    <span class="activity-comment-author">${comment.author}</span>
+                    <span class="activity-comment-time">${comment.timestamp}</span>
+                    <button onclick="showActivityReplyForm('${activityId}', ${comment.id})" style="margin-left: 8px; font-size: 11px; padding: 2px 6px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;">回復</button>
+                </div>
+                <div class="activity-comment-text">${comment.text}</div>
+                <div id="activity-reply-form-${activityId}-${comment.id}" class="activity-reply-form" style="display: none; margin-top: 8px; padding: 8px; background: #ecf0f1; border-radius: 5px;">
+                    <div style="margin-bottom: 6px; padding: 4px; background: #f8f9fa; border-radius: 3px; color: #2c3e50; font-size: 11px;">
+                        回覆者：<span class="current-user-name">${currentUser ? currentUser.name : '未登入'}</span>
+                    </div>
+                    <textarea id="activity-reply-text-${activityId}-${comment.id}" placeholder="回復 ${comment.author} 的留言..." style="width: 100%; padding: 4px; border: 1px solid #ddd; border-radius: 3px; resize: vertical; min-height: 50px; font-size: 12px;"></textarea>
+                    <div style="margin-top: 6px;">
+                        <button onclick="submitActivityReply('${activityId}', ${comment.id})" style="padding: 4px 8px; background: #27ae60; color: white; border: none; border-radius: 3px; cursor: pointer; margin-right: 4px; font-size: 11px;">發表回復</button>
+                        <button onclick="hideActivityReplyForm('${activityId}', ${comment.id})" style="padding: 4px 8px; background: #95a5a6; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px;">取消</button>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(commentDiv);
+            
+            // 更新新建立的用戶顯示
+            setTimeout(() => {
+                updateCurrentUserDisplay();
+            }, 0);
+            
+            // 渲染回復
+            if (comment.replies && comment.replies.length > 0) {
+                comment.replies.forEach(reply => {
+                    renderActivityComment(reply, container, activityId, depth + 1);
+                });
+            }
+        }
+        
+        // 顯示活動回復表單
+        function showActivityReplyForm(activityId, commentId) {
+            // 隱藏所有其他回復表單
+            document.querySelectorAll('.activity-reply-form').forEach(form => {
+                form.style.display = 'none';
+            });
+            
+            // 顯示指定的回復表單
+            const replyForm = document.getElementById(`activity-reply-form-${activityId}-${commentId}`);
+            if (replyForm) {
+                replyForm.style.display = 'block';
+                const textArea = document.getElementById(`activity-reply-text-${activityId}-${commentId}`);
+                if (textArea) textArea.focus();
+            }
+        }
+        
+        // 隱藏活動回復表單
+        function hideActivityReplyForm(activityId, commentId) {
+            const replyForm = document.getElementById(`activity-reply-form-${activityId}-${commentId}`);
+            if (replyForm) {
+                replyForm.style.display = 'none';
+                // 清空表單
+                const textArea = document.getElementById(`activity-reply-text-${activityId}-${commentId}`);
+                if (textArea) textArea.value = '';
+            }
+        }
+        
+        // 提交活動回復
+        function submitActivityReply(activityId, commentId) {
+            const textElement = document.getElementById(`activity-reply-text-${activityId}-${commentId}`);
+            
+            if (!textElement) {
+                showNotification('找不到回復表單元素', 'error');
+                return;
+            }
+            
+            if (!currentUser) {
+                showNotification('請先設定個人ID', 'error');
+                return;
+            }
+            
+            const text = textElement.value.trim();
+            
+            if (!text) {
+                showNotification('請填寫回復內容', 'error');
+                return;
+            }
+            
+            const author = currentUser.name;
+            
+            const reply = {
+                id: Date.now(),
+                author: author,
+                text: text,
+                timestamp: new Date().toLocaleString('zh-TW'),
+                replyTo: commentId,
+                replies: []
+            };
+            
+            // 找到被回復的留言並添加回復
+            const parentComment = findCommentById(activityComments[activityId], commentId);
+            if (parentComment) {
+                parentComment.replies.push(reply);
+                saveToLocalStorage('activityComments', activityComments);
+                renderActivityComments(activityId);
+                hideActivityReplyForm(activityId, commentId);
+                showNotification('回復已發表！');
+            } else {
+                showNotification('找不到原留言', 'error');
+            }
+        }
+
+        // 載入活動留言
+        function loadActivityComments(activityId) {
+            const savedComments = localStorage.getItem('activityComments');
+            if (savedComments) {
+                activityComments = JSON.parse(savedComments);
+                // 確保舊活動留言相容新的串文結構
+                Object.keys(activityComments).forEach(activityId => {
+                    activityComments[activityId].forEach(comment => {
+                        if (!comment.replies) {
+                            comment.replies = [];
+                        }
+                    });
+                });
+            }
+            renderActivityComments(activityId);
+        }
+
+        // 頁面載入時初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            checkUserIdentity();
+            loadComments();
+            
+            // 載入活動留言
+            const savedActivityComments = localStorage.getItem('activityComments');
+            if (savedActivityComments) {
+                activityComments = JSON.parse(savedActivityComments);
+            }
+            
+            // 載入打包清單狀態
+            const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                const saved = localStorage.getItem(checkbox.id);
+                if (saved === 'true') {
+                    checkbox.checked = true;
+                }
+                
+                checkbox.addEventListener('change', function() {
+                    localStorage.setItem(this.id, this.checked);
+                });
+            });
+        });
+        
+        // 檢查用戶身份
+        function checkUserIdentity() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (!savedUser) {
+                showUserIdentityModal();
+            } else {
+                currentUser = JSON.parse(savedUser);
+                updateCurrentUserDisplay();
+            }
+        }
+        
+        // 顯示用戶身份設定彈窗
+        function showUserIdentityModal() {
+            // 檢查是否已驗證邀請碼
+            const inviteCodeVerified = localStorage.getItem('inviteCodeVerified');
+            if (!inviteCodeVerified) {
+                showInviteCodeModal();
+                return;
+            }
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.7);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    padding: 30px;
+                    border-radius: 15px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                    max-width: 400px;
+                    width: 90%;
+                    text-align: center;
+                ">
+                    <h2 style="color: #2c3e50; margin-bottom: 20px; font-size: 24px;">👤 歡迎來到個人旅行手冊</h2>
+                     <p style="color: #7f8c8d; margin-bottom: 25px; line-height: 1.6;">請告訴我們您的個人ID，這樣我們就能為您個人化體驗！</p>
+                     <input type="text" id="userNameInput" placeholder="請輸入您的個人ID（例如：小雷、阿苦、泉成）" style="
+                        width: 100%;
+                        padding: 12px;
+                        border: 2px solid #ddd;
+                        border-radius: 8px;
+                        font-size: 16px;
+                        margin-bottom: 20px;
+                        box-sizing: border-box;
+                    ">
+                    <button onclick="setUserIdentity()" style="
+                        background: #3498db;
+                        color: white;
+                        border: none;
+                        padding: 12px 30px;
+                        border-radius: 8px;
+                        font-size: 16px;
+                        cursor: pointer;
+                        width: 100%;
+                        transition: background 0.3s;
+                    " onmouseover="this.style.background='#2980b9'" onmouseout="this.style.background='#3498db'">開始使用</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            document.getElementById('userNameInput').focus();
+            
+            // 按Enter鍵也能提交
+            document.getElementById('userNameInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    setUserIdentity();
+                }
+            });
+        }
+        
+        // 顯示邀請碼驗證彈窗
+        function showInviteCodeModal() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    padding: 30px;
+                    border-radius: 15px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                    max-width: 400px;
+                    width: 90%;
+                    text-align: center;
+                ">
+                    <h2 style="color: #e74c3c; margin-bottom: 20px; font-size: 24px;">🔐 邀請碼驗證</h2>
+                    <p style="color: #7f8c8d; margin-bottom: 25px; line-height: 1.6;">這是一個私人旅行手冊，請輸入邀請碼以繼續訪問。</p>
+                    <input type="password" id="inviteCodeInput" placeholder="請輸入邀請碼" style="
+                        width: 100%;
+                        padding: 12px;
+                        border: 2px solid #ddd;
+                        border-radius: 8px;
+                        font-size: 16px;
+                        margin-bottom: 15px;
+                        box-sizing: border-box;
+                        text-align: center;
+                        letter-spacing: 2px;
+                    ">
+                    <div id="inviteCodeError" style="
+                        color: #e74c3c;
+                        font-size: 14px;
+                        margin-bottom: 15px;
+                        display: none;
+                    ">邀請碼錯誤，請重新輸入</div>
+                    <button onclick="verifyInviteCode()" style="
+                        background: #e74c3c;
+                        color: white;
+                        border: none;
+                        padding: 12px 30px;
+                        border-radius: 8px;
+                        font-size: 16px;
+                        cursor: pointer;
+                        width: 100%;
+                        transition: background 0.3s;
+                    " onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='#e74c3c'">驗證邀請碼</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            document.getElementById('inviteCodeInput').focus();
+            
+            // 按Enter鍵也能提交
+            document.getElementById('inviteCodeInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    verifyInviteCode();
+                }
+            });
+        }
+        
+        // 驗證邀請碼
+        function verifyInviteCode() {
+            const inviteCode = document.getElementById('inviteCodeInput').value.trim();
+            const correctCode = '0808..';
+            
+            if (inviteCode === correctCode) {
+                // 邀請碼正確，儲存驗證狀態
+                localStorage.setItem('inviteCodeVerified', 'true');
+                
+                // 移除邀請碼彈窗
+                document.querySelector('div[style*="position: fixed"]').remove();
+                
+                // 顯示用戶身份設定彈窗
+                showUserIdentityModal();
+                
+                showNotification('邀請碼驗證成功！歡迎使用旅行手冊。', 'success');
+            } else {
+                // 邀請碼錯誤
+                const errorDiv = document.getElementById('inviteCodeError');
+                errorDiv.style.display = 'block';
+                document.getElementById('inviteCodeInput').value = '';
+                document.getElementById('inviteCodeInput').focus();
+                document.getElementById('inviteCodeInput').style.borderColor = '#e74c3c';
+                
+                // 3秒後隱藏錯誤訊息並重置邊框顏色
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                    document.getElementById('inviteCodeInput').style.borderColor = '#ddd';
+                }, 3000);
+            }
+        }
+        
+        // 設定用戶身份
+        function setUserIdentity() {
+            const userName = document.getElementById('userNameInput').value.trim();
+            if (!userName) {
+                 alert('請輸入您的個人ID');
+                 return;
+             }
+            
+            currentUser = {
+                name: userName,
+                joinDate: new Date().toLocaleString('zh-TW')
+            };
+            
+            // 儲存用戶資訊
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // 更新用戶列表
+            loadUserProfiles();
+            if (!userProfiles.find(user => user.name === userName)) {
+                userProfiles.push(currentUser);
+                saveToLocalStorage('userProfiles', userProfiles);
+            }
+            
+            // 移除彈窗
+            document.querySelector('div[style*="position: fixed"]').remove();
+            
+            // 更新用戶顯示
+            updateCurrentUserDisplay();
+            
+            showNotification(`歡迎 ${userName}！您現在可以開始使用個人旅行手冊了。`);
+        }
+        
+        // 載入用戶資料
+        function loadUserProfiles() {
+            const saved = localStorage.getItem('userProfiles');
+            userProfiles = saved ? JSON.parse(saved) : [
+                 { name: '小雷', joinDate: '2024-01-01' },
+                 { name: '阿苦', joinDate: '2024-01-01' },
+                 { name: '泉成', joinDate: '2024-01-01' },
+                 { name: '小紅', joinDate: '2024-01-01' }
+             ];
+        }
+        
+        // 更新當前用戶顯示
+        function updateCurrentUserDisplay() {
+            // 更新全域討論區的用戶顯示
+            const globalUserDisplay = document.getElementById('currentUserDisplay');
+            if (globalUserDisplay && currentUser) {
+                globalUserDisplay.textContent = currentUser.name;
+            }
+            
+            // 更新所有動態生成的用戶名稱顯示
+            document.querySelectorAll('.current-user-name').forEach(element => {
+                if (currentUser) {
+                    element.textContent = currentUser.name;
+                }
+            });
+        }
+        
+        // 清除邀請碼驗證狀態
+        function clearInviteCodeVerification() {
+            if (confirm('確定要清除邀請碼驗證狀態嗎？下次訪問時將需要重新輸入邀請碼。')) {
+                localStorage.removeItem('inviteCodeVerified');
+                localStorage.removeItem('currentUser');
+                showNotification('邀請碼驗證狀態已清除，頁面將重新載入。', 'warning');
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
