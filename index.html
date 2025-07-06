@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>日月潭旅行手冊 | 8/8-8/10</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -527,6 +530,31 @@
             color: #34495e;
             line-height: 1.4;
         }
+
+        /* 未讀留言指示器動畫 */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .unread-indicator {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 12px;
+            animation: pulse 2s infinite;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -539,6 +567,8 @@
                 <button class="btn btn-primary" onclick="showUpdateForm()" style="display: none;">📝 更新行程</button>
                 <button class="btn btn-success" onclick="toggleDiscussion()" style="display: none;">💬 家庭討論</button>
                 <button class="btn btn-warning" onclick="clearInviteCodeVerification()" title="清除邀請碼驗證狀態" style="display: none;">🔐 重置邀請碼</button>
+                
+                
             </div>
         </div>
 
@@ -833,7 +863,7 @@
         }
 
         // 新增留言
-        function addComment(replyToId = null) {
+        async function addComment(replyToId = null) {
             const text = document.getElementById('commentText').value.trim();
             
             if (!currentUser) {
@@ -857,23 +887,29 @@
                 replies: []
             };
             
-            if (replyToId) {
-                // 找到被回復的留言並添加回復
-                const parentComment = findCommentById(comments, replyToId);
-                if (parentComment) {
-                    parentComment.replies.push(comment);
+            try {
+                if (replyToId) {
+                    // 找到被回復的留言並添加回復
+                    const parentComment = findCommentById(comments, replyToId);
+                    if (parentComment) {
+                        parentComment.replies.push(comment);
+                        // 更新 Firebase
+                        await dbService.saveComments(comments);
+                    }
+                } else {
+                    // 新的主留言
+                    comments.unshift(comment);
+                    // 更新 Firebase
+                    await dbService.saveComments(comments);
                 }
-            } else {
-                // 新的主留言
-                comments.unshift(comment);
+                
+                // 清空表單
+                document.getElementById('commentText').value = '';
+                showNotification('留言已發表！');
+            } catch (error) {
+                console.error('發表留言失敗:', error);
+                showNotification('發表留言失敗，請稍後再試', 'error');
             }
-            
-            saveToLocalStorage('comments', comments);
-            renderComments();
-            
-            // 清空表單
-            document.getElementById('commentText').value = '';
-            showNotification('留言已發表！');
         }
 
         // 查找留言的輔助函數
@@ -985,7 +1021,7 @@
         }
         
         // 提交回復
-        function submitReply(commentId) {
+        async function submitReply(commentId) {
             const text = document.getElementById(`reply-text-${commentId}`).value.trim();
             
             if (!currentUser) {
@@ -1009,21 +1045,26 @@
                 replies: []
             };
             
-            // 找到被回復的留言並添加回復
-            const parentComment = findCommentById(comments, commentId);
-            if (parentComment) {
-                parentComment.replies.push(reply);
-                saveToLocalStorage('comments', comments);
-                renderComments();
-                hideReplyForm(commentId);
-                showNotification('回復已發表！');
-            } else {
-                showNotification('找不到原留言', 'error');
+            try {
+                // 找到被回復的留言並添加回復
+                const parentComment = findCommentById(comments, commentId);
+                if (parentComment) {
+                    parentComment.replies.push(reply);
+                    // 更新 Firebase
+                    await dbService.saveComments(comments);
+                    hideReplyForm(commentId);
+                    showNotification('回復已發表！');
+                } else {
+                    showNotification('找不到原留言', 'error');
+                }
+            } catch (error) {
+                console.error('發表回復失敗:', error);
+                showNotification('發表回復失敗，請稍後再試', 'error');
             }
         }
 
         // 提交更新
-        function submitUpdate() {
+        async function submitUpdate() {
             const title = document.getElementById('updateTitle').value.trim();
             const content = document.getElementById('updateContent').value.trim();
             
@@ -1039,10 +1080,16 @@
                 timestamp: new Date().toLocaleString('zh-TW')
             };
             
-            updates.unshift(update);
-            saveToLocalStorage('updates', updates);
-            hideUpdateForm();
-            showNotification('更新請求已提交！');
+            try {
+                updates.unshift(update);
+                // 更新 Firebase
+                await dbService.saveUpdates(updates);
+                hideUpdateForm();
+                showNotification('更新請求已提交！');
+            } catch (error) {
+                console.error('提交更新失敗:', error);
+                showNotification('提交更新失敗，請稍後再試', 'error');
+            }
         }
 
 
@@ -1059,20 +1106,138 @@
             }, 3000);
         }
 
-        // 儲存到本地存儲
+        // 儲存到本地存儲 (已棄用，保留作為相容性支援)
         function saveToLocalStorage(key, data) {
             localStorage.setItem(key, JSON.stringify(data));
+            // 注意：此函數已被 Firebase 相關函數取代，僅保留作為相容性支援
+        }
+
+        // 檢查活動是否有未讀留言
+        async function hasUnreadComments(activityId) {
+            try {
+                if (!currentUser) return false;
+                
+                // 獲取最後查看時間
+                const lastViewTime = await getLastViewTime(activityId);
+                const comments = activityComments[activityId] || [];
+                
+                // 檢查是否有新留言或回復
+                for (let comment of comments) {
+                    if (new Date(comment.timestamp) > lastViewTime) {
+                        return true;
+                    }
+                    // 檢查回復
+                    if (comment.replies) {
+                        for (let reply of comment.replies) {
+                            if (new Date(reply.timestamp) > lastViewTime) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            } catch (error) {
+                console.error('檢查未讀留言失敗:', error);
+                return false;
+            }
+        }
+
+        // 獲取最後查看時間
+        async function getLastViewTime(activityId) {
+            try {
+                if (!currentUser) return new Date(0);
+                
+                const viewTime = await dbService.getLastViewTime(currentUser.name, activityId);
+                return viewTime ? new Date(viewTime) : new Date(0);
+            } catch (error) {
+                console.error('獲取最後查看時間失敗:', error);
+                // 如果 Firebase 獲取失敗，嘗試從本地獲取
+                const viewTimes = JSON.parse(localStorage.getItem('activityViewTimes') || '{}');
+                return viewTimes[activityId] ? new Date(viewTimes[activityId]) : new Date(0);
+            }
+        }
+
+        // 更新最後查看時間
+        async function updateLastViewTime(activityId) {
+            try {
+                if (!currentUser) return;
+                
+                const currentTime = new Date().toISOString();
+                
+                // 更新 Firebase
+                await dbService.updateLastViewTime(currentUser.name, activityId, currentTime);
+                
+                // 同時更新本地存儲（作為備份）
+                const viewTimes = JSON.parse(localStorage.getItem('activityViewTimes') || '{}');
+                viewTimes[activityId] = currentTime;
+                localStorage.setItem('activityViewTimes', JSON.stringify(viewTimes));
+                
+                updateUnreadIndicators();
+            } catch (error) {
+                console.error('更新最後查看時間失敗:', error);
+            }
+        }
+
+        // 更新所有未讀指示器
+        async function updateUnreadIndicators() {
+            try {
+                // 查找所有討論按鈕並更新未讀指示器
+                const buttons = document.querySelectorAll('button[onclick*="toggleActivityDiscussion"]');
+                
+                for (const button of buttons) {
+                    const onclickAttr = button.getAttribute('onclick');
+                    const match = onclickAttr.match(/toggleActivityDiscussion\('([^']+)'\)/);
+                    if (match) {
+                        const activityId = match[1];
+                        await updateUnreadIndicator(activityId, button);
+                    }
+                }
+            } catch (error) {
+                console.error('更新未讀指示器失敗:', error);
+            }
+        }
+
+        // 更新單個未讀指示器
+        async function updateUnreadIndicator(activityId, button) {
+            try {
+                // 移除現有的未讀指示器
+                const existingIndicator = button.querySelector('.unread-indicator');
+                if (existingIndicator) {
+                    existingIndicator.remove();
+                }
+    
+                // 如果有未讀留言，添加指示器
+                const hasUnread = await hasUnreadComments(activityId);
+                if (hasUnread) {
+                    const indicator = document.createElement('span');
+                    indicator.className = 'unread-indicator';
+                    indicator.innerHTML = '🔴';
+                    indicator.style.cssText = `
+                        position: absolute;
+                        top: -5px;
+                        right: -5px;
+                        font-size: 12px;
+                        animation: pulse 2s infinite;
+                    `;
+                    button.style.position = 'relative';
+                    button.appendChild(indicator);
+                }
+            } catch (error) {
+                console.error(`更新 ${activityId} 的未讀指示器失敗:`, error);
+            }
         }
 
         // 切換活動討論區顯示
-        function toggleActivityDiscussion(activityId) {
+        async function toggleActivityDiscussion(activityId) {
             const discussionDiv = document.getElementById(activityId);
             
             if (discussionDiv.style.display === 'none') {
                 // 顯示討論區並初始化內容
                 discussionDiv.style.display = 'block';
                 initActivityDiscussion(activityId);
-                loadActivityComments(activityId);
+                await loadActivityComments(activityId);
+                // 更新最後查看時間
+                await updateLastViewTime(activityId);
             } else {
                 // 隱藏討論區
                 discussionDiv.style.display = 'none';
@@ -1106,7 +1271,7 @@
         }
 
         // 新增活動留言
-        function addActivityComment(activityId, replyToId = null) {
+        async function addActivityComment(activityId, replyToId = null) {
             const textElement = document.getElementById(`activity-text-${activityId}`);
             
             if (!textElement) {
@@ -1137,29 +1302,37 @@
                 replies: []
             };
             
-            // 初始化活動留言陣列（如果不存在）
-            if (!activityComments[activityId]) {
-                activityComments[activityId] = [];
-            }
-            
-            if (replyToId) {
-                // 找到被回復的留言並添加回復
-                const parentComment = findCommentById(activityComments[activityId], replyToId);
-                if (parentComment) {
-                    parentComment.replies.push(comment);
+            try {
+                // 初始化活動留言陣列（如果不存在）
+                if (!activityComments[activityId]) {
+                    activityComments[activityId] = [];
                 }
-            } else {
-                // 新的主留言
-                activityComments[activityId].unshift(comment);
+                
+                if (replyToId) {
+                    // 找到被回復的留言並添加回復
+                    const parentComment = findCommentById(activityComments[activityId], replyToId);
+                    if (parentComment) {
+                        parentComment.replies.push(comment);
+                    }
+                } else {
+                    // 新的主留言
+                    activityComments[activityId].unshift(comment);
+                }
+                
+                // 更新 Firebase
+                await dbService.saveActivityComments(activityId, activityComments[activityId]);
+                
+                // 更新未讀指示器
+                updateUnreadIndicators();
+                
+                // 清空表單
+                const textElementClear = document.getElementById(`activity-text-${activityId}`);
+                if (textElementClear) textElementClear.value = '';
+                showNotification('留言已發表！');
+            } catch (error) {
+                console.error('發表活動留言失敗:', error);
+                showNotification('發表活動留言失敗，請稍後再試', 'error');
             }
-            
-            saveToLocalStorage('activityComments', activityComments);
-            renderActivityComments(activityId);
-            
-            // 清空表單
-            const textElementClear = document.getElementById(`activity-text-${activityId}`);
-            if (textElementClear) textElementClear.value = '';
-            showNotification('留言已發表！');
         }
 
         // 渲染活動留言列表
@@ -1252,7 +1425,7 @@
         }
         
         // 提交活動回復
-        function submitActivityReply(activityId, commentId) {
+        async function submitActivityReply(activityId, commentId) {
             const textElement = document.getElementById(`activity-reply-text-${activityId}-${commentId}`);
             
             if (!textElement) {
@@ -1283,46 +1456,65 @@
                 replies: []
             };
             
-            // 找到被回復的留言並添加回復
-            const parentComment = findCommentById(activityComments[activityId], commentId);
-            if (parentComment) {
-                parentComment.replies.push(reply);
-                saveToLocalStorage('activityComments', activityComments);
-                renderActivityComments(activityId);
-                hideActivityReplyForm(activityId, commentId);
-                showNotification('回復已發表！');
-            } else {
-                showNotification('找不到原留言', 'error');
+            try {
+                // 找到被回復的留言並添加回復
+                const parentComment = findCommentById(activityComments[activityId], commentId);
+                if (parentComment) {
+                    parentComment.replies.push(reply);
+                    
+                    // 更新 Firebase
+                    await dbService.saveActivityComments(activityId, activityComments[activityId]);
+                    
+                    hideActivityReplyForm(activityId, commentId);
+                    
+                    // 更新未讀指示器
+                    updateUnreadIndicators();
+                    
+                    showNotification('回復已發表！');
+                } else {
+                    showNotification('找不到原留言', 'error');
+                }
+            } catch (error) {
+                console.error('發表活動回復失敗:', error);
+                showNotification('發表活動回復失敗，請稍後再試', 'error');
             }
         }
 
         // 載入活動留言
-        function loadActivityComments(activityId) {
-            const savedComments = localStorage.getItem('activityComments');
-            if (savedComments) {
-                activityComments = JSON.parse(savedComments);
-                // 確保舊活動留言相容新的串文結構
-                Object.keys(activityComments).forEach(activityId => {
+        async function loadActivityComments(activityId) {
+            try {
+                // 從 Firebase 獲取特定活動的留言
+                const comments = await dbService.getActivityComments(activityId);
+                
+                // 更新本地活動留言
+                if (comments) {
+                    activityComments[activityId] = comments;
+                    // 確保所有留言都有 replies 陣列
                     activityComments[activityId].forEach(comment => {
                         if (!comment.replies) {
                             comment.replies = [];
                         }
                     });
-                });
+                } else {
+                    activityComments[activityId] = [];
+                }
+                
+                renderActivityComments(activityId);
+            } catch (error) {
+                console.error(`載入活動 ${activityId} 的留言失敗:`, error);
+                showNotification('載入留言失敗，請稍後再試', 'error');
             }
-            renderActivityComments(activityId);
         }
 
         // 頁面載入時初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            checkUserIdentity();
-            loadComments();
+        document.addEventListener('DOMContentLoaded', async function() {
+            await checkUserIdentity();
+            await loadComments();
             
-            // 載入活動留言
-            const savedActivityComments = localStorage.getItem('activityComments');
-            if (savedActivityComments) {
-                activityComments = JSON.parse(savedActivityComments);
-            }
+            // 初始化未讀指示器
+            setTimeout(async () => {
+                await updateUnreadIndicators();
+            }, 500);
             
             // 載入打包清單狀態
             const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
@@ -1339,13 +1531,37 @@
         });
         
         // 檢查用戶身份
-        function checkUserIdentity() {
-            const savedUser = localStorage.getItem('currentUser');
-            if (!savedUser) {
+        async function checkUserIdentity() {
+            try {
+                // 先檢查本地儲存
+                const savedUser = localStorage.getItem('currentUser');
+                
+                if (savedUser) {
+                    // 如果本地有用戶資料，先使用它
+                    currentUser = JSON.parse(savedUser);
+                    updateCurrentUserDisplay();
+                    
+                    // 然後嘗試從 Firebase 獲取最新的用戶資料
+                    try {
+                        const firebaseUser = await dbService.getUserProfile(currentUser.name);
+                        if (firebaseUser) {
+                            // 如果 Firebase 中有更新的資料，使用它
+                            currentUser = firebaseUser;
+                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                            updateCurrentUserDisplay();
+                        }
+                    } catch (err) {
+                        console.error('從 Firebase 獲取用戶資料失敗:', err);
+                        // 繼續使用本地資料
+                    }
+                } else {
+                    // 如果本地沒有用戶資料，顯示身份設定彈窗
+                    showUserIdentityModal();
+                }
+            } catch (error) {
+                console.error('檢查用戶身份失敗:', error);
+                // 如果出錯，顯示身份設定彈窗
                 showUserIdentityModal();
-            } else {
-                currentUser = JSON.parse(savedUser);
-                updateCurrentUserDisplay();
             }
         }
         
@@ -1489,39 +1705,74 @@
         }
         
         // 驗證邀請碼
-        function verifyInviteCode() {
+        async function verifyInviteCode() {
             const inviteCode = document.getElementById('inviteCodeInput').value.trim();
-            const correctCode = '0808..';
             
-            if (inviteCode === correctCode) {
-                // 邀請碼正確，儲存驗證狀態
-                localStorage.setItem('inviteCodeVerified', 'true');
+            try {
+                // 使用 Firebase 驗證邀請碼
+                const isValid = await dbService.verifyInviteCode(inviteCode);
                 
-                // 移除邀請碼彈窗
-                document.querySelector('div[style*="position: fixed"]').remove();
+                if (isValid) {
+                    // 邀請碼正確，儲存驗證狀態
+                    localStorage.setItem('inviteCodeVerified', 'true');
+                    
+                    // 移除邀請碼彈窗
+                    document.querySelector('div[style*="position: fixed"]').remove();
+                    
+                    // 顯示用戶身份設定彈窗
+                    showUserIdentityModal();
+                    
+                    showNotification('邀請碼驗證成功！歡迎使用旅行手冊。', 'success');
+                } else {
+                    // 邀請碼錯誤
+                    const errorDiv = document.getElementById('inviteCodeError');
+                    errorDiv.style.display = 'block';
+                    document.getElementById('inviteCodeInput').value = '';
+                    document.getElementById('inviteCodeInput').focus();
+                    document.getElementById('inviteCodeInput').style.borderColor = '#e74c3c';
+                    
+                    // 3秒後隱藏錯誤訊息並重置邊框顏色
+                    setTimeout(() => {
+                        errorDiv.style.display = 'none';
+                        document.getElementById('inviteCodeInput').style.borderColor = '#ddd';
+                    }, 3000);
+                }
+            } catch (error) {
+                console.error('驗證邀請碼失敗:', error);
                 
-                // 顯示用戶身份設定彈窗
-                showUserIdentityModal();
+                // 如果 Firebase 驗證失敗，嘗試使用本地驗證
+                const correctCode = '0808..';
                 
-                showNotification('邀請碼驗證成功！歡迎使用旅行手冊。', 'success');
-            } else {
-                // 邀請碼錯誤
-                const errorDiv = document.getElementById('inviteCodeError');
-                errorDiv.style.display = 'block';
-                document.getElementById('inviteCodeInput').value = '';
-                document.getElementById('inviteCodeInput').focus();
-                document.getElementById('inviteCodeInput').style.borderColor = '#e74c3c';
-                
-                // 3秒後隱藏錯誤訊息並重置邊框顏色
-                setTimeout(() => {
-                    errorDiv.style.display = 'none';
-                    document.getElementById('inviteCodeInput').style.borderColor = '#ddd';
-                }, 3000);
+                if (inviteCode === correctCode) {
+                    // 邀請碼正確，儲存驗證狀態
+                    localStorage.setItem('inviteCodeVerified', 'true');
+                    
+                    // 移除邀請碼彈窗
+                    document.querySelector('div[style*="position: fixed"]').remove();
+                    
+                    // 顯示用戶身份設定彈窗
+                    showUserIdentityModal();
+                    
+                    showNotification('邀請碼驗證成功！歡迎使用旅行手冊。', 'success');
+                } else {
+                    // 邀請碼錯誤
+                    const errorDiv = document.getElementById('inviteCodeError');
+                    errorDiv.style.display = 'block';
+                    document.getElementById('inviteCodeInput').value = '';
+                    document.getElementById('inviteCodeInput').focus();
+                    document.getElementById('inviteCodeInput').style.borderColor = '#e74c3c';
+                    
+                    // 3秒後隱藏錯誤訊息並重置邊框顏色
+                    setTimeout(() => {
+                        errorDiv.style.display = 'none';
+                        document.getElementById('inviteCodeInput').style.borderColor = '#ddd';
+                    }, 3000);
+                }
             }
         }
         
         // 設定用戶身份
-        function setUserIdentity() {
+        async function setUserIdentity() {
             const userName = document.getElementById('userNameInput').value.trim();
             if (!userName) {
                  alert('請輸入您的個人ID');
@@ -1533,34 +1784,87 @@
                 joinDate: new Date().toLocaleString('zh-TW')
             };
             
-            // 儲存用戶資訊
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            
-            // 更新用戶列表
-            loadUserProfiles();
-            if (!userProfiles.find(user => user.name === userName)) {
-                userProfiles.push(currentUser);
-                saveToLocalStorage('userProfiles', userProfiles);
+            try {
+                // 儲存用戶資訊到 Firebase
+                await dbService.saveUserProfile(currentUser);
+                
+                // 同時儲存到本地（作為備份）
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                // 更新用戶列表
+                await loadUserProfiles();
+                
+                // 移除彈窗
+                document.querySelector('div[style*="position: fixed"]').remove();
+                
+                // 更新用戶顯示
+                updateCurrentUserDisplay();
+                
+                showNotification(`歡迎 ${userName}！您現在可以開始使用個人旅行手冊了。`);
+            } catch (error) {
+                console.error('設定用戶身份失敗:', error);
+                
+                // 如果 Firebase 儲存失敗，僅使用本地儲存
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                // 更新用戶列表
+                loadUserProfiles();
+                if (!userProfiles.find(user => user.name === userName)) {
+                    userProfiles.push(currentUser);
+                    saveToLocalStorage('userProfiles', userProfiles);
+                }
+                
+                // 移除彈窗
+                document.querySelector('div[style*="position: fixed"]').remove();
+                
+                // 更新用戶顯示
+                updateCurrentUserDisplay();
+                
+                showNotification(`歡迎 ${userName}！您現在可以開始使用個人旅行手冊了。`);
             }
-            
-            // 移除彈窗
-            document.querySelector('div[style*="position: fixed"]').remove();
-            
-            // 更新用戶顯示
-            updateCurrentUserDisplay();
-            
-            showNotification(`歡迎 ${userName}！您現在可以開始使用個人旅行手冊了。`);
         }
         
         // 載入用戶資料
-        function loadUserProfiles() {
-            const saved = localStorage.getItem('userProfiles');
-            userProfiles = saved ? JSON.parse(saved) : [
-                 { name: '小雷', joinDate: '2024-01-01' },
-                 { name: '阿苦', joinDate: '2024-01-01' },
-                 { name: '泉成', joinDate: '2024-01-01' },
-                 { name: '小紅', joinDate: '2024-01-01' }
-             ];
+        async function loadUserProfiles() {
+            try {
+                // 從 Firebase 載入用戶資料
+                const profiles = await dbService.getUserProfiles();
+                
+                if (profiles && profiles.length > 0) {
+                    userProfiles = profiles;
+                } else {
+                    // 如果 Firebase 中沒有資料，嘗試從本地載入
+                    const saved = localStorage.getItem('userProfiles');
+                    userProfiles = saved ? JSON.parse(saved) : [
+                        { name: '小雷', joinDate: '2024-01-01' },
+                        { name: '阿苦', joinDate: '2024-01-01' },
+                        { name: '泉成', joinDate: '2024-01-01' },
+                        { name: '小紅', joinDate: '2024-01-01' }
+                    ];
+                    
+                    // 將預設用戶資料儲存到 Firebase
+                    if (!saved) {
+                        try {
+                            for (const user of userProfiles) {
+                                await dbService.saveUserProfile(user);
+                            }
+                        } catch (err) {
+                            console.error('初始化用戶資料到 Firebase 失敗:', err);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('載入用戶資料失敗:', error);
+                
+                // 如果 Firebase 載入失敗，從本地載入
+                const saved = localStorage.getItem('userProfiles');
+                userProfiles = saved ? JSON.parse(saved) : [
+                    { name: '小雷', joinDate: '2024-01-01' },
+                    { name: '阿苦', joinDate: '2024-01-01' },
+                    { name: '泉成', joinDate: '2024-01-01' },
+                    { name: '小紅', joinDate: '2024-01-01' }
+                ];
+            }
         }
         
         // 更新當前用戶顯示
@@ -1577,17 +1881,101 @@
                     element.textContent = currentUser.name;
                 }
             });
+            
+            
         }
         
+        
+        
         // 清除邀請碼驗證狀態
-        function clearInviteCodeVerification() {
+        async function clearInviteCodeVerification() {
             if (confirm('確定要清除邀請碼驗證狀態嗎？下次訪問時將需要重新輸入邀請碼。')) {
-                localStorage.removeItem('inviteCodeVerified');
-                localStorage.removeItem('currentUser');
-                showNotification('邀請碼驗證狀態已清除，頁面將重新載入。', 'warning');
-                setTimeout(() => {
-                    location.reload();
-                }, 2000);
+                try {
+                    // 清除本地儲存
+                    localStorage.removeItem('inviteCodeVerified');
+                    localStorage.removeItem('currentUser');
+                    
+                    // 如果有當前用戶，也清除 Firebase 中的相關資料
+                    if (currentUser && currentUser.name) {
+                        // 這裡可以添加清除用戶特定資料的邏輯，如果需要的話
+                        // 例如：await dbService.clearUserData(currentUser.name);
+                    }
+                    
+                    showNotification('邀請碼驗證狀態已清除，頁面將重新載入。', 'warning');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                } catch (error) {
+                    console.error('清除邀請碼驗證狀態失敗:', error);
+                    
+                    // 如果 Firebase 操作失敗，至少清除本地儲存
+                    localStorage.removeItem('inviteCodeVerified');
+                    localStorage.removeItem('currentUser');
+                    
+                    showNotification('邀請碼驗證狀態已清除，頁面將重新載入。', 'warning');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                }
+            }
+        }
+    </script>
+    
+    <!-- Firebase 模組 (非模組方式載入) -->
+    <script src="./js/firebase-config.js"></script>
+    <script src="./js/database-service.js"></script>
+    <script src="./js/firebase-init.js"></script>
+    
+    <script>
+        // 頁面載入完成後初始化 Firebase
+        window.addEventListener('DOMContentLoaded', async () => {
+            // 檢查並遷移資料
+            if (window.checkAndMigrateData) {
+                await window.checkAndMigrateData();
+            } else {
+                console.error('Firebase 初始化失敗: checkAndMigrateData 未定義');
+            }
+            
+            // 初始化頁面資料
+            initializePageData();
+        });
+        
+        // 初始化頁面資料
+        async function initializePageData() {
+            try {
+                if (!window.dbService) {
+                    throw new Error('dbService 未定義，Firebase 可能未正確初始化');
+                }
+                
+                // 監聽全域留言變化
+                window.dbService.listenToComments(comments => {
+                    window.comments = comments || [];
+                    renderComments();
+                });
+                
+                // 監聽活動留言變化
+                window.dbService.listenToAllActivityComments(activityCommentsData => {
+                    window.activityComments = activityCommentsData || {};
+                    // 更新所有活動的未讀指示器
+                    updateUnreadIndicators();
+                });
+                
+                // 監聽用戶資料變化
+                window.dbService.listenToUserProfiles(profiles => {
+                    window.userProfiles = profiles || [];
+                });
+                
+                // 載入當前用戶
+                const savedUser = localStorage.getItem('currentUser');
+                if (savedUser) {
+                    window.currentUser = JSON.parse(savedUser);
+                    updateCurrentUserDisplay();
+                }
+                
+                console.log('Firebase 資料初始化完成');
+            } catch (error) {
+                console.error('初始化頁面資料失敗:', error);
+                alert('資料載入失敗，請重新整理頁面或檢查網路連接。');
             }
         }
     </script>
