@@ -6,6 +6,12 @@ const firebase = window.firebase;
 // 從 localStorage 遷移資料到 Firebase
 async function migrateDataToFirebase() {
   try {
+    // 檢查 dbService 是否已初始化
+    if (!window.dbService || !window.dbService.isInitialized || !window.dbService.isInitialized()) {
+      console.warn('DatabaseService 未初始化，無法遷移資料');
+      return false;
+    }
+    
     console.log('開始資料遷移...');
     
     // 遷移全域留言
@@ -48,8 +54,17 @@ async function migrateDataToFirebase() {
 
 // 檢查是否需要遷移資料
 async function checkAndMigrateData() {
+  // 檢查 dbService 是否已初始化
+  const dbServiceReady = window.dbService && window.dbService.isInitialized && window.dbService.isInitialized();
+  
   // 檢查是否已經遷移過
   const migrated = localStorage.getItem('dataMigrated') === 'true';
+  
+  // 如果 Firebase 未初始化，直接返回
+  if (!dbServiceReady) {
+    console.warn('DatabaseService 未初始化，跳過資料遷移檢查');
+    return false;
+  }
   
   if (!migrated) {
     // 顯示遷移提示
@@ -90,6 +105,8 @@ async function checkAndMigrateData() {
       }
     }
   }
+  
+  return migrated;
 }
 
 // 將函數暴露到全域

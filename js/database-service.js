@@ -2,23 +2,44 @@
 
 class DatabaseService {
   constructor() {
-    // 初始化 Firebase
-    const firebase = window.initFirebase ? window.initFirebase() : window.firebase;
-    if (!firebase) {
-      console.error('Firebase 未初始化，請確保 firebase-config.js 已正確載入');
-      return;
-    }
+    // 初始化狀態
+    this.initialized = false;
     
-    // 獲取資料庫實例
-    this.database = firebase.database();
-    // 定義資料節點路徑
-    this.refs = {
-      comments: this.database.ref('comments'),
-      activityComments: this.database.ref('activityComments'),
-      userProfiles: this.database.ref('userProfiles'),
-      inviteCodes: this.database.ref('inviteCodes'),
-      lastViewTimes: this.database.ref('lastViewTimes')
-    };
+    try {
+      // 初始化 Firebase
+      const firebase = window.initFirebase ? window.initFirebase() : window.firebase;
+      if (!firebase) {
+        console.error('Firebase 未初始化，請確保 firebase-config.js 已正確載入');
+        return;
+      }
+      
+      // 獲取資料庫實例
+      this.database = firebase.database();
+      if (!this.database) {
+        console.error('無法獲取 Firebase Database 實例');
+        return;
+      }
+      
+      // 定義資料節點路徑
+      this.refs = {
+        comments: this.database.ref('comments'),
+        activityComments: this.database.ref('activityComments'),
+        userProfiles: this.database.ref('userProfiles'),
+        inviteCodes: this.database.ref('inviteCodes'),
+        lastViewTimes: this.database.ref('lastViewTimes')
+      };
+      
+      // 標記初始化成功
+      this.initialized = true;
+      console.log('DatabaseService 初始化成功');
+    } catch (error) {
+      console.error('DatabaseService 初始化失敗:', error);
+    }
+  }
+  
+  // 檢查服務是否已初始化
+  isInitialized() {
+    return this.initialized;
   }
 
   // ===== 全域留言相關方法 =====
@@ -295,27 +316,73 @@ class DatabaseService {
   
   // 驗證邀請碼
   async verifyInviteCode(code) {
+    // 檢查服務是否已初始化
+    if (!this.initialized) {
+      console.warn('DatabaseService 未初始化，無法驗證邀請碼');
+      // 使用本地硬編碼的邀請碼進行驗證
+      return code === '0808..';
+    }
+    
     try {
+      // 檢查 refs 和 inviteCodes 是否存在
+      if (!this.refs || !this.refs.inviteCodes) {
+        console.error('inviteCodes 引用不存在');
+        return code === '0808..';
+      }
+      
+      // 檢查 code 是否為有效字串
+      if (!code || typeof code !== 'string' || code.includes('.') || code.includes('#') || 
+          code.includes('$') || code.includes('[') || code.includes(']')) {
+        console.error('邀請碼格式無效:', code);
+        return false;
+      }
+      
       const snapshot = await this.refs.inviteCodes.child(code).once('value');
       return snapshot.exists();
     } catch (error) {
       console.error('驗證邀請碼失敗:', error);
-      return false;
+      // 發生錯誤時，使用本地硬編碼的邀請碼進行驗證
+      return code === '0808..';
     }
   }
 
   // 初始化邀請碼（僅在首次設置時使用）
   async initializeInviteCodes(codes) {
+    // 檢查服務是否已初始化
+    if (!this.initialized) {
+      console.warn('DatabaseService 未初始化，無法初始化邀請碼');
+      return false;
+    }
+    
     try {
+      // 檢查 refs 和 inviteCodes 是否存在
+      if (!this.refs || !this.refs.inviteCodes) {
+        console.error('inviteCodes 引用不存在');
+        return false;
+      }
+      
       // 檢查邀請碼是否已存在
       const snapshot = await this.refs.inviteCodes.once('value');
       if (!snapshot.exists()) {
         // 如果不存在，則初始化邀請碼
         const codeObj = {};
         codes.forEach(code => {
-          codeObj[code] = true;
+          // 檢查 code 是否為有效字串
+          if (code && typeof code === 'string' && !code.includes('.') && !code.includes('#') && 
+              !code.includes('$') && !code.includes('[') && !code.includes(']')) {
+            codeObj[code] = true;
+          } else {
+            console.warn('跳過無效的邀請碼:', code);
+          }
         });
-        await this.refs.inviteCodes.set(codeObj);
+        
+        // 確保至少有一個有效的邀請碼
+        if (Object.keys(codeObj).length > 0) {
+          await this.refs.inviteCodes.set(codeObj);
+        } else {
+          console.error('沒有有效的邀請碼可初始化');
+          return false;
+        }
       }
       return true;
     } catch (error) {
