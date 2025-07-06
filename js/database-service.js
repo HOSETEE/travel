@@ -441,3 +441,13 @@ dbService.listenToUserProfiles = function(callback) {
   });
 };
 dbService.saveUserProfile = dbService.addUserProfile;
+// 添加獲取單個用戶資料的方法
+dbService.getUserProfile = async function(userName) {
+  try {
+    const profiles = await this.getUserProfiles();
+    return profiles.find(profile => profile.name === userName) || null;
+  } catch (error) {
+    console.error('獲取單個用戶資料失敗:', error);
+    return null;
+  }
+};
