@@ -1457,9 +1457,32 @@
             };
             
             try {
+                // 確保 activityComments 存在
+                if (!window.activityComments) {
+                    console.warn('activityComments 未定義，正在初始化');
+                    window.activityComments = {};
+                }
+                
+                // 確保 activityComments[activityId] 存在
+                if (!activityComments[activityId]) {
+                    console.warn(`活動 ${activityId} 的留言列表不存在，正在初始化`);
+                    activityComments[activityId] = [];
+                }
+                
+                console.log(`嘗試在活動 ${activityId} 中查找留言 ID: ${commentId}`);
+                console.log('當前活動留言列表:', activityComments[activityId]);
+                
                 // 找到被回復的留言並添加回復
                 const parentComment = findCommentById(activityComments[activityId], commentId);
                 if (parentComment) {
+                    console.log(`找到原留言:`, parentComment);
+                    
+                    // 確保 parentComment.replies 存在
+                    if (!parentComment.replies) {
+                        console.warn(`留言 ${commentId} 的 replies 屬性不存在，正在初始化`);
+                        parentComment.replies = [];
+                    }
+                    
                     parentComment.replies.push(reply);
                     
                     // 更新 Firebase
@@ -1472,10 +1495,13 @@
                     
                     showNotification('回復已發表！');
                 } else {
+                    console.error(`找不到原留言 ID: ${commentId}，活動 ID: ${activityId}`);
+                    console.log('當前活動留言列表:', JSON.stringify(activityComments[activityId]));
                     showNotification('找不到原留言', 'error');
                 }
             } catch (error) {
                 console.error('發表活動回復失敗:', error);
+                console.error('錯誤詳情:', error.stack);
                 showNotification('發表活動回復失敗，請稍後再試', 'error');
             }
         }
