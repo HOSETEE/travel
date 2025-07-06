@@ -1711,6 +1711,7 @@
             
             // 檢查邀請碼是否為本地硬編碼的邀請碼
             if (inviteCode === correctCode) {
+                console.log('使用硬編碼邀請碼驗證成功');
                 // 邀請碼正確，儲存驗證狀態
                 localStorage.setItem('inviteCodeVerified', 'true');
                 
@@ -1725,12 +1726,12 @@
             }
             
             // 檢查 dbService 是否已正確初始化
-            if (!window.dbService || !window.dbService.verifyInviteCode) {
+            if (!window.dbService || typeof window.dbService.verifyInviteCode !== 'function') {
                 console.error('Firebase 資料庫服務未初始化或 verifyInviteCode 方法不存在');
                 
                 // 顯示錯誤訊息
                 const errorDiv = document.getElementById('inviteCodeError');
-                errorDiv.textContent = 'Firebase 連接失敗，請檢查網路連接或使用預設邀請碼';
+                errorDiv.textContent = 'Firebase 連接失敗，請使用預設邀請碼 0808..';
                 errorDiv.style.display = 'block';
                 document.getElementById('inviteCodeInput').style.borderColor = '#e74c3c';
                 
@@ -1739,15 +1740,17 @@
                     errorDiv.style.display = 'none';
                     errorDiv.textContent = '邀請碼錯誤，請重新輸入';
                     document.getElementById('inviteCodeInput').style.borderColor = '#ddd';
-                }, 3000);
+                }, 5000); // 延長顯示時間，讓用戶有足夠時間看到提示
                 return;
             }
             
             try {
                 // 使用 Firebase 驗證邀請碼
+                console.log('嘗試驗證邀請碼:', inviteCode);
                 const isValid = await dbService.verifyInviteCode(inviteCode);
                 
                 if (isValid) {
+                    console.log('邀請碼驗證成功');
                     // 邀請碼正確，儲存驗證狀態
                     localStorage.setItem('inviteCodeVerified', 'true');
                     
@@ -1759,6 +1762,7 @@
                     
                     showNotification('邀請碼驗證成功！歡迎使用旅行手冊。', 'success');
                 } else {
+                    console.warn('邀請碼驗證失敗:', inviteCode);
                     // 邀請碼錯誤
                     const errorDiv = document.getElementById('inviteCodeError');
                     errorDiv.style.display = 'block';
@@ -1766,27 +1770,31 @@
                     document.getElementById('inviteCodeInput').focus();
                     document.getElementById('inviteCodeInput').style.borderColor = '#e74c3c';
                     
-                    // 3秒後隱藏錯誤訊息並重置邊框顏色
+                    // 提示可以使用預設邀請碼
+                    errorDiv.textContent = '邀請碼錯誤，請使用預設邀請碼 0808..';
+                    
+                    // 5秒後隱藏錯誤訊息並重置邊框顏色
                     setTimeout(() => {
                         errorDiv.style.display = 'none';
+                        errorDiv.textContent = '邀請碼錯誤，請重新輸入';
                         document.getElementById('inviteCodeInput').style.borderColor = '#ddd';
-                    }, 3000);
+                    }, 5000);
                 }
             } catch (error) {
                 console.error('驗證邀請碼失敗:', error);
                 
                 // 顯示錯誤訊息，提示可使用預設邀請碼
                 const errorDiv = document.getElementById('inviteCodeError');
-                errorDiv.textContent = '驗證失敗，請檢查網路連接或使用預設邀請碼';
+                errorDiv.textContent = '驗證失敗，請使用預設邀請碼 0808..';
                 errorDiv.style.display = 'block';
                 document.getElementById('inviteCodeInput').style.borderColor = '#e74c3c';
                 
-                // 3秒後隱藏錯誤訊息並重置邊框顏色
+                // 5秒後隱藏錯誤訊息並重置邊框顏色
                 setTimeout(() => {
                     errorDiv.style.display = 'none';
                     errorDiv.textContent = '邀請碼錯誤，請重新輸入';
                     document.getElementById('inviteCodeInput').style.borderColor = '#ddd';
-                }, 3000);
+                }, 5000);
             }
         }
         

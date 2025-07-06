@@ -316,24 +316,36 @@ class DatabaseService {
   
   // 驗證邀請碼
   async verifyInviteCode(code) {
+    // 檢查是否為硬編碼的特殊邀請碼
+    const hardcodedCode = '0808..';
+    if (code === hardcodedCode) {
+      console.log('使用硬編碼邀請碼驗證成功');
+      return true;
+    }
+    
     // 檢查服務是否已初始化
     if (!this.initialized) {
       console.warn('DatabaseService 未初始化，無法驗證邀請碼');
-      // 使用本地硬編碼的邀請碼進行驗證
-      return code === '0808..';
+      return false;
     }
     
     try {
       // 檢查 refs 和 inviteCodes 是否存在
       if (!this.refs || !this.refs.inviteCodes) {
         console.error('inviteCodes 引用不存在');
-        return code === '0808..';
+        return false;
       }
       
       // 檢查 code 是否為有效字串
-      if (!code || typeof code !== 'string' || code.includes('.') || code.includes('#') || 
-          code.includes('$') || code.includes('[') || code.includes(']')) {
+      if (!code || typeof code !== 'string') {
         console.error('邀請碼格式無效:', code);
+        return false;
+      }
+      
+      // 檢查 code 是否包含 Firebase 路徑中不允許的特殊字元
+      if (code.includes('.') || code.includes('#') || 
+          code.includes('$') || code.includes('[') || code.includes(']')) {
+        console.warn('邀請碼包含特殊字元，無法在 Firebase 中驗證:', code);
         return false;
       }
       
@@ -341,8 +353,7 @@ class DatabaseService {
       return snapshot.exists();
     } catch (error) {
       console.error('驗證邀請碼失敗:', error);
-      // 發生錯誤時，使用本地硬編碼的邀請碼進行驗證
-      return code === '0808..';
+      return false;
     }
   }
 
@@ -366,20 +377,41 @@ class DatabaseService {
       if (!snapshot.exists()) {
         // 如果不存在，則初始化邀請碼
         const codeObj = {};
+        const invalidCodes = [];
+        const hardcodedCode = '0808..';
+        
         codes.forEach(code => {
+          // 跳過硬編碼的特殊邀請碼，因為它包含特殊字元
+          if (code === hardcodedCode) {
+            console.log('跳過硬編碼邀請碼，它將在客戶端驗證');
+            return;
+          }
+          
           // 檢查 code 是否為有效字串
           if (code && typeof code === 'string' && !code.includes('.') && !code.includes('#') && 
               !code.includes('$') && !code.includes('[') && !code.includes(']')) {
             codeObj[code] = true;
           } else {
+            invalidCodes.push(code);
             console.warn('跳過無效的邀請碼:', code);
           }
         });
         
+        // 如果有無效的邀請碼，記錄它們
+        if (invalidCodes.length > 0) {
+          console.warn(`跳過 ${invalidCodes.length} 個無效的邀請碼:`, invalidCodes);
+        }
+        
         // 確保至少有一個有效的邀請碼
         if (Object.keys(codeObj).length > 0) {
           await this.refs.inviteCodes.set(codeObj);
+          console.log('成功初始化邀請碼:', Object.keys(codeObj));
         } else {
+          // 如果沒有有效的邀請碼，但有硬編碼的特殊邀請碼，仍然返回成功
+          if (codes.includes(hardcodedCode)) {
+            console.log('僅使用硬編碼邀請碼，不需要在 Firebase 中初始化');
+            return true;
+          }
           console.error('沒有有效的邀請碼可初始化');
           return false;
         }
