@@ -26,7 +26,8 @@ class DatabaseService {
         activityComments: this.database.ref('activityComments'),
         userProfiles: this.database.ref('userProfiles'),
         inviteCodes: this.database.ref('inviteCodes'),
-        lastViewTimes: this.database.ref('lastViewTimes')
+        lastViewTimes: this.database.ref('lastViewTimes'),
+        confirmationItems: this.database.ref('confirmationItems')
       };
       
       // 標記初始化成功
@@ -451,3 +452,199 @@ dbService.getUserProfile = async function(userName) {
     return null;
   }
 };
+
+// ===== 待確認事項相關方法 =====
+
+// 獲取待確認事項
+dbService.getConfirmationItems = async function() {
+  try {
+    // 檢查服務是否已初始化
+    if (!this.initialized) {
+      console.warn('DatabaseService 未初始化，無法獲取待確認事項');
+      return null;
+    }
+    
+    // 檢查 refs 和 confirmationItems 是否存在
+    if (!this.refs || !this.refs.confirmationItems) {
+      console.error('confirmationItems 引用不存在');
+      return null;
+    }
+    
+    const snapshot = await this.refs.confirmationItems.once('value');
+    return snapshot.val() || [];
+  } catch (error) {
+    console.error('從 Firebase 獲取待確認事項失敗:', error);
+    return null;
+  }
+};
+
+// 獲取待確認事項討論
+dbService.getConfirmationItemComments = async function(itemId) {
+  try {
+    // 檢查服務是否已初始化
+    if (!this.initialized) {
+      console.warn('DatabaseService 未初始化，無法獲取待確認事項討論');
+      return null;
+    }
+    
+    // 檢查 refs 是否存在
+    if (!this.refs) {
+      console.error('refs 不存在');
+      return null;
+    }
+    
+    // 如果 confirmationItemComments 引用不存在，創建它
+    if (!this.refs.confirmationItemComments) {
+      this.refs.confirmationItemComments = this.database.ref('confirmationItemComments');
+    }
+    
+    const snapshot = await this.refs.confirmationItemComments.child(itemId).once('value');
+    return snapshot.val() || [];
+  } catch (error) {
+    console.error(`獲取待確認事項 ${itemId} 的討論失敗:`, error);
+    return [];
+  }
+};
+
+// 保存待確認事項討論
+dbService.saveConfirmationItemComments = async function(itemId, comments) {
+  try {
+    // 檢查服務是否已初始化
+    if (!this.initialized) {
+      console.warn('DatabaseService 未初始化，無法保存待確認事項討論');
+      return false;
+    }
+    
+    // 檢查 refs 是否存在
+    if (!this.refs) {
+      console.error('refs 不存在');
+      return false;
+    }
+    
+    // 如果 confirmationItemComments 引用不存在，創建它
+    if (!this.refs.confirmationItemComments) {
+      this.refs.confirmationItemComments = this.database.ref('confirmationItemComments');
+    }
+    
+    await this.refs.confirmationItemComments.child(itemId).set(comments);
+    return true;
+  } catch (error) {
+    console.error(`保存待確認事項 ${itemId} 的討論失敗:`, error);
+    return false;
+  }
+};
+
+// 監聽待確認事項討論變化
+dbService.listenToConfirmationItemComments = function(itemId, callback) {
+  // 檢查服務是否已初始化
+  if (!this.initialized) {
+    console.warn('DatabaseService 未初始化，無法監聽待確認事項討論變化');
+    return;
+  }
+  
+  // 檢查 refs 是否存在
+  if (!this.refs) {
+    console.error('refs 不存在');
+    return;
+  }
+  
+  // 如果 confirmationItemComments 引用不存在，創建它
+  if (!this.refs.confirmationItemComments) {
+    this.refs.confirmationItemComments = this.database.ref('confirmationItemComments');
+  }
+  
+  this.refs.confirmationItemComments.child(itemId).on('value', (snapshot) => {
+    const comments = snapshot.val() || [];
+    callback(comments);
+  });
+};
+
+// 監聽所有待確認事項討論變化
+dbService.listenToAllConfirmationItemComments = function(callback) {
+  // 檢查服務是否已初始化
+  if (!this.initialized) {
+    console.warn('DatabaseService 未初始化，無法監聽所有待確認事項討論變化');
+    return;
+  }
+  
+  // 檢查 refs 是否存在
+  if (!this.refs) {
+    console.error('refs 不存在');
+    return;
+  }
+  
+  // 如果 confirmationItemComments 引用不存在，創建它
+  if (!this.refs.confirmationItemComments) {
+    this.refs.confirmationItemComments = this.database.ref('confirmationItemComments');
+  }
+  
+  this.refs.confirmationItemComments.on('value', (snapshot) => {
+    const allComments = snapshot.val() || {};
+    callback(allComments);
+  });
+};
+
+// 保存待確認事項
+dbService.saveConfirmationItems = async function(items) {
+  try {
+    // 檢查服務是否已初始化
+    if (!this.initialized) {
+      console.warn('DatabaseService 未初始化，無法保存待確認事項');
+      return false;
+    }
+    
+    // 檢查 refs 和 confirmationItems 是否存在
+    if (!this.refs || !this.refs.confirmationItems) {
+      console.error('confirmationItems 引用不存在');
+      return false;
+    }
+    
+    // 處理 null 值和 undefined 值，Firebase 不接受這些值
+    const processedItems = items.map(item => {
+      const processedItem = {...item};
+      // 將 null 值或 undefined 值轉換為空字串
+      if (processedItem.confirmedAt === null || processedItem.confirmedAt === undefined) {
+        processedItem.confirmedAt = '';
+      }
+      if (processedItem.confirmedBy === null || processedItem.confirmedBy === undefined) {
+        processedItem.confirmedBy = '';
+      }
+      // 確保所有屬性都不是 undefined，Firebase 不接受 undefined 值
+      Object.keys(processedItem).forEach(key => {
+        if (processedItem[key] === undefined) {
+          processedItem[key] = '';
+        }
+      });
+      return processedItem;
+    });
+    
+    await this.refs.confirmationItems.set(processedItems);
+    return true;
+  } catch (error) {
+    console.error('儲存待確認事項到 Firebase 失敗:', error);
+    return false;
+  }
+};
+
+// 監聽待確認事項變化
+dbService.onConfirmationItemsChange = function(callback) {
+  // 檢查服務是否已初始化
+  if (!this.initialized) {
+    console.warn('DatabaseService 未初始化，無法監聽待確認事項變化');
+    return;
+  }
+  
+  // 檢查 refs 和 confirmationItems 是否存在
+  if (!this.refs || !this.refs.confirmationItems) {
+    console.error('confirmationItems 引用不存在');
+    return;
+  }
+  
+  this.refs.confirmationItems.on('value', (snapshot) => {
+    const items = snapshot.val() || [];
+    callback(items);
+  });
+};
+
+// 為了相容性，添加別名方法
+dbService.listenToConfirmationItems = dbService.onConfirmationItemsChange;

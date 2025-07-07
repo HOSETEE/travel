@@ -600,6 +600,61 @@
             color: white;
         }
         
+        /* 待確認事項討論區樣式 */
+         .confirmation-discussion {
+             background: #f8f9fa;
+             border-radius: 8px;
+             margin-top: 10px;
+             overflow: hidden;
+             transition: all 0.3s ease;
+         }
+         
+         .confirmation-comment-form {
+             margin-bottom: 15px;
+         }
+         
+         .confirmation-comment-form textarea {
+             width: 100%;
+             padding: 8px;
+             border: 1px solid #ddd;
+             border-radius: 5px;
+             margin-bottom: 10px;
+             font-family: inherit;
+             font-size: 14px;
+             resize: vertical;
+             min-height: 60px;
+         }
+         
+         .confirmation-comments {
+             max-height: 300px;
+             overflow-y: auto;
+             padding-right: 5px;
+         }
+         
+         .confirmation-comment {
+             background: #f5f5f5;
+             border-radius: 5px;
+             margin-bottom: 10px;
+             font-size: 14px;
+             transition: all 0.3s ease;
+         }
+         
+         .confirmation-reply-form {
+             margin-top: 5px;
+             margin-bottom: 10px;
+         }
+         
+         .confirmation-reply-form textarea {
+             width: 100%;
+             padding: 6px;
+             border: 1px solid #ddd;
+             border-radius: 4px;
+             font-family: inherit;
+             font-size: 13px;
+             resize: vertical;
+             min-height: 50px;
+         }
+        
         .status-pending {
             background: #f39c12;
         }
@@ -885,6 +940,55 @@
 
             <!-- 側邊欄 -->
             <div class="sidebar">
+                <!-- 待確認事項 -->
+                <div class="confirmation-card">
+                    <h3 style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                        📋 待確認事項
+                        <button onclick="showAddConfirmationForm()" class="confirmation-btn btn-edit" style="font-size: 11px;">
+                            ➕ 新增事項
+                        </button>
+                    </h3>
+                    
+                    <!-- 新增待確認事項表單 -->
+                    <div id="addConfirmationForm" class="add-confirmation-form" style="display: none;">
+                        <input type="text" id="confirmationTitle" placeholder="事項標題 (例如: 確認餐廳訂位)">
+                        <textarea id="confirmationDetails" placeholder="詳細說明 (例如: 需要在8/5前確認日月潭餐廳的訂位，聯絡電話: 049-123456)"></textarea>
+                        <select id="confirmationRelatedDay">
+                            <option value="">選擇相關日期</option>
+                            <option value="day1">8/8 (五)</option>
+                            <option value="day2">8/9 (六)</option>
+                            <option value="day3">8/10 (日)</option>
+                            <option value="all">全部日期</option>
+                        </select>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="addConfirmationItem()" class="confirmation-btn btn-confirm" style="flex: 1;">新增</button>
+                            <button onclick="hideAddConfirmationForm()" class="confirmation-btn" style="flex: 1; background: #95a5a6; color: white;">取消</button>
+                        </div>
+                    </div>
+                    
+                    <!-- 編輯待確認事項表單 -->
+                    <div id="editConfirmationForm" class="add-confirmation-form" style="display: none;">
+                        <input type="hidden" id="editConfirmationId">
+                        <input type="text" id="editConfirmationTitle" placeholder="事項標題">
+                        <textarea id="editConfirmationDetails" placeholder="詳細說明"></textarea>
+                        <select id="editConfirmationRelatedDay">
+                            <option value="">選擇相關日期</option>
+                            <option value="day1">8/8 (五)</option>
+                            <option value="day2">8/9 (六)</option>
+                            <option value="day3">8/10 (日)</option>
+                            <option value="all">全部日期</option>
+                        </select>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="updateConfirmationItem()" class="confirmation-btn btn-confirm" style="flex: 1;">更新</button>
+                            <button onclick="hideEditConfirmationForm()" class="confirmation-btn" style="flex: 1; background: #95a5a6; color: white;">取消</button>
+                        </div>
+                    </div>
+                    
+                    <div id="confirmationItems" style="max-height: 300px; overflow-y: auto;">
+                        <!-- 待確認事項會動態載入到這裡 -->
+                    </div>
+                </div>
+                
                 <!-- 住宿資訊 -->
                 <div class="info-card">
                     <h3>🏨 住宿資訊</h3>
@@ -933,55 +1037,6 @@
                     <p>日月潭地區</p>
                     <p>溫度：25-30°C</p>
                     <p>建議攜帶防曬用品</p>
-                </div>
-
-                <!-- 待確認事項 -->
-                <div class="confirmation-card">
-                    <h3 style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
-                        📋 待確認事項
-                        <button onclick="showAddConfirmationForm()" class="confirmation-btn btn-edit" style="font-size: 11px;">
-                            ➕ 新增事項
-                        </button>
-                    </h3>
-                    
-                    <!-- 新增待確認事項表單 -->
-                    <div id="addConfirmationForm" class="add-confirmation-form" style="display: none;">
-                        <input type="text" id="confirmationTitle" placeholder="事項標題 (例如: 確認餐廳訂位)">
-                        <textarea id="confirmationDetails" placeholder="詳細說明 (例如: 需要在8/5前確認日月潭餐廳的訂位，聯絡電話: 049-123456)"></textarea>
-                        <select id="confirmationRelatedDay">
-                            <option value="">選擇相關日期</option>
-                            <option value="day1">8/8 (五)</option>
-                            <option value="day2">8/9 (六)</option>
-                            <option value="day3">8/10 (日)</option>
-                            <option value="all">全部日期</option>
-                        </select>
-                        <div style="display: flex; gap: 10px;">
-                            <button onclick="addConfirmationItem()" class="confirmation-btn btn-confirm" style="flex: 1;">新增</button>
-                            <button onclick="hideAddConfirmationForm()" class="confirmation-btn" style="flex: 1; background: #95a5a6; color: white;">取消</button>
-                        </div>
-                    </div>
-                    
-                    <!-- 編輯待確認事項表單 -->
-                    <div id="editConfirmationForm" class="add-confirmation-form" style="display: none;">
-                        <input type="hidden" id="editConfirmationId">
-                        <input type="text" id="editConfirmationTitle" placeholder="事項標題">
-                        <textarea id="editConfirmationDetails" placeholder="詳細說明"></textarea>
-                        <select id="editConfirmationRelatedDay">
-                            <option value="">選擇相關日期</option>
-                            <option value="day1">8/8 (五)</option>
-                            <option value="day2">8/9 (六)</option>
-                            <option value="day3">8/10 (日)</option>
-                            <option value="all">全部日期</option>
-                        </select>
-                        <div style="display: flex; gap: 10px;">
-                            <button onclick="updateConfirmationItem()" class="confirmation-btn btn-confirm" style="flex: 1;">更新</button>
-                            <button onclick="hideEditConfirmationForm()" class="confirmation-btn" style="flex: 1; background: #95a5a6; color: white;">取消</button>
-                        </div>
-                    </div>
-                    
-                    <div id="confirmationItems" style="max-height: 300px; overflow-y: auto;">
-                        <!-- 待確認事項會動態載入到這裡 -->
-                    </div>
                 </div>
                 
                 <!-- 打包清單 -->
@@ -1748,6 +1803,22 @@
             
             // 載入待確認事項
             await loadConfirmationItems();
+            
+            // 設置監聽所有待確認事項的討論變化
+            if (window.dbService && typeof window.dbService.listenToAllConfirmationItemComments === 'function') {
+                try {
+                    window.dbService.listenToAllConfirmationItemComments((itemId, comments) => {
+                        // 如果討論區已經打開，則更新顯示
+                        const discussionDiv = document.getElementById(`confirmation-discussion-${itemId}`);
+                        if (discussionDiv && discussionDiv.style.display !== 'none') {
+                            renderConfirmationItemComments(itemId, comments);
+                        }
+                    });
+                    console.log('已設置監聽所有待確認事項討論');
+                } catch (error) {
+                    console.error('設置監聽待確認事項討論失敗:', error);
+                }
+            }
         });
         
         // 檢查用戶身份
@@ -2176,7 +2247,7 @@
     <!-- 待確認事項 JavaScript 功能 -->
     <script>
         // 待確認事項相關變數
-        let confirmationItems = [];
+        window.confirmationItems = window.confirmationItems || [];
         
         // 顯示新增待確認事項表單
         function showAddConfirmationForm() {
@@ -2194,8 +2265,18 @@
         
         // 顯示編輯待確認事項表單
         function showEditConfirmationForm(id) {
-            const item = confirmationItems.find(item => item.id === id);
-            if (!item) return;
+            // 確保使用全域變數 window.confirmationItems
+            if (!window.confirmationItems) {
+                window.confirmationItems = [];
+                console.warn('待確認事項陣列不存在，已初始化為空陣列');
+                return;
+            }
+            
+            const item = window.confirmationItems.find(item => item.id === id);
+            if (!item) {
+                console.warn(`找不到 ID 為 ${id} 的待確認事項`);
+                return;
+            }
             
             document.getElementById('editConfirmationId').value = item.id;
             document.getElementById('editConfirmationTitle').value = item.title;
@@ -2229,20 +2310,38 @@
                 confirmed: false,
                 createdAt: new Date().toLocaleString('zh-TW'),
                 createdBy: currentUser ? currentUser.name : '匿名用戶',
-                confirmedAt: null,
-                confirmedBy: null
+                confirmedAt: '', // 使用空字串而非 null 或 undefined
+                confirmedBy: '' // 使用空字串而非 null 或 undefined
             };
+            
+            // 確保所有屬性都不是 undefined，Firebase 不接受 undefined 值
+            Object.keys(newItem).forEach(key => {
+                if (newItem[key] === undefined) {
+                    newItem[key] = '';
+                }
+            });
             
             try {
                 // 添加到本地陣列
-                confirmationItems.push(newItem);
+                if (!window.confirmationItems) {
+                    window.confirmationItems = [];
+                }
+                window.confirmationItems.push(newItem);
                 
-                // 儲存到 localStorage
-                localStorage.setItem('confirmationItems', JSON.stringify(confirmationItems));
+                // 儲存到 localStorage 作為備份
+                localStorage.setItem('confirmationItems', JSON.stringify(window.confirmationItems));
                 
                 // 如果 Firebase 已初始化，也儲存到 Firebase
                 if (window.dbService && typeof window.dbService.saveConfirmationItems === 'function') {
-                    await window.dbService.saveConfirmationItems(confirmationItems);
+                    console.log('正在將待確認事項儲存到 Firebase...');
+                    const result = await window.dbService.saveConfirmationItems(window.confirmationItems);
+                    if (result) {
+                        console.log('待確認事項已成功儲存到 Firebase');
+                    } else {
+                        console.warn('待確認事項儲存到 Firebase 失敗，但已儲存到本地');
+                    }
+                } else {
+                    console.warn('Firebase 未初始化或 saveConfirmationItems 方法不可用，僅儲存到本地');
                 }
                 
                 // 重新渲染待確認事項列表
@@ -2271,35 +2370,48 @@
             }
             
             try {
+                // 確保 confirmationItems 存在
+                if (!window.confirmationItems) {
+                    window.confirmationItems = [];
+                }
+                
                 // 找到並更新項目
-                const itemIndex = confirmationItems.findIndex(item => item.id === id);
+                const itemIndex = window.confirmationItems.findIndex(item => item.id === id);
                 if (itemIndex === -1) {
                     showNotification('找不到要更新的事項', 'error');
                     return;
                 }
                 
                 // 保留原有的確認狀態和確認者資訊
-                const confirmed = confirmationItems[itemIndex].confirmed;
-                const confirmedAt = confirmationItems[itemIndex].confirmedAt;
-                const confirmedBy = confirmationItems[itemIndex].confirmedBy;
+                const confirmed = window.confirmationItems[itemIndex].confirmed;
+                const confirmedAt = window.confirmationItems[itemIndex].confirmedAt;
+                const confirmedBy = window.confirmationItems[itemIndex].confirmedBy;
                 
                 // 更新項目
-                confirmationItems[itemIndex] = {
-                    ...confirmationItems[itemIndex],
+                window.confirmationItems[itemIndex] = {
+                    ...window.confirmationItems[itemIndex],
                     title: title,
                     details: details,
                     relatedDay: relatedDay,
                     confirmed: confirmed,
-                    confirmedAt: confirmedAt,
-                    confirmedBy: confirmedBy
+                    confirmedAt: confirmedAt === undefined || confirmedAt === null ? '' : confirmedAt,
+                    confirmedBy: confirmedBy === undefined || confirmedBy === null ? '' : confirmedBy
                 };
                 
-                // 儲存到 localStorage
-                localStorage.setItem('confirmationItems', JSON.stringify(confirmationItems));
+                // 儲存到 localStorage 作為備份
+                localStorage.setItem('confirmationItems', JSON.stringify(window.confirmationItems));
                 
                 // 如果 Firebase 已初始化，也儲存到 Firebase
                 if (window.dbService && typeof window.dbService.saveConfirmationItems === 'function') {
-                    await window.dbService.saveConfirmationItems(confirmationItems);
+                    console.log('正在將更新後的待確認事項儲存到 Firebase...');
+                    const result = await window.dbService.saveConfirmationItems(window.confirmationItems);
+                    if (result) {
+                        console.log('更新後的待確認事項已成功儲存到 Firebase');
+                    } else {
+                        console.warn('更新後的待確認事項儲存到 Firebase 失敗，但已儲存到本地');
+                    }
+                } else {
+                    console.warn('Firebase 未初始化或 saveConfirmationItems 方法不可用，僅儲存到本地');
                 }
                 
                 // 重新渲染待確認事項列表
@@ -2318,24 +2430,45 @@
         // 確認待確認事項
         async function confirmItem(id) {
             try {
+                // 確保 confirmationItems 存在
+                if (!window.confirmationItems) {
+                    window.confirmationItems = [];
+                }
+                
                 // 找到並更新項目
-                const itemIndex = confirmationItems.findIndex(item => item.id === id);
+                const itemIndex = window.confirmationItems.findIndex(item => item.id === id);
                 if (itemIndex === -1) {
                     showNotification('找不到要確認的事項', 'error');
                     return;
                 }
                 
                 // 更新確認狀態
-                confirmationItems[itemIndex].confirmed = true;
-                confirmationItems[itemIndex].confirmedAt = new Date().toLocaleString('zh-TW');
-                confirmationItems[itemIndex].confirmedBy = currentUser ? currentUser.name : '匿名用戶';
+                window.confirmationItems[itemIndex].confirmed = true;
+                window.confirmationItems[itemIndex].confirmedAt = new Date().toLocaleString('zh-TW');
+                window.confirmationItems[itemIndex].confirmedBy = currentUser ? currentUser.name : '匿名用戶';
                 
-                // 儲存到 localStorage
-                localStorage.setItem('confirmationItems', JSON.stringify(confirmationItems));
+                // 確保 confirmedAt 和 confirmedBy 不是 undefined 或 null
+                if (window.confirmationItems[itemIndex].confirmedAt === undefined || window.confirmationItems[itemIndex].confirmedAt === null) {
+                    window.confirmationItems[itemIndex].confirmedAt = '';
+                }
+                if (window.confirmationItems[itemIndex].confirmedBy === undefined || window.confirmationItems[itemIndex].confirmedBy === null) {
+                    window.confirmationItems[itemIndex].confirmedBy = '';
+                }
+                
+                // 儲存到 localStorage 作為備份
+                localStorage.setItem('confirmationItems', JSON.stringify(window.confirmationItems));
                 
                 // 如果 Firebase 已初始化，也儲存到 Firebase
                 if (window.dbService && typeof window.dbService.saveConfirmationItems === 'function') {
-                    await window.dbService.saveConfirmationItems(confirmationItems);
+                    console.log('正在將已確認的待確認事項儲存到 Firebase...');
+                    const result = await window.dbService.saveConfirmationItems(window.confirmationItems);
+                    if (result) {
+                        console.log('已確認的待確認事項已成功儲存到 Firebase');
+                    } else {
+                        console.warn('已確認的待確認事項儲存到 Firebase 失敗，但已儲存到本地');
+                    }
+                } else {
+                    console.warn('Firebase 未初始化或 saveConfirmationItems 方法不可用，僅儲存到本地');
                 }
                 
                 // 重新渲染待確認事項列表
@@ -2353,15 +2486,39 @@
             if (!confirm('確定要刪除此待確認事項嗎？')) return;
             
             try {
-                // 從陣列中移除項目
-                confirmationItems = confirmationItems.filter(item => item.id !== id);
+                // 確保 confirmationItems 存在
+                if (!window.confirmationItems) {
+                    window.confirmationItems = [];
+                    showNotification('找不到要刪除的事項', 'error');
+                    return;
+                }
                 
-                // 儲存到 localStorage
-                localStorage.setItem('confirmationItems', JSON.stringify(confirmationItems));
+                // 從陣列中移除項目
+                window.confirmationItems = window.confirmationItems.filter(item => item.id !== id);
+                
+                // 確保所有項目的所有屬性都不是 undefined，Firebase 不接受 undefined 值
+                window.confirmationItems.forEach(item => {
+                    Object.keys(item).forEach(key => {
+                        if (item[key] === undefined) {
+                            item[key] = '';
+                        }
+                    });
+                });
+                
+                // 儲存到 localStorage 作為備份
+                localStorage.setItem('confirmationItems', JSON.stringify(window.confirmationItems));
                 
                 // 如果 Firebase 已初始化，也儲存到 Firebase
                 if (window.dbService && typeof window.dbService.saveConfirmationItems === 'function') {
-                    await window.dbService.saveConfirmationItems(confirmationItems);
+                    console.log('正在將更新後的待確認事項儲存到 Firebase...');
+                    const result = await window.dbService.saveConfirmationItems(window.confirmationItems);
+                    if (result) {
+                        console.log('刪除後的待確認事項已成功儲存到 Firebase');
+                    } else {
+                        console.warn('刪除後的待確認事項儲存到 Firebase 失敗，但已儲存到本地');
+                    }
+                } else {
+                    console.warn('Firebase 未初始化或 saveConfirmationItems 方法不可用，僅儲存到本地');
                 }
                 
                 // 重新渲染待確認事項列表
@@ -2381,19 +2538,29 @@
                 if (window.dbService && typeof window.dbService.getConfirmationItems === 'function') {
                     const items = await window.dbService.getConfirmationItems();
                     if (items && items.length > 0) {
-                        confirmationItems = items;
+                        window.confirmationItems = items;
                         renderConfirmationItems();
                         return;
                     }
-                }
-                
-                // 如果 Firebase 未初始化或沒有資料，從 localStorage 載入
-                const saved = localStorage.getItem('confirmationItems');
-                if (saved) {
-                    confirmationItems = JSON.parse(saved);
-                } else {
-                    // 初始化一些範例資料
-                    confirmationItems = [
+                    
+                    // 如果 Firebase 中沒有資料，但有本地資料，則將本地資料同步到 Firebase
+                    const saved = localStorage.getItem('confirmationItems');
+                    if (saved) {
+                        const localItems = JSON.parse(saved);
+                        if (localItems && localItems.length > 0) {
+                            window.confirmationItems = localItems;
+                            // 同步到 Firebase
+                            if (typeof window.dbService.saveConfirmationItems === 'function') {
+                                await window.dbService.saveConfirmationItems(localItems);
+                                console.log('已將本地待確認事項同步到 Firebase');
+                            }
+                            renderConfirmationItems();
+                            return;
+                        }
+                    }
+                    
+                    // 如果 Firebase 和本地都沒有資料，初始化一些範例資料
+                    window.confirmationItems = [
                         {
                             id: '1',
                             title: '確認餐廳訂位',
@@ -2402,8 +2569,8 @@
                             confirmed: false,
                             createdAt: '2024/7/20 10:00:00',
                             createdBy: '系統',
-                            confirmedAt: null,
-                            confirmedBy: null
+                            confirmedAt: '', // 使用空字串而非 null 或 undefined
+                            confirmedBy: '' // 使用空字串而非 null 或 undefined
                         },
                         {
                             id: '2',
@@ -2417,7 +2584,26 @@
                             confirmedBy: '小雷'
                         }
                     ];
-                    localStorage.setItem('confirmationItems', JSON.stringify(confirmationItems));
+                    
+                    // 確保所有項目的所有屬性都不是 undefined，Firebase 不接受 undefined 值
+                    window.confirmationItems.forEach(item => {
+                        Object.keys(item).forEach(key => {
+                            if (item[key] === undefined) {
+                                item[key] = '';
+                            }
+                        });
+                    });
+                    localStorage.setItem('confirmationItems', JSON.stringify(window.confirmationItems));
+                    
+                    // 同步到 Firebase
+                    if (typeof window.dbService.saveConfirmationItems === 'function') {
+                        try {
+                            await window.dbService.saveConfirmationItems(window.confirmationItems);
+                            console.log('已將初始化的待確認事項同步到 Firebase');
+                        } catch (err) {
+                            console.error('初始化待確認事項到 Firebase 失敗:', err);
+                        }
+                    }
                 }
                 
                 renderConfirmationItems();
@@ -2432,8 +2618,14 @@
             const container = document.getElementById('confirmationItems');
             if (!container) return;
             
+            // 確保 window.confirmationItems 存在
+            if (!window.confirmationItems) {
+                window.confirmationItems = [];
+                console.warn('待確認事項陣列不存在，已初始化為空陣列');
+            }
+            
             // 先排序：未確認的在前，已確認的在後，同一狀態下按創建時間排序
-            const sortedItems = [...confirmationItems].sort((a, b) => {
+            const sortedItems = [...window.confirmationItems].sort((a, b) => {
                 if (a.confirmed !== b.confirmed) {
                     return a.confirmed ? 1 : -1; // 未確認的在前
                 }
@@ -2485,7 +2677,7 @@
                         <span>相關日期: ${dayLabel}</span>
                         <span style="margin-left: 10px;">建立者: ${item.createdBy}</span>
                     </div>
-                    ${item.confirmed ? `
+                    ${item.confirmed && item.confirmedBy && item.confirmedBy !== '' && item.confirmedBy !== undefined && item.confirmedAt && item.confirmedAt !== '' && item.confirmedAt !== undefined ? `
                         <div style="font-size: 12px; color: #27ae60; margin-bottom: 10px;">
                             確認者: ${item.confirmedBy} (${item.confirmedAt})
                         </div>
@@ -2496,11 +2688,309 @@
                         ` : ''}
                         <button onclick="showEditConfirmationForm('${item.id}')" class="confirmation-btn btn-edit">編輯</button>
                         <button onclick="deleteConfirmationItem('${item.id}')" class="confirmation-btn btn-delete">刪除</button>
+                        <button onclick="toggleConfirmationItemDiscussion('${item.id}')" class="confirmation-btn" style="background-color: #3498db; color: white;">💬 討論</button>
                     </div>
+                    <div id="confirmation-discussion-${item.id}" class="confirmation-discussion" style="display: none; margin-top: 10px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;"></div>
                 `;
                 
                 container.appendChild(itemElement);
             });
+        }
+    </script>
+    
+    <!-- 待確認事項討論功能 -->
+    <script>
+        // 切換待確認事項討論區顯示
+        async function toggleConfirmationItemDiscussion(itemId) {
+            const discussionDiv = document.getElementById(`confirmation-discussion-${itemId}`);
+            
+            if (discussionDiv.style.display === 'none') {
+                // 顯示討論區並初始化內容
+                discussionDiv.style.display = 'block';
+                initConfirmationItemDiscussion(itemId);
+                await loadConfirmationItemComments(itemId);
+            } else {
+                // 隱藏討論區
+                discussionDiv.style.display = 'none';
+            }
+        }
+
+        // 初始化待確認事項討論區
+        function initConfirmationItemDiscussion(itemId) {
+            const discussionDiv = document.getElementById(`confirmation-discussion-${itemId}`);
+            
+            if (discussionDiv.innerHTML === '') {
+                discussionDiv.innerHTML = `
+                     <h4 style="margin-bottom: 15px; color: #2c3e50; font-size: 16px;">💬 討論區</h4>
+                     <div class="confirmation-comment-form">
+                         <div style="margin-bottom: 10px; padding: 8px; background: #f8f9fa; border-radius: 5px; color: #2c3e50; font-weight: bold; font-size: 14px;">
+                             發表者：<span class="current-user-name">${currentUser ? currentUser.name : '未登入'}</span>
+                         </div>
+                         <textarea id="confirmation-text-${itemId}" placeholder="對這個待確認事項有什麼想法或建議？" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; resize: vertical; min-height: 80px;"></textarea>
+                         <button class="btn btn-success" onclick="addConfirmationItemComment('${itemId}')" style="font-size: 12px; padding: 6px 12px; margin-top: 8px;">發表留言</button>
+                     </div>
+                     <div id="${itemId}-comments" class="confirmation-comments" style="margin-top: 15px;">
+                         <!-- 留言會動態載入到這裡 -->
+                     </div>
+                 `;
+                 
+                 // 更新新建立的用戶顯示
+                 setTimeout(() => {
+                     updateCurrentUserDisplay();
+                 }, 0);
+            }
+        }
+
+        // 新增待確認事項留言
+        async function addConfirmationItemComment(itemId, replyToId = null) {
+            const textElement = document.getElementById(`confirmation-text-${itemId}`);
+            
+            if (!textElement) {
+                showNotification('找不到表單元素', 'error');
+                return;
+            }
+            
+            if (!currentUser) {
+                showNotification('請先設定個人ID', 'error');
+                return;
+            }
+            
+            const text = textElement.value.trim();
+            
+            if (!text) {
+                showNotification('請填寫留言內容', 'error');
+                return;
+            }
+            
+            const author = currentUser.name;
+            
+            const comment = {
+                id: Date.now(),
+                author: author,
+                text: text,
+                timestamp: new Date().toLocaleString('zh-TW'),
+                replyTo: replyToId,
+                replies: []
+            };
+            
+            try {
+                // 從 Firebase 獲取當前留言
+                let comments = await dbService.getConfirmationItemComments(itemId) || [];
+                
+                if (replyToId) {
+                    // 找到被回復的留言並添加回復
+                    const parentComment = findCommentById(comments, replyToId);
+                    if (parentComment) {
+                        if (!parentComment.replies) {
+                            parentComment.replies = [];
+                        }
+                        parentComment.replies.push(comment);
+                    }
+                } else {
+                    // 新的主留言
+                    comments.unshift(comment);
+                }
+                
+                // 更新 Firebase
+                await dbService.saveConfirmationItemComments(itemId, comments);
+                
+                // 清空表單
+                textElement.value = '';
+                showNotification('留言已發表！');
+            } catch (error) {
+                console.error('發表待確認事項留言失敗:', error);
+                showNotification('發表留言失敗，請稍後再試', 'error');
+            }
+        }
+
+        // 渲染待確認事項留言列表
+        function renderConfirmationItemComments(itemId, comments) {
+            const commentsList = document.getElementById(`${itemId}-comments`);
+            
+            commentsList.innerHTML = '';
+            
+            if (!comments || comments.length === 0) {
+                commentsList.innerHTML = '<p style="color: #7f8c8d; font-style: italic; text-align: center; padding: 20px;">還沒有人討論這個事項，快來留下第一個意見吧！</p>';
+                return;
+            }
+            
+            comments.forEach(comment => {
+                renderConfirmationItemComment(comment, commentsList, itemId, 0);
+            });
+        }
+        
+        // 渲染單個待確認事項留言（支援巢狀回復）
+        function renderConfirmationItemComment(comment, container, itemId, depth = 0) {
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'confirmation-comment';
+            commentDiv.style.marginLeft = `${depth * 15}px`;
+            commentDiv.style.marginBottom = '10px';
+            commentDiv.style.padding = '10px';
+            commentDiv.style.backgroundColor = depth > 0 ? '#f1f8ff' : '#f5f5f5';
+            commentDiv.style.borderRadius = '5px';
+            commentDiv.style.border = depth > 0 ? '1px solid #d1e4ff' : '1px solid #e0e0e0';
+            
+            commentDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span style="font-weight: bold; color: #2c3e50;">${comment.author}</span>
+                    <span style="color: #7f8c8d; font-size: 12px;">${comment.timestamp}</span>
+                </div>
+                <div style="margin-bottom: 8px;">${comment.text}</div>
+                <div>
+                    <button onclick="showConfirmationItemReplyForm('${itemId}', ${comment.id})" style="font-size: 11px; padding: 2px 6px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;">回復</button>
+                </div>
+                <div id="confirmation-reply-form-${itemId}-${comment.id}" class="confirmation-reply-form" style="display: none; margin-top: 8px; padding: 8px; background: #ecf0f1; border-radius: 5px;">
+                    <div style="margin-bottom: 6px; padding: 4px; background: #f8f9fa; border-radius: 3px; color: #2c3e50; font-size: 11px;">
+                        回覆者：<span class="current-user-name">${currentUser ? currentUser.name : '未登入'}</span>
+                    </div>
+                    <textarea id="confirmation-reply-text-${itemId}-${comment.id}" placeholder="回復 ${comment.author} 的留言..." style="width: 100%; padding: 4px; border: 1px solid #ddd; border-radius: 3px; resize: vertical; min-height: 50px; font-size: 12px;"></textarea>
+                    <div style="margin-top: 6px;">
+                        <button onclick="submitConfirmationItemReply('${itemId}', ${comment.id})" style="padding: 4px 8px; background: #27ae60; color: white; border: none; border-radius: 3px; cursor: pointer; margin-right: 4px; font-size: 11px;">發表回復</button>
+                        <button onclick="hideConfirmationItemReplyForm('${itemId}', ${comment.id})" style="padding: 4px 8px; background: #95a5a6; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px;">取消</button>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(commentDiv);
+            
+            // 更新新建立的用戶顯示
+            setTimeout(() => {
+                updateCurrentUserDisplay();
+            }, 0);
+            
+            // 渲染回復
+            if (comment.replies && comment.replies.length > 0) {
+                comment.replies.forEach(reply => {
+                    renderConfirmationItemComment(reply, container, itemId, depth + 1);
+                });
+            }
+        }
+        
+        // 顯示待確認事項回復表單
+        function showConfirmationItemReplyForm(itemId, commentId) {
+            // 隱藏所有其他回復表單
+            document.querySelectorAll('.confirmation-reply-form').forEach(form => {
+                form.style.display = 'none';
+            });
+            
+            // 顯示指定的回復表單
+            const replyForm = document.getElementById(`confirmation-reply-form-${itemId}-${commentId}`);
+            if (replyForm) {
+                replyForm.style.display = 'block';
+                const textArea = document.getElementById(`confirmation-reply-text-${itemId}-${commentId}`);
+                if (textArea) textArea.focus();
+            }
+        }
+        
+        // 隱藏待確認事項回復表單
+        function hideConfirmationItemReplyForm(itemId, commentId) {
+            const replyForm = document.getElementById(`confirmation-reply-form-${itemId}-${commentId}`);
+            if (replyForm) {
+                replyForm.style.display = 'none';
+                // 清空表單
+                const textArea = document.getElementById(`confirmation-reply-text-${itemId}-${commentId}`);
+                if (textArea) textArea.value = '';
+            }
+        }
+        
+        // 提交待確認事項回復
+        async function submitConfirmationItemReply(itemId, commentId) {
+            const textElement = document.getElementById(`confirmation-reply-text-${itemId}-${commentId}`);
+            
+            if (!textElement) {
+                showNotification('找不到回復表單元素', 'error');
+                return;
+            }
+            
+            if (!currentUser) {
+                showNotification('請先設定個人ID', 'error');
+                return;
+            }
+            
+            const text = textElement.value.trim();
+            
+            if (!text) {
+                showNotification('請填寫回復內容', 'error');
+                return;
+            }
+            
+            const author = currentUser.name;
+            
+            const reply = {
+                id: Date.now(),
+                author: author,
+                text: text,
+                timestamp: new Date().toLocaleString('zh-TW'),
+                replyTo: commentId,
+                replies: []
+            };
+            
+            try {
+                // 從 Firebase 獲取當前留言
+                let comments = await dbService.getConfirmationItemComments(itemId) || [];
+                
+                // 找到被回復的留言並添加回復
+                const parentComment = findCommentById(comments, commentId);
+                if (parentComment) {
+                    if (!parentComment.replies) {
+                        parentComment.replies = [];
+                    }
+                    parentComment.replies.push(reply);
+                    
+                    // 更新 Firebase
+                    await dbService.saveConfirmationItemComments(itemId, comments);
+                    
+                    hideConfirmationItemReplyForm(itemId, commentId);
+                    showNotification('回復已發表！');
+                } else {
+                    console.error(`找不到原留言 ID: ${commentId}，事項 ID: ${itemId}`);
+                    showNotification('找不到原留言', 'error');
+                }
+            } catch (error) {
+                console.error('發表待確認事項回復失敗:', error);
+                showNotification('發表回復失敗，請稍後再試', 'error');
+            }
+        }
+
+        // 載入待確認事項留言
+        async function loadConfirmationItemComments(itemId) {
+            try {
+                // 從 Firebase 獲取特定待確認事項的留言
+                const comments = await dbService.getConfirmationItemComments(itemId);
+                
+                // 渲染留言
+                renderConfirmationItemComments(itemId, comments);
+                
+                // 設置監聽
+                dbService.listenToConfirmationItemComments(itemId, (updatedComments) => {
+                    renderConfirmationItemComments(itemId, updatedComments);
+                });
+            } catch (error) {
+                console.error(`載入待確認事項 ${itemId} 的留言失敗:`, error);
+                showNotification('載入留言失敗，請稍後再試', 'error');
+            }
+        }
+    </script>
+    
+    <!-- 通用函數 -->
+    <script>
+        // 在留言列表中遞迴查找特定 ID 的留言
+        function findCommentById(comments, commentId) {
+            if (!comments || !Array.isArray(comments)) return null;
+            
+            // 先在頂層留言中查找
+            const comment = comments.find(c => c.id == commentId);
+            if (comment) return comment;
+            
+            // 如果頂層沒有找到，則在所有回復中查找
+            for (const c of comments) {
+                if (c.replies && Array.isArray(c.replies) && c.replies.length > 0) {
+                    const found = findCommentById(c.replies, commentId);
+                    if (found) return found;
+                }
+            }
+            
+            return null;
         }
     </script>
     
@@ -2532,50 +3022,65 @@
                     console.warn('dbService 未定義，Firebase 可能未正確初始化，將使用本地資料');
                     // 從本地儲存載入資料
                     loadDataFromLocalStorage();
-                } else {
-                    // 如果 Firebase 已初始化，添加待確認事項相關方法
-                    if (!window.dbService.getConfirmationItems) {
-                        window.dbService.getConfirmationItems = async function() {
-                            try {
-                                const snapshot = await this.database.ref('confirmationItems').once('value');
-                                return snapshot.val() || [];
-                            } catch (error) {
-                                console.error('從 Firebase 獲取待確認事項失敗:', error);
-                                return null;
-                            }
-                        };
-                    }
-                    
-                    if (!window.dbService.saveConfirmationItems) {
-                        window.dbService.saveConfirmationItems = async function(items) {
-                            try {
-                                await this.database.ref('confirmationItems').set(items);
-                                return true;
-                            } catch (error) {
-                                console.error('儲存待確認事項到 Firebase 失敗:', error);
-                                return false;
-                            }
-                        };
-                    }
+                    return;
                 }
                 
                 // 監聽全域留言變化
-                window.dbService.listenToComments(comments => {
-                    window.comments = comments || [];
+                if (typeof window.dbService.listenToComments === 'function') {
+                    window.dbService.listenToComments(comments => {
+                        window.comments = comments || [];
+                        renderComments();
+                    });
+                } else {
+                    console.warn('留言監聽功能不可用');
+                    const savedComments = localStorage.getItem('comments');
+                    window.comments = savedComments ? JSON.parse(savedComments) : [];
                     renderComments();
-                });
+                }
                 
                 // 監聽活動留言變化
-                window.dbService.listenToAllActivityComments(activityCommentsData => {
-                    window.activityComments = activityCommentsData || {};
-                    // 更新所有活動的未讀指示器
+                if (typeof window.dbService.listenToAllActivityComments === 'function') {
+                    window.dbService.listenToAllActivityComments(activityCommentsData => {
+                        window.activityComments = activityCommentsData || {};
+                        // 更新所有活動的未讀指示器
+                        updateUnreadIndicators();
+                    });
+                } else {
+                    console.warn('活動留言監聽功能不可用');
+                    const savedActivityComments = localStorage.getItem('activityComments');
+                    window.activityComments = savedActivityComments ? JSON.parse(savedActivityComments) : {};
                     updateUnreadIndicators();
-                });
+                }
                 
                 // 監聽用戶資料變化
-                window.dbService.listenToUserProfiles(profiles => {
-                    window.userProfiles = profiles || [];
-                });
+                if (typeof window.dbService.listenToUserProfiles === 'function') {
+                    window.dbService.listenToUserProfiles(profiles => {
+                        window.userProfiles = profiles || [];
+                    });
+                } else {
+                    console.warn('用戶資料監聽功能不可用');
+                    const savedUserProfiles = localStorage.getItem('userProfiles');
+                    window.userProfiles = savedUserProfiles ? JSON.parse(savedUserProfiles) : [
+                        { name: '小雷', joinDate: '2024-01-01' },
+                        { name: '阿苦', joinDate: '2024-01-01' },
+                        { name: '泉成', joinDate: '2024-01-01' },
+                        { name: '小紅', joinDate: '2024-01-01' }
+                    ];
+                }
+                
+                // 監聽待確認事項變化
+                if (typeof window.dbService.listenToConfirmationItems === 'function') {
+                    console.log('開始監聽待確認事項變化...');
+                    window.dbService.listenToConfirmationItems(items => {
+                        console.log('待確認事項已更新:', items ? items.length : 0, '個項目');
+                        window.confirmationItems = items || [];
+                        renderConfirmationItems();
+                    });
+                } else {
+                    console.warn('待確認事項監聽功能不可用，將使用本地儲存');
+                    // 如果監聽方法不存在，則直接載入待確認事項
+                    loadConfirmationItems();
+                }
                 
                 // 載入當前用戶
                 const savedUser = localStorage.getItem('currentUser');
@@ -2613,6 +3118,34 @@
                 { name: '泉成', joinDate: '2024-01-01' },
                 { name: '小紅', joinDate: '2024-01-01' }
             ];
+            
+            // 載入待確認事項
+            const savedConfirmationItems = localStorage.getItem('confirmationItems');
+            window.confirmationItems = savedConfirmationItems ? JSON.parse(savedConfirmationItems) : [
+                {
+                    id: '1',
+                    title: '確認餐廳訂位',
+                    details: '需要在8/5前確認日月潭餐廳的訂位，聯絡電話: 049-123456',
+                    relatedDay: 'day2',
+                    confirmed: false,
+                    createdAt: '2024/7/20 10:00:00',
+                    createdBy: '系統',
+                    confirmedAt: '',
+                    confirmedBy: ''
+                },
+                {
+                    id: '2',
+                    title: '確認立槳預約時間',
+                    details: '需要確認立槳體驗的預約時間，可能需要提前30分鐘到達',
+                    relatedDay: 'day2',
+                    confirmed: true,
+                    createdAt: '2024/7/20 10:00:00',
+                    createdBy: '系統',
+                    confirmedAt: '2024/7/25 15:30:00',
+                    confirmedBy: '小雷'
+                }
+            ];
+            renderConfirmationItems();
             
             // 載入當前用戶
             const savedUser = localStorage.getItem('currentUser');
