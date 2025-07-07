@@ -1041,16 +1041,26 @@
                 
                 <!-- 打包清單 -->
                 <div class="info-card">
-                    <h3>🎒 打包清單</h3>
-                    <ul class="checklist">
-                        <li><input type="checkbox" id="item1"> <label for="item1">換洗衣物</label></li>
-                        <li><input type="checkbox" id="item2"> <label for="item2">防曬用品</label></li>
-                        <li><input type="checkbox" id="item3"> <label for="item3">相機/充電器</label></li>
-                        <li><input type="checkbox" id="item4"> <label for="item4">個人藥品</label></li>
-                        <li><input type="checkbox" id="item5"> <label for="item5">泳衣（SUP用）</label></li>
-                        <li><input type="checkbox" id="item6"> <label for="item6">運動鞋</label></li>
-                        <li><input type="checkbox" id="item7"> <label for="item7">雨具</label></li>
-                        <li><input type="checkbox" id="item8"> <label for="item8">零食飲料</label></li>
+                    <h3 style="display: flex; justify-content: space-between; align-items: center;">
+                        🎒 打包清單
+                        <div style="display: flex; gap: 5px;">
+                            <button onclick="resetPackingList()" style="font-size: 11px; padding: 3px 8px; background-color: #e67e22; color: white; border: none; border-radius: 15px; cursor: pointer;">
+                                🔄 重置清單
+                            </button>
+                            <button onclick="showAddPackingItemForm()" style="font-size: 11px; padding: 3px 8px; background-color: #3498db; color: white; border: none; border-radius: 15px; cursor: pointer;">
+                                ➕ 新增物品
+                            </button>
+                        </div>
+                    </h3>
+                    <div id="addPackingItemForm" style="display: none; margin-bottom: 15px; background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                        <input type="text" id="newPackingItem" placeholder="輸入物品名稱" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="addPackingItem()" style="flex: 1; padding: 8px; font-size: 12px; background-color: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer;">新增</button>
+                            <button onclick="hideAddPackingItemForm()" style="flex: 1; padding: 8px; font-size: 12px; background-color: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer;">取消</button>
+                        </div>
+                    </div>
+                    <ul id="packingList" class="checklist">
+                        <!-- 打包清單項目將由JavaScript動態生成 -->
                     </ul>
                 </div>
             </div>
@@ -2607,6 +2617,8 @@
                 }
                 
                 renderConfirmationItems();
+                // 初始化待確認事項未讀指示器
+                updateConfirmationItemUnreadIndicators();
             } catch (error) {
                 console.error('載入待確認事項失敗:', error);
                 showNotification('載入待確認事項失敗，請稍後再試', 'error');
@@ -2688,7 +2700,7 @@
                         ` : ''}
                         <button onclick="showEditConfirmationForm('${item.id}')" class="confirmation-btn btn-edit">編輯</button>
                         <button onclick="deleteConfirmationItem('${item.id}')" class="confirmation-btn btn-delete">刪除</button>
-                        <button onclick="toggleConfirmationItemDiscussion('${item.id}')" class="confirmation-btn" style="background-color: #3498db; color: white;">💬 討論</button>
+                        <button onclick="toggleConfirmationItemDiscussion('${item.id}')" class="confirmation-btn" style="background-color: #3498db; color: white; position: relative;">💬 討論</button>
                     </div>
                     <div id="confirmation-discussion-${item.id}" class="confirmation-discussion" style="display: none; margin-top: 10px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;"></div>
                 `;
@@ -2709,6 +2721,13 @@
                 discussionDiv.style.display = 'block';
                 initConfirmationItemDiscussion(itemId);
                 await loadConfirmationItemComments(itemId);
+                
+                // 更新最後查看時間
+                if (currentUser) {
+                    await dbService.updateConfirmationItemLastViewTime(currentUser.name, itemId);
+                    // 更新未讀指示器
+                    updateConfirmationItemUnreadIndicators();
+                }
             } else {
                 // 隱藏討論區
                 discussionDiv.style.display = 'none';
@@ -2964,10 +2983,96 @@
                 // 設置監聽
                 dbService.listenToConfirmationItemComments(itemId, (updatedComments) => {
                     renderConfirmationItemComments(itemId, updatedComments);
+                    // 更新未讀指示器
+                    updateConfirmationItemUnreadIndicators();
                 });
+                
+                // 更新最後查看時間
+                if (currentUser) {
+                    await dbService.updateConfirmationItemLastViewTime(currentUser.name, itemId);
+                }
             } catch (error) {
                 console.error(`載入待確認事項 ${itemId} 的留言失敗:`, error);
                 showNotification('載入留言失敗，請稍後再試', 'error');
+            }
+        }
+        
+        // 檢查待確認事項是否有未讀留言
+        async function hasUnreadConfirmationItemComments(itemId) {
+            try {
+                if (!currentUser) return false;
+                
+                // 獲取最後查看時間
+                const lastViewTime = await dbService.getConfirmationItemLastViewTime(currentUser.name, itemId);
+                const comments = await dbService.getConfirmationItemComments(itemId) || [];
+                
+                // 檢查是否有新留言或回復
+                for (let comment of comments) {
+                    if (new Date(comment.timestamp) > new Date(lastViewTime)) {
+                        return true;
+                    }
+                    // 檢查回復
+                    if (comment.replies) {
+                        for (let reply of comment.replies) {
+                            if (new Date(reply.timestamp) > new Date(lastViewTime)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            } catch (error) {
+                console.error('檢查待確認事項未讀留言失敗:', error);
+                return false;
+            }
+        }
+        
+        // 更新所有待確認事項未讀指示器
+        async function updateConfirmationItemUnreadIndicators() {
+            try {
+                // 查找所有討論按鈕並更新未讀指示器
+                const buttons = document.querySelectorAll('button[onclick*="toggleConfirmationItemDiscussion"]');
+                
+                for (const button of buttons) {
+                    const onclickAttr = button.getAttribute('onclick');
+                    const match = onclickAttr.match(/toggleConfirmationItemDiscussion\('([^']+)'\)/);
+                    if (match) {
+                        const itemId = match[1];
+                        await updateConfirmationItemUnreadIndicator(itemId, button);
+                    }
+                }
+            } catch (error) {
+                console.error('更新待確認事項未讀指示器失敗:', error);
+            }
+        }
+        
+        // 更新單個待確認事項未讀指示器
+        async function updateConfirmationItemUnreadIndicator(itemId, button) {
+            try {
+                // 移除現有的未讀指示器
+                const existingIndicator = button.querySelector('.unread-indicator');
+                if (existingIndicator) {
+                    existingIndicator.remove();
+                }
+    
+                // 如果有未讀留言，添加指示器
+                const hasUnread = await hasUnreadConfirmationItemComments(itemId);
+                if (hasUnread) {
+                    const indicator = document.createElement('span');
+                    indicator.className = 'unread-indicator';
+                    indicator.innerHTML = '🔴';
+                    indicator.style.cssText = `
+                        position: absolute;
+                        top: -5px;
+                        right: -5px;
+                        font-size: 12px;
+                        animation: pulse 2s infinite;
+                    `;
+                    button.style.position = 'relative';
+                    button.appendChild(indicator);
+                }
+            } catch (error) {
+                console.error(`更新待確認事項 ${itemId} 的未讀指示器失敗:`, error);
             }
         }
     </script>
@@ -3075,6 +3180,8 @@
                         console.log('待確認事項已更新:', items ? items.length : 0, '個項目');
                         window.confirmationItems = items || [];
                         renderConfirmationItems();
+                        // 初始化待確認事項未讀指示器
+                        updateConfirmationItemUnreadIndicators();
                     });
                 } else {
                     console.warn('待確認事項監聽功能不可用，將使用本地儲存');
@@ -3146,6 +3253,73 @@
                 }
             ];
             renderConfirmationItems();
+            // 初始化待確認事項未讀指示器
+            updateConfirmationItemUnreadIndicators();
+            
+            // 載入打包清單
+            const savedPackingItems = localStorage.getItem('packingItems');
+            // 定義預設打包清單
+            const defaultPackingItems = [
+                // 衣物類
+                { id: 'item1', name: '換洗衣物', checked: false },
+                { id: 'item2', name: '內衣褲', checked: false },
+                { id: 'item3', name: '襪子', checked: false },
+                { id: 'item4', name: '睡衣', checked: false },
+                { id: 'item5', name: '泳衣/泳褲', checked: false },
+                { id: 'item6', name: '外套/薄長袖', checked: false },
+                { id: 'item7', name: '運動鞋', checked: false },
+                { id: 'item8', name: '拖鞋/涼鞋', checked: false },
+                { id: 'item9', name: '遮陽帽', checked: false },
+                
+                // 盥洗用品
+                { id: 'item10', name: '牙刷牙膏', checked: false },
+                { id: 'item11', name: '洗髮精/沐浴乳', checked: false },
+                { id: 'item12', name: '毛巾/浴巾', checked: false },
+                { id: 'item13', name: '梳子/髮圈', checked: false },
+                { id: 'item14', name: '刮鬍刀', checked: false },
+                { id: 'item15', name: '化妝品/保養品', checked: false },
+                
+                // 防護用品
+                { id: 'item16', name: '防曬乳/防曬衣', checked: false },
+                { id: 'item17', name: '防蚊液', checked: false },
+                { id: 'item18', name: '雨具/雨傘', checked: false },
+                { id: 'item19', name: '口罩', checked: false },
+                { id: 'item20', name: '乾洗手/濕紙巾', checked: false },
+                
+                // 電子產品
+                { id: 'item21', name: '手機充電器', checked: false },
+                { id: 'item22', name: '行動電源', checked: false },
+                { id: 'item23', name: '相機/攝影機', checked: false },
+                { id: 'item24', name: '耳機', checked: false },
+                
+                // 其他必需品
+                { id: 'item25', name: '個人藥品/常備藥', checked: false },
+                { id: 'item26', name: '零食/飲料', checked: false },
+                { id: 'item27', name: '證件/錢包', checked: false },
+                { id: 'item28', name: '太陽眼鏡', checked: false },
+                { id: 'item29', name: '水壺', checked: false },
+                { id: 'item30', name: '小背包/腰包', checked: false }
+            ];
+            
+            try {
+                // 嘗試解析localStorage中的資料
+                window.packingItems = savedPackingItems ? JSON.parse(savedPackingItems) : defaultPackingItems;
+                
+                // 檢查解析後的資料是否為有效的陣列
+                if (!Array.isArray(window.packingItems) || window.packingItems.length === 0) {
+                    console.log('打包清單資料無效或為空，載入預設物品');
+                    window.packingItems = defaultPackingItems;
+                    // 儲存預設物品到localStorage
+                    localStorage.setItem('packingItems', JSON.stringify(defaultPackingItems));
+                }
+            } catch (error) {
+                console.error('解析打包清單資料時發生錯誤:', error);
+                window.packingItems = defaultPackingItems;
+                // 儲存預設物品到localStorage
+                localStorage.setItem('packingItems', JSON.stringify(defaultPackingItems));
+            }
+            
+            renderPackingItems();
             
             // 載入當前用戶
             const savedUser = localStorage.getItem('currentUser');
@@ -3155,6 +3329,228 @@
             }
             
             console.log('本地資料載入完成');
+        }
+        
+        // 打包清單相關功能
+        // 顯示新增打包物品表單
+        function showAddPackingItemForm() {
+            document.getElementById('addPackingItemForm').style.display = 'block';
+            document.getElementById('newPackingItem').focus();
+        }
+        
+        // 隱藏新增打包物品表單
+        function hideAddPackingItemForm() {
+            document.getElementById('addPackingItemForm').style.display = 'none';
+            document.getElementById('newPackingItem').value = '';
+        }
+        
+        // 新增打包物品
+        function addPackingItem() {
+            const itemName = document.getElementById('newPackingItem').value.trim();
+            
+            if (!itemName) {
+                showNotification('請輸入物品名稱', 'error');
+                return;
+            }
+            
+            // 創建新物品
+            const newItem = {
+                id: 'item_' + Date.now(),
+                name: itemName,
+                checked: false
+            };
+            
+            // 確保 packingItems 存在
+            if (!window.packingItems) {
+                window.packingItems = [];
+            }
+            
+            // 添加到列表
+            window.packingItems.push(newItem);
+            
+            // 保存到本地儲存
+            localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
+            
+            // 重新渲染列表
+            renderPackingItems();
+            
+            // 隱藏表單並清空輸入
+            hideAddPackingItemForm();
+            
+            showNotification('已新增物品到打包清單');
+        }
+        
+        // 刪除打包物品
+        function deletePackingItem(itemId) {
+            // 確保 packingItems 存在
+            if (!window.packingItems) {
+                return;
+            }
+            
+            // 找到物品索引
+            const itemIndex = window.packingItems.findIndex(item => item.id === itemId);
+            
+            if (itemIndex === -1) {
+                return;
+            }
+            
+            // 從列表中移除
+            window.packingItems.splice(itemIndex, 1);
+            
+            // 保存到本地儲存
+            localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
+            
+            // 重新渲染列表
+            renderPackingItems();
+            
+            showNotification('已從打包清單中移除物品');
+        }
+        
+        // 更新打包物品狀態
+        function updatePackingItemStatus(itemId, checked) {
+            // 確保 packingItems 存在
+            if (!window.packingItems) {
+                return;
+            }
+            
+            // 找到物品
+            const item = window.packingItems.find(item => item.id === itemId);
+            
+            if (!item) {
+                return;
+            }
+            
+            // 更新狀態
+            item.checked = checked;
+            
+            // 保存到本地儲存
+            localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
+        }
+        
+        // 重置打包清單
+        function resetPackingList() {
+            if (confirm('確定要重置打包清單嗎？這將清除所有已勾選的狀態並恢復預設物品。')) {
+                // 清除localStorage中的打包清單資料
+                localStorage.removeItem('packingItems');
+                
+                // 重新載入預設物品
+                window.packingItems = [
+                    // 衣物類
+                    { id: 'item1', name: '換洗衣物', checked: false },
+                    { id: 'item2', name: '內衣褲', checked: false },
+                    { id: 'item3', name: '襪子', checked: false },
+                    { id: 'item4', name: '睡衣', checked: false },
+                    { id: 'item5', name: '泳衣/泳褲', checked: false },
+                    { id: 'item6', name: '外套/薄長袖', checked: false },
+                    { id: 'item7', name: '運動鞋', checked: false },
+                    { id: 'item8', name: '拖鞋/涼鞋', checked: false },
+                    { id: 'item9', name: '遮陽帽', checked: false },
+                    
+                    // 盥洗用品
+                    { id: 'item10', name: '牙刷牙膏', checked: false },
+                    { id: 'item11', name: '洗髮精/沐浴乳', checked: false },
+                    { id: 'item12', name: '毛巾/浴巾', checked: false },
+                    { id: 'item13', name: '梳子/髮圈', checked: false },
+                    { id: 'item14', name: '刮鬍刀', checked: false },
+                    { id: 'item15', name: '化妝品/保養品', checked: false },
+                    
+                    // 防護用品
+                    { id: 'item16', name: '防曬乳/防曬衣', checked: false },
+                    { id: 'item17', name: '防蚊液', checked: false },
+                    { id: 'item18', name: '雨具/雨傘', checked: false },
+                    { id: 'item19', name: '口罩', checked: false },
+                    { id: 'item20', name: '乾洗手/濕紙巾', checked: false },
+                    
+                    // 電子產品
+                    { id: 'item21', name: '手機充電器', checked: false },
+                    { id: 'item22', name: '行動電源', checked: false },
+                    { id: 'item23', name: '相機/攝影機', checked: false },
+                    { id: 'item24', name: '耳機', checked: false },
+                    
+                    // 其他必需品
+                    { id: 'item25', name: '個人藥品/常備藥', checked: false },
+                    { id: 'item26', name: '零食/飲料', checked: false },
+                    { id: 'item27', name: '證件/錢包', checked: false },
+                    { id: 'item28', name: '太陽眼鏡', checked: false },
+                    { id: 'item29', name: '水壺', checked: false },
+                    { id: 'item30', name: '小背包/腰包', checked: false }
+                ];
+                
+                // 重新渲染清單
+                renderPackingItems();
+                
+                showNotification('打包清單已重置為預設物品');
+            }
+        }
+        
+        // 渲染打包清單
+        function renderPackingItems() {
+            const container = document.getElementById('packingList');
+            if (!container) return;
+            
+            // 確保 packingItems 存在
+            if (!window.packingItems || window.packingItems.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #7f8c8d; padding: 10px;">打包清單是空的，請新增物品</div>';
+                return;
+            }
+            
+            // 清空容器
+            container.innerHTML = '';
+            
+            // 渲染每個物品
+            window.packingItems.forEach(item => {
+                const li = document.createElement('li');
+                li.style.display = 'flex';
+                li.style.justifyContent = 'space-between';
+                li.style.alignItems = 'center';
+                
+                // 創建核取方塊和標籤
+                const checkboxContainer = document.createElement('div');
+                checkboxContainer.style.flex = '1';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = item.id;
+                checkbox.checked = item.checked;
+                checkbox.addEventListener('change', function() {
+                    updatePackingItemStatus(item.id, this.checked);
+                });
+                
+                const label = document.createElement('label');
+                label.htmlFor = item.id;
+                label.textContent = item.name;
+                
+                checkboxContainer.appendChild(checkbox);
+                checkboxContainer.appendChild(label);
+                
+                // 創建刪除按鈕
+                const deleteBtn = document.createElement('button');
+                deleteBtn.innerHTML = '❌';
+                deleteBtn.style.background = '#f8f9fa';
+                deleteBtn.style.border = 'none';
+                deleteBtn.style.borderRadius = '50%';
+                deleteBtn.style.cursor = 'pointer';
+                deleteBtn.style.fontSize = '12px';
+                deleteBtn.style.padding = '3px';
+                deleteBtn.style.width = '22px';
+                deleteBtn.style.height = '22px';
+                deleteBtn.style.display = 'flex';
+                deleteBtn.style.alignItems = 'center';
+                deleteBtn.style.justifyContent = 'center';
+                deleteBtn.title = '刪除物品';
+                deleteBtn.addEventListener('click', function() {
+                    if (confirm(`確定要刪除「${item.name}」嗎？`)) {
+                        deletePackingItem(item.id);
+                    }
+                });
+                
+                // 添加到列表項
+                li.appendChild(checkboxContainer);
+                li.appendChild(deleteBtn);
+                
+                // 添加到容器
+                container.appendChild(li);
+            });
         }
     </script>
 </body>

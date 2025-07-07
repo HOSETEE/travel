@@ -312,6 +312,39 @@ class DatabaseService {
       return false;
     }
   }
+  
+  // 獲取特定待確認事項的最後查看時間
+  async getConfirmationItemLastViewTime(userId, itemId) {
+    try {
+      // 如果 confirmationItemViewTimes 引用不存在，創建它
+      if (!this.refs.confirmationItemViewTimes) {
+        this.refs.confirmationItemViewTimes = this.database.ref('confirmationItemViewTimes');
+      }
+      
+      const snapshot = await this.refs.confirmationItemViewTimes.child(userId).child(itemId).once('value');
+      return snapshot.val() || new Date(0).toISOString();
+    } catch (error) {
+      console.error(`獲取用戶 ${userId} 對待確認事項 ${itemId} 的最後查看時間失敗:`, error);
+      return new Date(0).toISOString();
+    }
+  }
+
+  // 更新待確認事項最後查看時間
+  async updateConfirmationItemLastViewTime(userId, itemId) {
+    try {
+      // 如果 confirmationItemViewTimes 引用不存在，創建它
+      if (!this.refs.confirmationItemViewTimes) {
+        this.refs.confirmationItemViewTimes = this.database.ref('confirmationItemViewTimes');
+      }
+      
+      const now = new Date().toISOString();
+      await this.refs.confirmationItemViewTimes.child(userId).child(itemId).set(now);
+      return true;
+    } catch (error) {
+      console.error(`更新用戶 ${userId} 對待確認事項 ${itemId} 的最後查看時間失敗:`, error);
+      return false;
+    }
+  }
 
   // ===== 邀請碼相關方法 =====
   
