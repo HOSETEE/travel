@@ -5150,6 +5150,9 @@
                     await updateUnreadIndicators();
                 }, 1000);
                 
+                // 初始化美食管理系統
+                await initializeFoodSystem();
+                
                 // 測試按鈕已移除
                 
                 console.log('Firebase 資料初始化完成');
@@ -5535,6 +5538,9 @@
                 
                 renderFoodItems();
                 
+                // 處理待同步的項目
+                await processPendingFoodSync();
+                
                 // 設置 Firebase 同步（如果可用）
                 if (window.dbService && window.dbService.initialized) {
                     setupFoodFirebaseSync();
@@ -5567,6 +5573,77 @@
                 }
             }
             return [];
+        }
+        
+        // 添加項目到待同步列表
+         function addToPendingFoodSync(syncItem) {
+             try {
+                 const pendingSync = JSON.parse(localStorage.getItem('pendingFoodSync') || '[]');
+                 pendingSync.push(syncItem);
+                 localStorage.setItem('pendingFoodSync', JSON.stringify(pendingSync));
+                 console.log('已添加到待同步列表:', syncItem.action, syncItem.itemId || syncItem.item?.name);
+             } catch (error) {
+                 console.error('添加到待同步列表失敗:', error);
+             }
+         }
+         
+         // 處理待同步的美食項目
+         async function processPendingFoodSync() {
+            if (!window.dbService || !window.dbService.initialized) {
+                console.log('Firebase 不可用，跳過待同步項目處理');
+                return;
+            }
+            
+            try {
+                const pendingSync = JSON.parse(localStorage.getItem('pendingFoodSync') || '[]');
+                if (pendingSync.length === 0) {
+                    console.log('沒有待同步的美食項目');
+                    return;
+                }
+                
+                console.log('處理', pendingSync.length, '個待同步的美食項目');
+                const successfulSync = [];
+                
+                for (const syncItem of pendingSync) {
+                    try {
+                        if (syncItem.action === 'add') {
+                            const success = await window.dbService.addFoodItem(syncItem.item);
+                            if (success) {
+                                console.log('成功同步美食項目:', syncItem.item.name);
+                                successfulSync.push(syncItem);
+                            }
+                        } else if (syncItem.action === 'update') {
+                            const success = await window.dbService.updateFoodItem(syncItem.itemId, syncItem.item);
+                            if (success) {
+                                console.log('成功同步美食項目更新:', syncItem.item.name);
+                                successfulSync.push(syncItem);
+                            }
+                        } else if (syncItem.action === 'delete') {
+                            const success = await window.dbService.deleteFoodItem(syncItem.itemId);
+                            if (success) {
+                                console.log('成功同步美食項目刪除:', syncItem.itemId);
+                                successfulSync.push(syncItem);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('同步美食項目失敗:', error);
+                    }
+                }
+                
+                // 移除成功同步的項目
+                if (successfulSync.length > 0) {
+                    const remainingSync = pendingSync.filter(item => 
+                        !successfulSync.some(success => 
+                            success.action === item.action && 
+                            success.timestamp === item.timestamp
+                        )
+                    );
+                    localStorage.setItem('pendingFoodSync', JSON.stringify(remainingSync));
+                    console.log('已移除', successfulSync.length, '個成功同步的項目，剩餘', remainingSync.length, '個待同步項目');
+                }
+            } catch (error) {
+                console.error('處理待同步美食項目失敗:', error);
+            }
         }
         
         // 設置 Firebase 同步
@@ -5634,8 +5711,25 @@
                 return migrateOldFoodItems(remoteItems);
             }
             
-            // 簡單策略：使用遠端資料（因為它是最新的）
-            return migrateOldFoodItems(remoteItems);
+            // 智能合併策略：合併本地和遠端資料，避免數據丟失
+            const mergedItems = [];
+            const remoteIds = new Set(remoteItems.map(item => item.id));
+            const localIds = new Set(localItems.map(item => item.id));
+            
+            // 添加所有遠端項目
+            remoteItems.forEach(item => {
+                mergedItems.push(item);
+            });
+            
+            // 添加本地獨有的項目（可能是新增但還沒同步的）
+            localItems.forEach(item => {
+                if (!remoteIds.has(item.id)) {
+                    mergedItems.push(item);
+                    console.log('發現本地獨有的美食項目，保留:', item.name);
+                }
+            });
+            
+            return migrateOldFoodItems(mergedItems);
         }
         
         // 遷移舊的美食資料，為缺少建立者資訊的項目添加預設值
@@ -5792,14 +5886,26 @@
                 localStorage.setItem('foodItems', JSON.stringify(foodItems));
                 renderFoodItems();
                 
-                // 如果 Firebase 可用，同步到雲端
+                // 標記為需要同步（用於離線時的重試機制）
+                const pendingSync = JSON.parse(localStorage.getItem('pendingFoodSync') || '[]');
+                pendingSync.push({ action: 'add', item: newFood, timestamp: Date.now() });
+                localStorage.setItem('pendingFoodSync', JSON.stringify(pendingSync));
+                
+                // 如果 Firebase 可用，立即同步到雲端
                 if (window.dbService && window.dbService.initialized) {
                     const success = await window.dbService.addFoodItem(newFood);
                     if (success) {
                         console.log('美食項目已同步到 Firebase');
+                        // 同步成功，移除待同步記錄
+                        const updatedPendingSync = pendingSync.filter(item => 
+                            !(item.action === 'add' && item.item.id === newFood.id)
+                        );
+                        localStorage.setItem('pendingFoodSync', JSON.stringify(updatedPendingSync));
                     } else {
-                        console.warn('美食項目同步到 Firebase 失敗，但本地已保存');
+                        console.warn('美食項目同步到 Firebase 失敗，將在下次連線時重試');
                     }
+                } else {
+                    console.log('Firebase 不可用，美食項目已保存到本地，將在連線時同步');
                 }
                 
                 hideAddFoodForm();
@@ -5827,7 +5933,21 @@
                         console.log('美食項目已從 Firebase 刪除');
                     } else {
                         console.warn('美食項目從 Firebase 刪除失敗，但本地已刪除');
+                        // 同步失敗，添加到待同步列表
+                        addToPendingFoodSync({
+                            action: 'delete',
+                            itemId: foodId,
+                            timestamp: Date.now()
+                        });
                     }
+                } else {
+                    // Firebase 不可用，添加到待同步列表
+                    addToPendingFoodSync({
+                        action: 'delete',
+                        itemId: foodId,
+                        timestamp: Date.now()
+                    });
+                    console.log('Firebase 不可用，美食項目刪除將在連線時同步');
                 }
                 
                 showNotification('已刪除美食推薦');
@@ -5905,7 +6025,23 @@
                             console.log('美食項目已在 Firebase 中更新');
                         } else {
                             console.warn('美食項目在 Firebase 中更新失敗，但本地已更新');
+                            // 同步失敗，添加到待同步列表
+                            addToPendingFoodSync({
+                                action: 'update',
+                                itemId: foodId,
+                                item: updatedFood,
+                                timestamp: Date.now()
+                            });
                         }
+                    } else {
+                        // Firebase 不可用，添加到待同步列表
+                        addToPendingFoodSync({
+                            action: 'update',
+                            itemId: foodId,
+                            item: updatedFood,
+                            timestamp: Date.now()
+                        });
+                        console.log('Firebase 不可用，美食項目更新將在連線時同步');
                     }
                     
                     hideAddFoodForm();
@@ -6596,9 +6732,17 @@
                 const forecastUrl = `${WEATHER_CONFIG.BASE_URL}/forecast.json?key=${WEATHER_CONFIG.API_KEY}&q=${WEATHER_CONFIG.LOCATION}&days=3&lang=zh`;
                 
                 // 同時請求當前天氣和預報
+                const fetchOptions = {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Content-Type-Options': 'nosniff'
+                    }
+                };
+                
                 const [currentResponse, forecastResponse] = await Promise.all([
-                    fetch(currentWeatherUrl),
-                    fetch(forecastUrl)
+                    fetch(currentWeatherUrl, fetchOptions),
+                    fetch(forecastUrl, fetchOptions)
                 ]);
                 
                 if (!currentResponse.ok || !forecastResponse.ok) {
