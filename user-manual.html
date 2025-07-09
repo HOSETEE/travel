@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旅行手冊 - 使用者手冊</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #faf6f0 0%, #f5f0e8 100%);
+            color: #5d4e37;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fcf8f0;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(222, 184, 135, 0.2);
+            border: 2px solid #deb887;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #d4a574 0%, #c19660 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #faf6f0;
+            border-radius: 12px;
+            border: 1px solid #e8dcc0;
+        }
+        
+        .section h2 {
+            color: #8b7355;
+            font-size: 22px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section h3 {
+            color: #a0916d;
+            font-size: 18px;
+            margin: 20px 0 10px 0;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .feature-list li {
+            margin-bottom: 12px;
+            padding: 10px 15px;
+            background: #f5f0e8;
+            border-radius: 8px;
+            border-left: 4px solid #d4a574;
+        }
+        
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .step-list li {
+            counter-increment: step-counter;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f5f0e8;
+            border-radius: 8px;
+            position: relative;
+            padding-left: 50px;
+        }
+        
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            background: #d4a574;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .tip-box {
+            background: #e8f4f8;
+            border: 1px solid #b8d4da;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .tip-box::before {
+            content: "💡 ";
+            font-weight: bold;
+            color: #5a9fb8;
+        }
+        
+        .warning-box {
+            background: #fef3e2;
+            border: 1px solid #f0c674;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .warning-box::before {
+            content: "⚠️ ";
+            font-weight: bold;
+            color: #d4a574;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background: #d4a574;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: #c19660;
+        }
+        
+        .emoji {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📖 旅行手冊使用者手冊</h1>
+            <p>歡迎使用個人旅行手冊！這裡是您的專屬旅行助手</p>
+        </div>
+        
+        <div class="content">
+            <!-- 快速開始 -->
+            <div class="section">
+                <h2><span class="emoji">🚀</span> 快速開始</h2>
+                <ol class="step-list">
+                    <li>首次使用需要輸入邀請碼進入系統</li>
+                    <li>設定您的個人ID和選擇喜歡的頭像</li>
+                    <li>開始使用各項功能規劃您的旅行</li>
+                </ol>
+                
+                <div class="tip-box">
+                    如果需要更新個人資訊或頭像，可以點擊「👤 更新個人資訊」按鈕重新設定。
+                </div>
+            </div>
+            
+            <!-- 主要功能 -->
+            <div class="section">
+                <h2><span class="emoji">🎯</span> 主要功能介紹</h2>
+                
+                <h3>📅 旅行行程</h3>
+                <ul class="feature-list">
+                    <li><strong>查看行程：</strong>瀏覽完整的旅行計劃和每日安排</li>
+                    <li><strong>天氣資訊：</strong>即時查看目的地天氣預報</li>
+                    <li><strong>地圖導航：</strong>快速定位景點和規劃路線</li>
+                </ul>
+                
+                <h3>🎒 個人打包清單</h3>
+                <ul class="feature-list">
+                    <li><strong>自訂物品：</strong>新增個人化的打包物品</li>
+                    <li><strong>分類管理：</strong>按類別整理打包物品</li>
+                    <li><strong>進度追蹤：</strong>即時查看打包完成度</li>
+                    <li><strong>常用物品：</strong>快速載入預設的旅行必需品</li>
+                </ul>
+                
+                <h3>💬 家庭討論</h3>
+                <ul class="feature-list">
+                    <li><strong>即時留言：</strong>與家人朋友分享旅行想法</li>
+                    <li><strong>活動討論：</strong>針對特定行程進行討論</li>
+                    <li><strong>未讀提醒：</strong>自動標示新的留言和回覆</li>
+                </ul>
+                
+                <h3>✅ 待確認事項</h3>
+                <ul class="feature-list">
+                    <li><strong>事項管理：</strong>記錄需要確認的旅行細節</li>
+                    <li><strong>狀態追蹤：</strong>標記已確認和待處理的事項</li>
+                    <li><strong>協作確認：</strong>多人共同確認重要事項</li>
+                </ul>
+            </div>
+            
+            <!-- 操作指南 -->
+            <div class="section">
+                <h2><span class="emoji">📋</span> 詳細操作指南</h2>
+                
+                <h3>🎒 使用打包清單</h3>
+                <ol class="step-list">
+                    <li>點擊「🎒 個人打包清單」進入打包頁面</li>
+                    <li>使用「重置打包清單」載入常用物品模板</li>
+                    <li>點擊「新增物品」添加個人化物品</li>
+                    <li>勾選已打包的物品，系統會自動計算完成度</li>
+                    <li>使用分類篩選功能快速找到特定類型的物品</li>
+                </ol>
+                
+                <h3>💬 參與家庭討論</h3>
+                <ol class="step-list">
+                    <li>點擊「💬 家庭討論」開啟討論功能</li>
+                    <li>選擇要討論的活動或使用全域討論</li>
+                    <li>在留言框輸入您的想法並發送</li>
+                    <li>查看其他成員的留言並進行回覆</li>
+                    <li>注意紅點提醒，表示有新的未讀留言</li>
+                </ol>
+                
+                <h3>✅ 管理待確認事項</h3>
+                <ol class="step-list">
+                    <li>點擊「✅ 待確認事項」進入管理頁面</li>
+                    <li>使用「新增事項」按鈕創建新的待確認項目</li>
+                    <li>填寫事項標題、詳細說明和相關日期</li>
+                    <li>點擊「確認」按鈕標記事項為已完成</li>
+                    <li>使用編輯功能修改事項內容</li>
+                </ol>
+            </div>
+            
+            <!-- 小技巧 -->
+            <div class="section">
+                <h2><span class="emoji">💡</span> 實用小技巧</h2>
+                
+                <div class="tip-box">
+                    <strong>同步功能：</strong>所有資料都會自動同步到雲端，多裝置使用時資料保持一致。
+                </div>
+                
+                <div class="tip-box">
+                    <strong>未讀提醒：</strong>紅色圓點表示有新的留言或更新，點擊後會自動標記為已讀。
+                </div>
+                
+                <div class="tip-box">
+                    <strong>快速操作：</strong>大部分表單都支援 Enter 鍵快速提交，提高操作效率。
+                </div>
+                
+                <div class="tip-box">
+                    <strong>資料備份：</strong>重要資料會同時儲存在本地和雲端，確保資料安全。
+                </div>
+            </div>
+            
+            <!-- 常見問題 -->
+            <div class="section">
+                <h2><span class="emoji">❓</span> 常見問題</h2>
+                
+                <h3>Q: 如何更換頭像？</h3>
+                <p>點擊「👤 更新個人資訊」按鈕，重新選擇您喜歡的頭像。</p>
+                
+                <h3>Q: 資料會不會遺失？</h3>
+                <p>所有資料都會自動同步到 Firebase 雲端資料庫，並在本地進行備份。</p>
+                
+                <h3>Q: 可以多人同時使用嗎？</h3>
+                <p>可以！每個人使用不同的個人ID，資料會分別儲存和同步。</p>
+                
+                <h3>Q: 忘記邀請碼怎麼辦？</h3>
+                <p>請聯繫管理員重新獲取邀請碼，或使用「🔐 重置邀請碼」功能。</p>
+                
+                <div class="warning-box">
+                    <strong>注意：</strong>重置邀請碼會清除所有本地資料，請謹慎操作。
+                </div>
+            </div>
+            
+            <!-- 技術支援 -->
+            <div class="section">
+                <h2><span class="emoji">🛠️</span> 技術支援</h2>
+                <p>如果您在使用過程中遇到任何問題，請嘗試以下解決方案：</p>
+                
+                <ul class="feature-list">
+                    <li><strong>重新整理頁面：</strong>解決大部分載入問題</li>
+                    <li><strong>檢查網路連線：</strong>確保能正常連接網際網路</li>
+                    <li><strong>清除瀏覽器快取：</strong>解決資料同步問題</li>
+                    <li><strong>更新瀏覽器：</strong>使用最新版本的瀏覽器</li>
+                </ul>
+                
+                <div class="warning-box">
+                    如果問題持續存在，請聯繫技術支援團隊。
+                </div>
+            </div>
+            
+            <a href="index.html" class="back-btn">🏠 返回主頁</a>
+        </div>
+    </div>
+</body>
+</html>
