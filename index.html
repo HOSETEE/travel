@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>日月潭旅行手冊 | 8/8-8/10</title>
     <!-- Firebase SDK -->
@@ -196,6 +196,7 @@
             box-shadow: inset 0 1px 3px rgba(139, 115, 85, 0.15), 0 1px 2px rgba(252, 248, 240, 0.8);
             position: relative;
             border: 1px solid rgba(222, 184, 135, 0.2);
+            -webkit-backdrop-filter: blur(5px);
             backdrop-filter: blur(5px);
         }
         
@@ -440,6 +441,8 @@
             box-shadow: 0 10px 25px rgba(139, 115, 85, 0.12), 0 2px 5px rgba(139, 115, 85, 0.08);
             border: 1px solid rgba(212, 184, 150, 0.3);
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            -webkit-backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
@@ -642,8 +645,10 @@
             }
             
             .link-btn {
-                padding: 6px 12px;
+                padding: 6px;
                 font-size: 11px;
+                width: 28px;
+                height: 28px;
             }
             
             /* 特斯拉按鈕響應式優化 */
@@ -703,8 +708,10 @@
             }
             
             .link-btn {
-                 padding: 5px 10px;
+                 padding: 4px;
                  font-size: 10px;
+                 width: 26px;
+                 height: 26px;
              }
              
              /* 觸控優化 */
@@ -737,7 +744,8 @@
          @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
              .tesla-btn img {
                  image-rendering: -webkit-optimize-contrast;
-                 image-rendering: crisp-edges;
+                image-rendering: -ms-crisp-edges;
+                image-rendering: crisp-edges;
              }
          }
 
@@ -829,13 +837,18 @@
         }
 
         .link-btn {
-            padding: 8px 16px;
+            padding: 8px;
             background: #d4b896;
             color: #5d4e37;
             text-decoration: none;
-            border-radius: 20px;
+            border-radius: 50%;
             font-size: 12px;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
         }
 
         .link-btn:hover {
@@ -1001,6 +1014,7 @@
         }
         
         .weather-header {
+            -webkit-user-select: none;
             user-select: none;
             transition: background-color 0.2s ease;
         }
@@ -1466,6 +1480,179 @@
             font-size: 12px;
             font-weight: bold;
         }
+        
+        /* 美食管理樣式 */
+        .food-item {
+            background: linear-gradient(135deg, #fff8e1 0%, #f5f5dc 100%);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid #deb887;
+        }
+        
+        .food-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .food-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .food-item-name {
+            font-weight: bold;
+            color: #8b4513;
+            font-size: 16px;
+        }
+        
+        .food-item-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .food-item-description {
+            color: #a0522d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .food-item-category {
+            display: inline-block;
+            background: #deb887;
+            color: #8b4513;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .food-nav-btn {
+            background: linear-gradient(135deg, #f4a460 0%, #deb887 100%);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .food-nav-btn:hover {
+            background: linear-gradient(135deg, #deb887 0%, #d2b48c 100%);
+            transform: translateY(-1px);
+        }
+        
+        .food-edit-btn, .food-delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .food-edit-btn {
+            color: #8b4513;
+        }
+        
+        .food-edit-btn:hover {
+            background: #f0e68c;
+        }
+        
+        .food-delete-btn {
+            color: #cd853f;
+        }
+        
+        .food-delete-btn:hover {
+            background: #ffe4e1;
+        }
+        
+        #addFoodForm {
+            background: linear-gradient(135deg, #fff8e1 0%, #f5f5dc 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 2px solid #deb887;
+            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        #addFoodForm.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #addFoodForm input, #addFoodForm select, #addFoodForm textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #f0e68c;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            background: white;
+            color: #8b4513;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        #addFoodForm input:focus, #addFoodForm select:focus, #addFoodForm textarea:focus {
+            outline: none;
+            border-color: #deb887;
+            box-shadow: 0 0 0 3px rgba(222, 184, 135, 0.2);
+        }
+        
+        #addFoodForm textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .form-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .form-buttons .confirm-btn {
+            background: linear-gradient(135deg, #deb887 0%, #d2b48c 100%);
+            color: #8b4513;
+        }
+        
+        .form-buttons .confirm-btn:hover {
+            background: linear-gradient(135deg, #d2b48c 0%, #c8a882 100%);
+            transform: translateY(-2px);
+        }
+        
+        .form-buttons .cancel-btn {
+            background: linear-gradient(135deg, #f5deb3 0%, #f0e68c 100%);
+            color: #8b4513;
+        }
+        
+        .form-buttons .cancel-btn:hover {
+            background: linear-gradient(135deg, #f0e68c 0%, #eee8aa 100%);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -1476,7 +1663,7 @@
             <div class="date">📅 2024年8月8日 - 8月10日</div>
             <div class="quick-actions">
                 <button class="btn btn-primary" onclick="showUpdateForm()" style="display: none;">📝 更新行程</button>
-                <button class="btn btn-success" onclick="toggleDiscussion()" style="display: none;">💬 家庭討論</button>
+                <button class="btn btn-success" onclick="toggleDiscussion()" style="display: none;" title="家庭討論">💬</button>
                 <button class="btn btn-warning" onclick="clearInviteCodeVerification()" title="清除邀請碼驗證狀態" style="display: none;">🔐 重置邀請碼</button>
                 <button class="btn btn-info" onclick="forceUserRelogin()" title="重新設定用戶身份和頭像">👤 更新個人資訊</button>
                 <button class="btn btn-info" onclick="window.open('user-manual.html', '_blank')" title="查看使用說明">📖 使用者手冊</button>
@@ -1488,9 +1675,8 @@
         <div id="packing-page" class="page packing-page">
             <!-- 返回按鈕移動到頁面頂部 -->
             <div class="back-to-main-top">
-                <button onclick="showPage('main')" class="btn btn-back-home-top">
+                <button onclick="showPage('main')" class="btn btn-back-home-top" title="返回主頁">
                     <div class="btn-icon">🏠</div>
-                    <div class="btn-text">返回主頁</div>
                 </button>
             </div>
             
@@ -1500,13 +1686,11 @@
                     <span class="title-underline"></span>
                 </h2>
                 <div class="packing-actions">
-                    <button onclick="resetPackingList()" class="btn btn-common-items">
+                    <button onclick="resetPackingList()" class="btn btn-common-items" title="重置打包清單">
                         <div class="btn-icon">🔄</div>
-                        <div class="btn-text">重置打包清單</div>
                     </button>
-                    <button onclick="showAddPackingItemForm()" class="btn btn-add-item">
+                    <button onclick="showAddPackingItemForm()" class="btn btn-add-item" title="新增物品">
                         <div class="btn-icon">➕</div>
-                        <div class="btn-text">新增物品</div>
                     </button>
                 </div>
             </div>
@@ -1807,7 +1991,7 @@
                 <div class="form-row">
                     <div class="input-group">
                         <label for="newItemCategory">選擇分類</label>
-                        <select id="newItemCategory" onchange="toggleCustomCategoryInput()">
+                        <select id="newItemCategory" onchange="toggleCustomCategoryInput()" title="選擇物品類別">
                             <option value="clothing">衣物</option>
                             <option value="toiletries">盥洗用品</option>
                             <option value="protection">防護用品</option>
@@ -1826,13 +2010,11 @@
                 </div>
                 
                 <div class="form-actions">
-                    <button onclick="addPackingItem()" class="btn btn-submit">
+                    <button onclick="addPackingItem()" class="btn btn-submit" title="新增物品">
                         <div class="btn-icon">✅</div>
-                        <div class="btn-text">新增物品</div>
                     </button>
-                    <button onclick="hideAddPackingItemForm()" class="btn btn-cancel">
+                    <button onclick="hideAddPackingItemForm()" class="btn btn-cancel" title="取消">
                         <div class="btn-icon">❌</div>
-                        <div class="btn-text">取消</div>
                     </button>
                 </div>
                 
@@ -2218,7 +2400,7 @@
                         <div class="activity-time">09:00</div>
                         <div class="activity-title">🚗 高雄出發</div>
                         <div class="activity-details">開始我們的日月潭之旅！</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity1')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity1')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day1-activity1" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2227,10 +2409,10 @@
                         <div class="activity-title">🍜 午餐 - 竹香園</div>
                         <div class="activity-details">路程約1小時45分鐘</div>
                         <div class="activity-links">
-                            <a href="https://maps.app.goo.gl/Z4FwX1HCSUiFjLgW8" target="_blank" class="link-btn">🧭 導航</a>
+                            <a href="https://maps.app.goo.gl/Z4FwX1HCSUiFjLgW8" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 16px; height: 16px;"></a>
                             <a href="https://maps.app.goo.gl/J3GT86WiSKWocXieA" target="_blank" class="link-btn tesla-btn" style="background: #e74c3c; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 32px; padding: 0;"><img src="img/Tesla.svg" alt="Tesla" style="width: 20px; height: 20px; filter: brightness(0) invert(1);"></a>
                         </div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity2')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity2')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day1-activity2" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2238,7 +2420,7 @@
                         <div class="activity-time">15:00</div>
                         <div class="activity-title">🥾 步道健走</div>
                         <div class="activity-details">地點待確認，享受大自然的美景</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity3')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity3')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day1-activity3" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2249,7 +2431,7 @@
                             選項：市區買現成食物（燒烤、鹹酥雞）或火鍋（全聯食材）<br>
                             飲品：紅酒、啤酒、小孩無酒精飲料
                         </div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity4')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity4')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day1-activity4" class="activity-discussion" style="display: none;"></div>
                     </div>
                 </div>
@@ -2261,10 +2443,10 @@
                         <div class="activity-title">🏄‍♀️ 日月潭立槳SUP體驗</div>
                         <div class="activity-details">路程約10分鐘，體驗水上運動的樂趣</div>
                         <div class="activity-links">
-                            <a href="https://maps.app.goo.gl/YiyeqhiqPpJHWoxD6" target="_blank" class="link-btn">🧭 導航</a>
+                            <a href="https://maps.app.goo.gl/YiyeqhiqPpJHWoxD6" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 16px; height: 16px;"></a>
                             <a href="https://maps.app.goo.gl/JoViJpmjYGrQbKRL6" target="_blank" class="link-btn tesla-btn" style="background: #e74c3c; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 32px; padding: 0;"><img src="img/Tesla.svg" alt="Tesla" style="width: 20px; height: 20px; filter: brightness(0) invert(1);"></a>
                         </div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity1')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity1')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day2-activity1" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2272,7 +2454,7 @@
                         <div class="activity-time">12:00</div>
                         <div class="activity-title">🍱 午餐 + 盥洗</div>
                         <div class="activity-details">回飯店盥洗，路上隨便買回飯店吃</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity2')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity2')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day2-activity2" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2281,10 +2463,10 @@
                         <div class="activity-title">☕ 下午茶 - 鹿篙咖啡莊園</div>
                         <div class="activity-details">路程約15分鐘，享受山景咖啡</div>
                         <div class="activity-links">
-                            <a href="https://maps.app.goo.gl/st5HA5XjiPttuzMB7" target="_blank" class="link-btn">🧭 導航</a>
+                            <a href="https://maps.app.goo.gl/st5HA5XjiPttuzMB7" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 16px; height: 16px;"></a>
                             <a href="https://maps.app.goo.gl/jFBJEradwCgeQ7QZ6" target="_blank" class="link-btn tesla-btn" style="background: #e74c3c; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 32px; padding: 0;"><img src="img/Tesla.svg" alt="Tesla" style="width: 20px; height: 20px; filter: brightness(0) invert(1);"></a>
                         </div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity3')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity3')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day2-activity3" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2292,7 +2474,7 @@
                         <div class="activity-time">19:00</div>
                         <div class="activity-title">🍽️ 晚餐</div>
                         <div class="activity-details">餐廳待訂</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity4')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity4')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day2-activity4" class="activity-discussion" style="display: none;"></div>
                     </div>
                 </div>
@@ -2303,7 +2485,7 @@
                         <div class="activity-time">06:30</div>
                         <div class="activity-title">🥐 民宿早餐</div>
                         <div class="activity-details">享用民宿提供的早餐</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity1')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity1')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day3-activity1" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2312,10 +2494,10 @@
                         <div class="activity-title">🚴‍♀️ 單車環湖日月潭</div>
                         <div class="activity-details">路程約10分鐘，自由參加，沒參加的人可以睡晚一點</div>
                         <div class="activity-links">
-                            <a href="https://maps.app.goo.gl/yKeRJjKdjiHf5nT5A" target="_blank" class="link-btn">🧭 導航</a>
+                            <a href="https://maps.app.goo.gl/yKeRJjKdjiHf5nT5A" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 16px; height: 16px;"></a>
                             <a href="https://maps.app.goo.gl/8ANMfrNSWh1BnKUK7" target="_blank" class="link-btn tesla-btn" style="background: #e74c3c; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 32px; padding: 0;"><img src="img/Tesla.svg" alt="Tesla" style="width: 20px; height: 20px; filter: brightness(0) invert(1);"></a>
                         </div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity2')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity2')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day3-activity2" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2323,7 +2505,7 @@
                         <div class="activity-time">11:00</div>
                         <div class="activity-title">🏨 退房</div>
                         <div class="activity-details">整理行李，準備離開</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity3')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity3')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day3-activity3" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2331,7 +2513,7 @@
                         <div class="activity-time">12:00</div>
                         <div class="activity-title">🍜 午餐</div>
                         <div class="activity-details">餐廳待訂</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity4')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity4')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day3-activity4" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2339,7 +2521,7 @@
                         <div class="activity-time">14:00</div>
                         <div class="activity-title">👋 解散</div>
                         <div class="activity-details">結束愉快的旅程，各自回家</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity5')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;">💬 討論</button>
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity5')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day3-activity5" class="activity-discussion" style="display: none;"></div>
                     </div>
                 </div>
@@ -2352,7 +2534,7 @@
                             發表者：<span id="currentUserDisplay">載入中...</span>
                         </div>
                         <textarea id="commentText" placeholder="分享你的想法、建議或問題..."></textarea>
-                        <button class="btn btn-primary" onclick="addComment()">發表留言</button>
+                        <button class="btn btn-primary" onclick="addComment()" title="發表留言">💬</button>
                     </div>
                     <div id="commentsList" class="comments-list">
                         <!-- 留言會動態載入到這裡 -->
@@ -2375,8 +2557,8 @@
                 <div class="confirmation-card">
                     <h3 style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
                         📋 待確認事項
-                        <button onclick="showAddConfirmationForm()" class="confirmation-btn btn-edit" style="font-size: 11px;">
-                            ➕ 新增事項
+                        <button onclick="showAddConfirmationForm()" class="confirmation-btn btn-edit" style="font-size: 11px;" title="新增事項">
+                            ➕
                         </button>
                     </h3>
                     
@@ -2384,7 +2566,7 @@
                     <div id="addConfirmationForm" class="add-confirmation-form" style="display: none;">
                         <input type="text" id="confirmationTitle" placeholder="事項標題 (例如: 確認餐廳訂位)">
                         <textarea id="confirmationDetails" placeholder="詳細說明 (例如: 需要在8/5前確認日月潭餐廳的訂位，聯絡電話: 049-123456)"></textarea>
-                        <select id="confirmationRelatedDay">
+                        <select id="confirmationRelatedDay" title="選擇相關日期">
                             <option value="">選擇相關日期</option>
                             <option value="day1">8/8 (五)</option>
                             <option value="day2">8/9 (六)</option>
@@ -2392,8 +2574,8 @@
                             <option value="all">全部日期</option>
                         </select>
                         <div style="display: flex; gap: 10px;">
-                            <button onclick="addConfirmationItem()" class="confirmation-btn btn-confirm" style="flex: 1;">新增</button>
-                            <button onclick="hideAddConfirmationForm()" class="confirmation-btn" style="flex: 1; background: #95a5a6; color: white;">取消</button>
+                            <button onclick="addConfirmationItem()" class="confirmation-btn btn-confirm" style="flex: 1;" title="新增">➕</button>
+                            <button onclick="hideAddConfirmationForm()" class="confirmation-btn" style="flex: 1; background: #95a5a6; color: white;" title="取消">❌</button>
                         </div>
                     </div>
                     
@@ -2402,7 +2584,7 @@
                         <input type="hidden" id="editConfirmationId">
                         <input type="text" id="editConfirmationTitle" placeholder="事項標題">
                         <textarea id="editConfirmationDetails" placeholder="詳細說明"></textarea>
-                        <select id="editConfirmationRelatedDay">
+                        <select id="editConfirmationRelatedDay" title="選擇相關日期">
                             <option value="">選擇相關日期</option>
                             <option value="day1">8/8 (五)</option>
                             <option value="day2">8/9 (六)</option>
@@ -2410,8 +2592,8 @@
                             <option value="all">全部日期</option>
                         </select>
                         <div style="display: flex; gap: 10px;">
-                            <button onclick="updateConfirmationItem()" class="confirmation-btn btn-confirm" style="flex: 1;">更新</button>
-                            <button onclick="hideEditConfirmationForm()" class="confirmation-btn" style="flex: 1; background: #95a5a6; color: white;">取消</button>
+                            <button onclick="updateConfirmationItem()" class="confirmation-btn btn-confirm" style="flex: 1;" title="更新">✅</button>
+                            <button onclick="hideEditConfirmationForm()" class="confirmation-btn" style="flex: 1; background: #95a5a6; color: white;" title="取消">❌</button>
                         </div>
                     </div>
                     
@@ -2424,7 +2606,7 @@
                 <div class="info-card">
                     <h3>🏨 住宿資訊</h3>
                     <h4>3JD.HOME</h4>
-                    <a href="https://maps.app.goo.gl/pYVRDqcJJx61gBGP8" target="_blank" class="link-btn">🧭 導航</a>
+                    <a href="https://maps.app.goo.gl/pYVRDqcJJx61gBGP8" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 16px; height: 16px;"></a>
                     
                     <div class="emergency-contact">
                         <h4>🚨 緊急聯絡</h4>
@@ -2436,29 +2618,47 @@
 
                 <!-- 附近美食 -->
                 <div class="info-card">
-                    <h3>🍴 附近美食</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li style="margin-bottom: 10px;">
-                            <strong>魚光窯烤麵包</strong><br>
-                            <a href="https://maps.app.goo.gl/wWTSEYKu9f2rxVrq5" target="_blank" class="link-btn">🧭 導航</a>
-                        </li>
-                        <li style="margin-bottom: 10px;">
-                            <strong>走路擼貓</strong><br>
-                            <a href="https://maps.app.goo.gl/bEACb3WmXziVFp9H8" target="_blank" class="link-btn">🧭 導航</a>
-                        </li>
-                        <li style="margin-bottom: 10px;">
-                            <strong>素食餐廳</strong><br>
-                            <a href="https://maps.app.goo.gl/fJxANeiLY4oF7MpZ9" target="_blank" class="link-btn">🧭 導航</a>
-                        </li>
-                        <li style="margin-bottom: 10px;">
-                            <strong>日月潭紅茶館（義大利麵）</strong><br>
-                            <a href="https://maps.app.goo.gl/szkuNrdFYWckuBJ66" target="_blank" class="link-btn">🧭 導航</a>
-                        </li>
-                        <li style="margin-bottom: 10px;">
-                            <strong>全聯</strong><br>
-                            <a href="https://maps.app.goo.gl/wHReMsvXB2ByosJw8" target="_blank" class="link-btn">🧭 導航</a>
-                        </li>
-                    </ul>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0;">🍴 附近美食</h3>
+                        <button onclick="showAddFoodForm()" class="btn btn-success" style="font-size: 12px; padding: 6px 12px;" title="新增美食">➕</button>
+                    </div>
+                    <div id="foodList">
+                        <!-- 美食列表將由 JavaScript 動態生成 -->
+                    </div>
+                </div>
+                
+                <!-- 新增美食表單 -->
+                <div id="addFoodForm" class="form-overlay" style="display: none;">
+                    <div class="form-container">
+                        <h3 class="form-title">新增美食推薦</h3>
+                        <div class="form-group">
+                            <label for="newFoodName">餐廳名稱：</label>
+                            <input type="text" id="newFoodName" placeholder="例如：魚光窯烤麵包">
+                        </div>
+                        <div class="form-group">
+                            <label for="newFoodDescription">簡介：</label>
+                            <input type="text" id="newFoodDescription" placeholder="例如：手工窯烤麵包，香氣濃郁">
+                        </div>
+                        <div class="form-group">
+                            <label for="newFoodMapUrl">Google Maps 連結：</label>
+                            <input type="url" id="newFoodMapUrl" placeholder="https://maps.app.goo.gl/...">
+                        </div>
+                        <div class="form-group">
+                            <label for="newFoodCategory">分類：</label>
+                            <select id="newFoodCategory" title="選擇美食類別">
+                                <option value="restaurant">餐廳</option>
+                                <option value="cafe">咖啡廳</option>
+                                <option value="bakery">烘焙坊</option>
+                                <option value="snack">小吃</option>
+                                <option value="convenience">便利商店</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button onclick="addFoodItem()" class="btn btn-success" title="新增">➕</button>
+                            <button onclick="hideAddFoodForm()" class="btn btn-secondary" title="取消">❌</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 天氣資訊 -->
@@ -2510,7 +2710,7 @@
                         <div class="weather-error" id="weatherError" style="display: none; text-align: center; padding: 20px; color: #e74c3c;">
                             <div style="font-size: 2em; margin-bottom: 10px;">⚠️</div>
                             <p>無法載入天氣資訊</p>
-                            <button onclick="loadWeatherData()" class="btn btn-primary" style="margin-top: 10px; font-size: 0.8em; padding: 5px 10px;">重新載入</button>
+                            <button onclick="loadWeatherData()" class="btn btn-primary" style="margin-top: 10px; font-size: 0.8em; padding: 5px 10px;" title="重新載入">🔄</button>
                         </div>
                     </div>
                 </div>
@@ -2668,7 +2868,7 @@
                 <div class="comment-header">
                     <span class="comment-author">${comment.author}</span>
                     <span class="comment-time">${formatTimestamp(comment.timestamp)}</span>
-                    <button class="reply-btn" onclick="showReplyForm(${comment.id})" style="margin-left: 10px; font-size: 12px; padding: 2px 8px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;">回復</button>
+                    <button class="reply-btn" onclick="showReplyForm(${comment.id})" style="margin-left: 10px; font-size: 12px; padding: 2px 8px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;" title="回復">↩️</button>
                 </div>
                 <div class="comment-text">${comment.text}</div>
                 <div id="reply-form-${comment.id}" class="reply-form" style="display: none; margin-top: 10px; padding: 10px; background: #ecf0f1; border-radius: 5px;">
@@ -2677,8 +2877,8 @@
                     </div>
                     <textarea id="reply-text-${comment.id}" placeholder="回復 ${comment.author} 的留言..." style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 3px; resize: vertical; min-height: 60px;"></textarea>
                     <div style="margin-top: 8px;">
-                        <button onclick="submitReply(${comment.id})" style="padding: 5px 12px; background: #27ae60; color: white; border: none; border-radius: 3px; cursor: pointer; margin-right: 5px;">發表回復</button>
-                        <button onclick="hideReplyForm(${comment.id})" style="padding: 5px 12px; background: #95a5a6; color: white; border: none; border-radius: 3px; cursor: pointer;">取消</button>
+                        <button onclick="submitReply(${comment.id})" style="padding: 5px 12px; background: #27ae60; color: white; border: none; border-radius: 3px; cursor: pointer; margin-right: 5px;" title="發表回復">💬</button>
+                        <button onclick="hideReplyForm(${comment.id})" style="padding: 5px 12px; background: #95a5a6; color: white; border: none; border-radius: 3px; cursor: pointer;" title="取消">❌</button>
                     </div>
                 </div>
             `;
@@ -3088,7 +3288,7 @@
                              發表者：<span class="current-user-name">${currentUser ? currentUser.name : '未登入'}</span>
                          </div>
                          <textarea id="activity-text-${activityId}" placeholder="對這個行程有什麼想法或建議？"></textarea>
-                         <button class="btn btn-success" onclick="addActivityComment('${activityId}')" style="font-size: 12px; padding: 6px 12px;">發表留言</button>
+                         <button class="btn btn-success" onclick="addActivityComment('${activityId}')" style="font-size: 12px; padding: 6px 12px;" title="發表留言">💬</button>
                      </div>
                      <div id="${activityId}-comments" class="activity-comments">
                          <!-- 留言會動態載入到這裡 -->
@@ -3202,7 +3402,7 @@
                 <div class="activity-comment-header">
                     <span class="activity-comment-author">${comment.author}</span>
                     <span class="activity-comment-time">${formatTimestamp(comment.timestamp)}</span>
-                    <button onclick="showActivityReplyForm('${activityId}', ${comment.id})" style="margin-left: 8px; font-size: 11px; padding: 2px 6px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;">回復</button>
+                    <button onclick="showActivityReplyForm('${activityId}', ${comment.id})" style="margin-left: 8px; font-size: 11px; padding: 2px 6px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;" title="回復">↩️</button>
                 </div>
                 <div class="activity-comment-text">${comment.text}</div>
                 <div id="activity-reply-form-${activityId}-${comment.id}" class="activity-reply-form" style="display: none; margin-top: 8px; padding: 8px; background: #ecf0f1; border-radius: 5px;">
@@ -3211,8 +3411,8 @@
                     </div>
                     <textarea id="activity-reply-text-${activityId}-${comment.id}" placeholder="回復 ${comment.author} 的留言..." style="width: 100%; padding: 4px; border: 1px solid #ddd; border-radius: 3px; resize: vertical; min-height: 50px; font-size: 12px;"></textarea>
                     <div style="margin-top: 6px;">
-                        <button onclick="submitActivityReply('${activityId}', ${comment.id})" style="padding: 4px 8px; background: #27ae60; color: white; border: none; border-radius: 3px; cursor: pointer; margin-right: 4px; font-size: 11px;">發表回復</button>
-                        <button onclick="hideActivityReplyForm('${activityId}', ${comment.id})" style="padding: 4px 8px; background: #95a5a6; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px;">取消</button>
+                        <button onclick="submitActivityReply('${activityId}', ${comment.id})" style="padding: 4px 8px; background: #27ae60; color: white; border: none; border-radius: 3px; cursor: pointer; margin-right: 4px; font-size: 11px;" title="發表回復">💬</button>
+                        <button onclick="hideActivityReplyForm('${activityId}', ${comment.id})" style="padding: 4px 8px; background: #95a5a6; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px;" title="取消">❌</button>
                     </div>
                 </div>
             `;
@@ -4422,11 +4622,11 @@
                     ` : ''}
                     <div class="confirmation-item-actions">
                         ${!item.confirmed ? `
-                            <button onclick="confirmItem('${item.id}')" class="confirmation-btn btn-confirm">確認</button>
+                            <button onclick="confirmItem('${item.id}')" class="confirmation-btn btn-confirm" title="確認">✅</button>
                         ` : ''}
-                        <button onclick="showEditConfirmationForm('${item.id}')" class="confirmation-btn btn-edit">編輯</button>
-                        <button onclick="deleteConfirmationItem('${item.id}')" class="confirmation-btn btn-delete">刪除</button>
-                        <button onclick="toggleConfirmationItemDiscussion('${item.id}')" class="confirmation-btn" style="background-color: #3498db; color: white; position: relative;">💬 討論</button>
+                        <button onclick="showEditConfirmationForm('${item.id}')" class="confirmation-btn btn-edit" title="編輯">✏️</button>
+                        <button onclick="deleteConfirmationItem('${item.id}')" class="confirmation-btn btn-delete" title="刪除">🗑️</button>
+                        <button onclick="toggleConfirmationItemDiscussion('${item.id}')" class="confirmation-btn" style="background-color: #3498db; color: white; position: relative;" title="討論">💬</button>
                     </div>
                     <div id="confirmation-discussion-${item.id}" class="confirmation-discussion" style="display: none; margin-top: 10px; padding: 10px; background-color: #f8f9fa; border-radius: 5px;"></div>
                 `;
@@ -4472,7 +4672,7 @@
                              發表者：<span class="current-user-name">${currentUser ? currentUser.name : '未登入'}</span>
                          </div>
                          <textarea id="confirmation-text-${itemId}" placeholder="對這個待確認事項有什麼想法或建議？" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; resize: vertical; min-height: 80px;"></textarea>
-                         <button class="btn btn-success" onclick="addConfirmationItemComment('${itemId}')" style="font-size: 12px; padding: 6px 12px; margin-top: 8px;">發表留言</button>
+                         <button class="btn btn-success" onclick="addConfirmationItemComment('${itemId}')" style="font-size: 12px; padding: 6px 12px; margin-top: 8px;" title="發表留言">💬</button>
                      </div>
                      <div id="${itemId}-comments" class="confirmation-comments" style="margin-top: 15px;">
                          <!-- 留言會動態載入到這裡 -->
@@ -4582,7 +4782,7 @@
                 </div>
                 <div style="margin-bottom: 8px;">${comment.text}</div>
                 <div>
-                    <button onclick="showConfirmationItemReplyForm('${itemId}', ${comment.id})" style="font-size: 11px; padding: 2px 6px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;">回復</button>
+                    <button onclick="showConfirmationItemReplyForm('${itemId}', ${comment.id})" style="font-size: 11px; padding: 2px 6px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;" title="回復">↩️</button>
                 </div>
                 <div id="confirmation-reply-form-${itemId}-${comment.id}" class="confirmation-reply-form" style="display: none; margin-top: 8px; padding: 8px; background: #ecf0f1; border-radius: 5px;">
                     <div style="margin-bottom: 6px; padding: 4px; background: #f8f9fa; border-radius: 3px; color: #2c3e50; font-size: 11px;">
@@ -4590,8 +4790,8 @@
                     </div>
                     <textarea id="confirmation-reply-text-${itemId}-${comment.id}" placeholder="回復 ${comment.author} 的留言..." style="width: 100%; padding: 4px; border: 1px solid #ddd; border-radius: 3px; resize: vertical; min-height: 50px; font-size: 12px;"></textarea>
                     <div style="margin-top: 6px;">
-                        <button onclick="submitConfirmationItemReply('${itemId}', ${comment.id})" style="padding: 4px 8px; background: #27ae60; color: white; border: none; border-radius: 3px; cursor: pointer; margin-right: 4px; font-size: 11px;">發表回復</button>
-                        <button onclick="hideConfirmationItemReplyForm('${itemId}', ${comment.id})" style="padding: 4px 8px; background: #95a5a6; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px;">取消</button>
+                        <button onclick="submitConfirmationItemReply('${itemId}', ${comment.id})" style="padding: 4px 8px; background: #27ae60; color: white; border: none; border-radius: 3px; cursor: pointer; margin-right: 4px; font-size: 11px;" title="發表回復">💬</button>
+                        <button onclick="hideConfirmationItemReplyForm('${itemId}', ${comment.id})" style="padding: 4px 8px; background: #95a5a6; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px;" title="取消">❌</button>
                     </div>
                 </div>
             `;
@@ -5066,6 +5266,9 @@
             // 初始化打包清單系統（使用即時同步模式）
             await initializePackingSystem();
             
+            // 初始化美食管理系統
+            await initializeFoodSystem();
+            
             console.log('本地資料載入完成');
             
             // 測試按鈕已移除
@@ -5225,6 +5428,509 @@
             console.log('使用新的即時同步模式替代舊的載入方式');
             await initializePackingSystem();
         }
+        
+        // 美食管理系統
+        let foodItems = [];
+        
+        // 獲取預設美食列表
+        function getDefaultFoodItems() {
+            return [
+                {
+                    id: 'food1',
+                    name: '魚光窯烤麵包',
+                    description: '手工窯烤麵包，香氣濃郁',
+                    mapUrl: 'https://maps.app.goo.gl/wWTSEYKu9f2rxVrq5',
+                    category: 'bakery',
+                    createdBy: '系統預設',
+                    createdByAvatar: null,
+                    createdAt: '2024-01-01T00:00:00.000Z'
+                },
+                {
+                    id: 'food2',
+                    name: '走路擼貓',
+                    description: '特色咖啡廳，可愛貓咪陪伴',
+                    mapUrl: 'https://maps.app.goo.gl/bEACb3WmXziVFp9H8',
+                    category: 'cafe',
+                    createdBy: '系統預設',
+                    createdByAvatar: null,
+                    createdAt: '2024-01-01T00:00:00.000Z'
+                },
+                {
+                    id: 'food3',
+                    name: '素食餐廳',
+                    description: '健康素食料理',
+                    mapUrl: 'https://maps.app.goo.gl/fJxANeiLY4oF7MpZ9',
+                    category: 'restaurant',
+                    createdBy: '系統預設',
+                    createdByAvatar: null,
+                    createdAt: '2024-01-01T00:00:00.000Z'
+                },
+                {
+                    id: 'food4',
+                    name: '日月潭紅茶館（義大利麵）',
+                    description: '在地紅茶配義式料理',
+                    mapUrl: 'https://maps.app.goo.gl/szkuNrdFYWckuBJ66',
+                    category: 'restaurant',
+                    createdBy: '系統預設',
+                    createdByAvatar: null,
+                    createdAt: '2024-01-01T00:00:00.000Z'
+                },
+                {
+                    id: 'food5',
+                    name: '全聯',
+                    description: '便利購物，補充旅行用品',
+                    mapUrl: 'https://maps.app.goo.gl/wHReMsvXB2ByosJw8',
+                    category: 'convenience',
+                    createdBy: '系統預設',
+                    createdByAvatar: null,
+                    createdAt: '2024-01-01T00:00:00.000Z'
+                }
+            ];
+        }
+        
+        // 初始化美食系統
+        async function initializeFoodSystem() {
+            console.log('正在初始化美食管理系統...');
+            
+            try {
+                // 如果 Firebase 可用，優先從 Firebase 載入
+                if (window.dbService && window.dbService.initialized) {
+                    console.log('從 Firebase 載入美食資料...');
+                    const firebaseFoodItems = await window.dbService.getFoodItems();
+                    
+                    if (firebaseFoodItems && Array.isArray(firebaseFoodItems) && firebaseFoodItems.length > 0) {
+                        foodItems = firebaseFoodItems;
+                        console.log('成功從 Firebase 載入美食資料:', foodItems.length, '項');
+                        // 同步到本地儲存
+                        localStorage.setItem('foodItems', JSON.stringify(foodItems));
+                    } else {
+                        // Firebase 中沒有資料，檢查本地儲存
+                        const localFoodItems = loadFoodFromLocalStorage();
+                        if (localFoodItems.length > 0) {
+                            foodItems = localFoodItems;
+                            console.log('從本地儲存載入美食資料，準備同步到 Firebase');
+                            // 將本地資料同步到 Firebase
+                            await window.dbService.saveFoodItems(foodItems);
+                        } else {
+                            // 使用預設美食列表
+                            foodItems = getDefaultFoodItems();
+                            console.log('使用預設美食列表');
+                            // 保存預設資料到 Firebase 和本地儲存
+                            await window.dbService.saveFoodItems(foodItems);
+                            localStorage.setItem('foodItems', JSON.stringify(foodItems));
+                        }
+                    }
+                } else {
+                    // Firebase 不可用，使用本地儲存
+                    console.log('Firebase 不可用，使用本地儲存');
+                    foodItems = loadFoodFromLocalStorage();
+                    if (foodItems.length === 0) {
+                        foodItems = getDefaultFoodItems();
+                        localStorage.setItem('foodItems', JSON.stringify(foodItems));
+                        console.log('初始化預設美食列表:', foodItems.length, '個項目');
+                    } else {
+                        console.log('從本地儲存載入美食列表:', foodItems.length, '個項目');
+                    }
+                }
+                
+                renderFoodItems();
+                
+                // 設置 Firebase 同步（如果可用）
+                if (window.dbService && window.dbService.initialized) {
+                    setupFoodFirebaseSync();
+                }
+                
+                console.log('美食管理系統初始化完成');
+            } catch (error) {
+                console.error('初始化美食系統失敗:', error);
+                // 發生錯誤時使用本地儲存
+                foodItems = loadFoodFromLocalStorage();
+                if (foodItems.length === 0) {
+                    foodItems = getDefaultFoodItems();
+                    localStorage.setItem('foodItems', JSON.stringify(foodItems));
+                }
+                renderFoodItems();
+            }
+        }
+        
+        // 從本地儲存載入美食資料
+        function loadFoodFromLocalStorage() {
+            const savedFoodItems = localStorage.getItem('foodItems');
+            if (savedFoodItems) {
+                try {
+                    const items = JSON.parse(savedFoodItems);
+                    // 遷移舊資料，確保所有項目都有建立者資訊
+                    return migrateOldFoodItems(items);
+                } catch (error) {
+                    console.error('解析本地美食列表失敗:', error);
+                    return [];
+                }
+            }
+            return [];
+        }
+        
+        // 設置 Firebase 同步
+        async function setupFoodFirebaseSync() {
+            if (!window.dbService || !window.dbService.initialized) {
+                console.log('美食 Firebase 同步未啟用：Firebase 服務未初始化');
+                return;
+            }
+            
+            try {
+                console.log('嘗試從 Firebase 同步美食列表...');
+                
+                // 從 Firebase 載入美食資料
+                const firebaseFoodItems = await window.dbService.getFoodItems();
+                
+                if (firebaseFoodItems && Array.isArray(firebaseFoodItems) && firebaseFoodItems.length > 0) {
+                    // 智能合併本地和遠端資料
+                    const mergedItems = smartMergeFoodItems(foodItems, firebaseFoodItems);
+                    if (JSON.stringify(mergedItems) !== JSON.stringify(foodItems)) {
+                        foodItems = mergedItems;
+                        localStorage.setItem('foodItems', JSON.stringify(foodItems));
+                        renderFoodItems();
+                        console.log('已從 Firebase 同步美食資料:', foodItems.length, '項');
+                    }
+                } else if (foodItems.length > 0) {
+                    // Firebase 中沒有資料，將本地資料同步到 Firebase
+                    console.log('將本地美食資料同步到 Firebase...');
+                    await window.dbService.saveFoodItems(foodItems);
+                }
+                
+                // 設置即時監聽
+                window.dbService.onFoodItemsChange((updatedItems) => {
+                    console.log('收到 Firebase 美食資料更新:', updatedItems.length, '項');
+                    
+                    // 智能合併：比較本地和遠端資料
+                    const mergedItems = smartMergeFoodItems(foodItems, updatedItems);
+                    
+                    if (JSON.stringify(mergedItems) !== JSON.stringify(foodItems)) {
+                        foodItems = mergedItems;
+                        localStorage.setItem('foodItems', JSON.stringify(foodItems));
+                        renderFoodItems();
+                        console.log('美食資料已更新並重新渲染');
+                    }
+                });
+                
+                console.log('美食 Firebase 即時同步設置完成');
+            } catch (error) {
+                console.error('設置美食 Firebase 同步失敗:', error);
+            }
+        }
+        
+        // 智能合併美食資料
+        function smartMergeFoodItems(localItems, remoteItems) {
+            if (!Array.isArray(remoteItems)) {
+                return migrateOldFoodItems(localItems);
+            }
+            
+            // 如果遠端資料為空，保持本地資料
+            if (remoteItems.length === 0) {
+                return migrateOldFoodItems(localItems);
+            }
+            
+            // 如果本地資料為空，使用遠端資料
+            if (localItems.length === 0) {
+                return migrateOldFoodItems(remoteItems);
+            }
+            
+            // 簡單策略：使用遠端資料（因為它是最新的）
+            return migrateOldFoodItems(remoteItems);
+        }
+        
+        // 遷移舊的美食資料，為缺少建立者資訊的項目添加預設值
+        function migrateOldFoodItems(items) {
+            if (!Array.isArray(items)) {
+                return [];
+            }
+            
+            return items.map(item => {
+                // 如果項目缺少建立者資訊，添加預設值
+                if (!item.createdBy) {
+                    return {
+                        ...item,
+                        createdBy: '系統預設',
+                        createdByAvatar: null,
+                        createdAt: item.createdAt || '2024-01-01T00:00:00.000Z'
+                    };
+                }
+                return item;
+            });
+        }
+        
+        // 渲染美食列表
+        function renderFoodItems() {
+            const foodList = document.getElementById('foodList');
+            if (!foodList) return;
+            
+            if (foodItems.length === 0) {
+                foodList.innerHTML = '<div style="text-align: center; color: #7f8c8d; padding: 20px;">還沒有美食推薦，點擊上方按鈕新增吧！</div>';
+                return;
+            }
+            
+            const categoryNames = {
+                'restaurant': '🍽️ 餐廳',
+                'cafe': '☕ 咖啡廳',
+                'bakery': '🥖 烘焙坊',
+                'snack': '🍡 小吃',
+                'convenience': '🏪 便利商店',
+                'other': '🍴 其他'
+            };
+            
+            let html = '<ul style="list-style: none; padding: 0;">';
+            
+            foodItems.forEach(item => {
+                const categoryIcon = categoryNames[item.category] || '🍴 其他';
+                
+                // 建立者資訊顯示
+                let creatorInfo = '';
+                if (item.createdBy) {
+                    if (item.createdByAvatar) {
+                        creatorInfo = `
+                            <div style="display: flex; align-items: center; gap: 4px; font-size: 11px; color: #999; margin-bottom: 5px;">
+                                <img src="./img/${item.createdByAvatar}.png" alt="${item.createdBy}的頭像" style="width: 16px; height: 16px; border-radius: 50%; object-fit: cover;">
+                                <span>由 ${item.createdBy} 推薦</span>
+                            </div>
+                        `;
+                    } else {
+                        creatorInfo = `
+                            <div style="font-size: 11px; color: #999; margin-bottom: 5px;">
+                                <span>👤 由 ${item.createdBy} 推薦</span>
+                            </div>
+                        `;
+                    }
+                }
+                
+                html += `
+                    <li style="margin-bottom: 15px; padding: 12px; background: rgba(255, 255, 255, 0.6); border-radius: 8px; border: 1px solid rgba(222, 184, 135, 0.3);">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
+                                    <strong style="color: #8b7355;">${item.name}</strong>
+                                    <span style="font-size: 12px; color: #a0956b; background: rgba(212, 184, 150, 0.3); padding: 2px 6px; border-radius: 10px;">${categoryIcon.split(' ')[1]}</span>
+                                </div>
+                                ${creatorInfo}
+                                ${item.description ? `<div style="font-size: 14px; color: #6b5b47; margin-bottom: 8px;">${item.description}</div>` : ''}
+                                <a href="${item.mapUrl}" target="_blank" class="link-btn" style="font-size: 12px;" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 16px; height: 16px;"></a>
+                            </div>
+                            <div style="display: flex; gap: 5px; margin-left: 10px;">
+                                <button onclick="editFoodItem('${item.id}')" class="btn btn-warning" style="font-size: 10px; padding: 4px 8px;" title="編輯">✏️</button>
+                                <button onclick="deleteFoodItem('${item.id}')" class="btn" style="background: #e74c3c; color: white; font-size: 10px; padding: 4px 8px;" title="刪除">🗑️</button>
+                            </div>
+                        </div>
+                    </li>
+                `;
+            });
+            
+            html += '</ul>';
+            foodList.innerHTML = html;
+        }
+        
+        // 顯示新增美食表單
+        function showAddFoodForm() {
+            const form = document.getElementById('addFoodForm');
+            form.style.display = 'block';
+            setTimeout(() => {
+                form.classList.add('visible');
+            }, 10);
+            document.getElementById('newFoodName').focus();
+        }
+        
+        // 隱藏新增美食表單
+        function hideAddFoodForm() {
+            const form = document.getElementById('addFoodForm');
+            form.classList.remove('visible');
+            setTimeout(() => {
+                form.style.display = 'none';
+                // 清空表單
+                document.getElementById('newFoodName').value = '';
+                document.getElementById('newFoodDescription').value = '';
+                document.getElementById('newFoodMapUrl').value = '';
+                document.getElementById('newFoodCategory').value = 'restaurant';
+            }, 300);
+        }
+        
+        // 新增美食項目
+        async function addFoodItem() {
+            const name = document.getElementById('newFoodName').value.trim();
+            const description = document.getElementById('newFoodDescription').value.trim();
+            const mapUrl = document.getElementById('newFoodMapUrl').value.trim();
+            const category = document.getElementById('newFoodCategory').value;
+            
+            if (!name) {
+                showNotification('請輸入餐廳名稱', 'error');
+                return;
+            }
+            
+            if (!mapUrl) {
+                showNotification('請輸入 Google Maps 連結', 'error');
+                return;
+            }
+            
+            // 驗證 URL 格式
+            try {
+                new URL(mapUrl);
+            } catch {
+                showNotification('請輸入有效的 Google Maps 連結', 'error');
+                return;
+            }
+            
+            const newFood = {
+                id: 'food_' + Date.now(),
+                name: name,
+                description: description,
+                mapUrl: mapUrl,
+                category: category,
+                createdBy: currentUser ? currentUser.name : '匿名用戶',
+                createdByAvatar: currentUser ? currentUser.avatar : null,
+                createdAt: new Date().toISOString()
+            };
+            
+            try {
+                // 先更新本地資料
+                foodItems.push(newFood);
+                localStorage.setItem('foodItems', JSON.stringify(foodItems));
+                renderFoodItems();
+                
+                // 如果 Firebase 可用，同步到雲端
+                if (window.dbService && window.dbService.initialized) {
+                    const success = await window.dbService.addFoodItem(newFood);
+                    if (success) {
+                        console.log('美食項目已同步到 Firebase');
+                    } else {
+                        console.warn('美食項目同步到 Firebase 失敗，但本地已保存');
+                    }
+                }
+                
+                hideAddFoodForm();
+                showNotification('已新增美食推薦！');
+            } catch (error) {
+                console.error('新增美食失敗:', error);
+                showNotification('新增美食失敗，請重試', 'error');
+            }
+        }
+        
+        // 刪除美食項目
+        async function deleteFoodItem(foodId) {
+            if (!confirm('確定要刪除這個美食推薦嗎？')) return;
+            
+            try {
+                // 先更新本地資料
+                foodItems = foodItems.filter(item => item.id !== foodId);
+                localStorage.setItem('foodItems', JSON.stringify(foodItems));
+                renderFoodItems();
+                
+                // 如果 Firebase 可用，同步到雲端
+                if (window.dbService && window.dbService.initialized) {
+                    const success = await window.dbService.deleteFoodItem(foodId);
+                    if (success) {
+                        console.log('美食項目已從 Firebase 刪除');
+                    } else {
+                        console.warn('美食項目從 Firebase 刪除失敗，但本地已刪除');
+                    }
+                }
+                
+                showNotification('已刪除美食推薦');
+            } catch (error) {
+                console.error('刪除美食失敗:', error);
+                showNotification('刪除美食失敗，請重試', 'error');
+            }
+        }
+        
+        // 編輯美食項目
+        function editFoodItem(foodId) {
+            const food = foodItems.find(item => item.id === foodId);
+            if (!food) return;
+            
+            // 填入現有資料到表單
+            document.getElementById('newFoodName').value = food.name;
+            document.getElementById('newFoodDescription').value = food.description || '';
+            document.getElementById('newFoodMapUrl').value = food.mapUrl;
+            document.getElementById('newFoodCategory').value = food.category;
+            
+            // 顯示表單
+            showAddFoodForm();
+            
+            // 修改表單標題和按鈕
+            document.querySelector('#addFoodForm .form-title').textContent = '編輯美食推薦';
+            const addButton = document.querySelector('#addFoodForm .btn-success');
+            addButton.textContent = '更新';
+            addButton.onclick = () => updateFoodItem(foodId);
+        }
+        
+        // 更新美食項目
+        async function updateFoodItem(foodId) {
+            const name = document.getElementById('newFoodName').value.trim();
+            const description = document.getElementById('newFoodDescription').value.trim();
+            const mapUrl = document.getElementById('newFoodMapUrl').value.trim();
+            const category = document.getElementById('newFoodCategory').value;
+            
+            if (!name) {
+                showNotification('請輸入餐廳名稱', 'error');
+                return;
+            }
+            
+            if (!mapUrl) {
+                showNotification('請輸入 Google Maps 連結', 'error');
+                return;
+            }
+            
+            try {
+                new URL(mapUrl);
+            } catch {
+                showNotification('請輸入有效的 Google Maps 連結', 'error');
+                return;
+            }
+            
+            try {
+                const foodIndex = foodItems.findIndex(item => item.id === foodId);
+                if (foodIndex !== -1) {
+                    const updatedFood = {
+                        ...foodItems[foodIndex],
+                        name: name,
+                        description: description,
+                        mapUrl: mapUrl,
+                        category: category
+                    };
+                    
+                    // 先更新本地資料
+                    foodItems[foodIndex] = updatedFood;
+                    localStorage.setItem('foodItems', JSON.stringify(foodItems));
+                    renderFoodItems();
+                    
+                    // 如果 Firebase 可用，同步到雲端
+                    if (window.dbService && window.dbService.initialized) {
+                        const success = await window.dbService.updateFoodItem(foodId, updatedFood);
+                        if (success) {
+                            console.log('美食項目已在 Firebase 中更新');
+                        } else {
+                            console.warn('美食項目在 Firebase 中更新失敗，但本地已更新');
+                        }
+                    }
+                    
+                    hideAddFoodForm();
+                    
+                    // 重置表單
+                    document.querySelector('#addFoodForm .form-title').textContent = '新增美食推薦';
+                    const addButton = document.querySelector('#addFoodForm .btn-success');
+                    addButton.textContent = '新增';
+                    addButton.onclick = addFoodItem;
+                    
+                    showNotification('已更新美食推薦！');
+                }
+            } catch (error) {
+                console.error('更新美食失敗:', error);
+                showNotification('更新美食失敗，請重試', 'error');
+            }
+        }
+        
+        // 將函數暴露到全域作用域
+        window.showAddFoodForm = showAddFoodForm;
+        window.hideAddFoodForm = hideAddFoodForm;
+        window.addFoodItem = addFoodItem;
+        window.deleteFoodItem = deleteFoodItem;
+        window.editFoodItem = editFoodItem;
+        window.updateFoodItem = updateFoodItem;
         
         // 新增打包物品
         async function addPackingItem() {

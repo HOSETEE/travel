@@ -28,7 +28,8 @@ class DatabaseService {
         inviteCodes: this.database.ref('inviteCodes'),
         lastViewTimes: this.database.ref('lastViewTimes'),
         confirmationItems: this.database.ref('confirmationItems'),
-        packingItems: this.database.ref('packingItems')
+        packingItems: this.database.ref('packingItems'),
+        foodItems: this.database.ref('foodItems')
       };
       
       // 標記初始化成功
@@ -845,3 +846,156 @@ dbService.resetUserPackingList = async function(userId, defaultItems) {
 
 // 為了相容性，添加別名方法
 dbService.listenToUserPackingItems = dbService.onUserPackingItemsChange;
+
+// ===== 美食管理相關方法 =====
+
+// 獲取所有美食項目
+dbService.getFoodItems = async function() {
+  try {
+    // 檢查服務是否已初始化
+    if (!this.initialized) {
+      console.warn('DatabaseService 未初始化，無法獲取美食項目');
+      return null;
+    }
+    
+    // 檢查 refs 和 foodItems 是否存在
+    if (!this.refs || !this.refs.foodItems) {
+      console.error('foodItems 引用不存在');
+      return null;
+    }
+    
+    const snapshot = await this.refs.foodItems.once('value');
+    return snapshot.val() || [];
+  } catch (error) {
+    console.error('從 Firebase 獲取美食項目失敗:', error);
+    return null;
+  }
+};
+
+// 保存美食項目列表
+dbService.saveFoodItems = async function(items) {
+  try {
+    // 檢查服務是否已初始化
+    if (!this.initialized) {
+      console.warn('DatabaseService 未初始化，無法保存美食項目');
+      return false;
+    }
+    
+    // 檢查 refs 和 foodItems 是否存在
+    if (!this.refs || !this.refs.foodItems) {
+      console.error('foodItems 引用不存在');
+      return false;
+    }
+    
+    // 處理數據，確保沒有 undefined 值
+    const processedItems = items.map(item => {
+      const processedItem = {...item};
+      // 確保所有屬性都不是 undefined，Firebase 不接受 undefined 值
+      Object.keys(processedItem).forEach(key => {
+        if (processedItem[key] === undefined) {
+          processedItem[key] = '';
+        }
+      });
+      return processedItem;
+    });
+    
+    await this.refs.foodItems.set(processedItems);
+    console.log('成功保存美食項目到 Firebase');
+    return true;
+  } catch (error) {
+    console.error('保存美食項目到 Firebase 失敗:', error);
+    return false;
+  }
+};
+
+// 監聽美食項目變化
+dbService.onFoodItemsChange = function(callback) {
+  // 檢查服務是否已初始化
+  if (!this.initialized) {
+    console.warn('DatabaseService 未初始化，無法監聽美食項目變化');
+    return;
+  }
+  
+  // 檢查 refs 和 foodItems 是否存在
+  if (!this.refs || !this.refs.foodItems) {
+    console.error('foodItems 引用不存在');
+    return;
+  }
+  
+  this.refs.foodItems.on('value', (snapshot) => {
+    const items = snapshot.val() || [];
+    callback(items);
+  });
+};
+
+// 添加美食項目
+dbService.addFoodItem = async function(item) {
+  try {
+    // 獲取當前美食列表
+    const items = await this.getFoodItems();
+    if (items === null) {
+      console.error('無法獲取當前美食列表');
+      return false;
+    }
+    
+    // 添加新項目
+    items.push(item);
+    
+    // 保存更新後的列表
+    return await this.saveFoodItems(items);
+  } catch (error) {
+    console.error('添加美食項目失敗:', error);
+    return false;
+  }
+};
+
+// 更新美食項目
+dbService.updateFoodItem = async function(itemId, updatedItem) {
+  try {
+    // 獲取當前美食列表
+    const items = await this.getFoodItems();
+    if (items === null) {
+      console.error('無法獲取當前美食列表');
+      return false;
+    }
+    
+    // 查找並更新項目
+    const itemIndex = items.findIndex(item => item.id === itemId);
+    if (itemIndex !== -1) {
+      items[itemIndex] = { ...items[itemIndex], ...updatedItem };
+      
+      // 保存更新後的列表
+      return await this.saveFoodItems(items);
+    } else {
+      console.error(`找不到 ID 為 ${itemId} 的美食項目`);
+      return false;
+    }
+  } catch (error) {
+    console.error('更新美食項目失敗:', error);
+    return false;
+  }
+};
+
+// 刪除美食項目
+dbService.deleteFoodItem = async function(itemId) {
+  try {
+    // 獲取當前美食列表
+    const items = await this.getFoodItems();
+    if (items === null) {
+      console.error('無法獲取當前美食列表');
+      return false;
+    }
+    
+    // 過濾掉要刪除的項目
+    const updatedItems = items.filter(item => item.id !== itemId);
+    
+    // 保存更新後的列表
+    return await this.saveFoodItems(updatedItems);
+  } catch (error) {
+    console.error('刪除美食項目失敗:', error);
+    return false;
+  }
+};
+
+// 為了相容性，添加別名方法
+dbService.listenToFoodItems = dbService.onFoodItemsChange;
