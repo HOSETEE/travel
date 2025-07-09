@@ -27,7 +27,8 @@ class DatabaseService {
         userProfiles: this.database.ref('userProfiles'),
         inviteCodes: this.database.ref('inviteCodes'),
         lastViewTimes: this.database.ref('lastViewTimes'),
-        confirmationItems: this.database.ref('confirmationItems')
+        confirmationItems: this.database.ref('confirmationItems'),
+        packingItems: this.database.ref('packingItems')
       };
       
       // 標記初始化成功
@@ -302,10 +303,10 @@ class DatabaseService {
   }
 
   // 更新最後查看時間
-  async updateLastViewTime(userId, activityId) {
+  async updateLastViewTime(userId, activityId, timestamp) {
     try {
-      const now = new Date().toISOString();
-      await this.refs.lastViewTimes.child(userId).child(activityId).set(now);
+      const timeToSet = timestamp || new Date().toISOString();
+      await this.refs.lastViewTimes.child(userId).child(activityId).set(timeToSet);
       return true;
     } catch (error) {
       console.error(`更新用戶 ${userId} 對活動 ${activityId} 的最後查看時間失敗:`, error);
@@ -681,3 +682,166 @@ dbService.onConfirmationItemsChange = function(callback) {
 
 // 為了相容性，添加別名方法
 dbService.listenToConfirmationItems = dbService.onConfirmationItemsChange;
+
+// ===== 打包清單相關方法 =====
+
+// 獲取用戶的打包清單
+dbService.getUserPackingItems = async function(userId) {
+  try {
+    // 檢查服務是否已初始化
+    if (!this.initialized) {
+      console.warn('DatabaseService 未初始化，無法獲取打包清單');
+      return null;
+    }
+    
+    // 檢查 refs 和 packingItems 是否存在
+    if (!this.refs || !this.refs.packingItems) {
+      console.error('packingItems 引用不存在');
+      return null;
+    }
+    
+    const snapshot = await this.refs.packingItems.child(userId).once('value');
+    return snapshot.val() || [];
+  } catch (error) {
+    console.error(`從 Firebase 獲取用戶 ${userId} 的打包清單失敗:`, error);
+    return null;
+  }
+};
+
+// 保存用戶的打包清單
+dbService.saveUserPackingItems = async function(userId, items) {
+  try {
+    // 檢查服務是否已初始化
+    if (!this.initialized) {
+      console.warn('DatabaseService 未初始化，無法保存打包清單');
+      return false;
+    }
+    
+    // 檢查 refs 和 packingItems 是否存在
+    if (!this.refs || !this.refs.packingItems) {
+      console.error('packingItems 引用不存在');
+      return false;
+    }
+    
+    // 處理數據，確保沒有 undefined 值
+    const processedItems = items.map(item => {
+      const processedItem = {...item};
+      // 確保所有屬性都不是 undefined，Firebase 不接受 undefined 值
+      Object.keys(processedItem).forEach(key => {
+        if (processedItem[key] === undefined) {
+          processedItem[key] = '';
+        }
+      });
+      return processedItem;
+    });
+    
+    await this.refs.packingItems.child(userId).set(processedItems);
+    console.log(`成功保存用戶 ${userId} 的打包清單到 Firebase`);
+    return true;
+  } catch (error) {
+    console.error(`保存用戶 ${userId} 的打包清單到 Firebase 失敗:`, error);
+    return false;
+  }
+};
+
+// 監聽用戶打包清單變化
+dbService.onUserPackingItemsChange = function(userId, callback) {
+  // 檢查服務是否已初始化
+  if (!this.initialized) {
+    console.warn('DatabaseService 未初始化，無法監聽打包清單變化');
+    return;
+  }
+  
+  // 檢查 refs 和 packingItems 是否存在
+  if (!this.refs || !this.refs.packingItems) {
+    console.error('packingItems 引用不存在');
+    return;
+  }
+  
+  this.refs.packingItems.child(userId).on('value', (snapshot) => {
+    const items = snapshot.val() || [];
+    callback(items);
+  });
+};
+
+// 添加打包清單項目
+dbService.addPackingItem = async function(userId, item) {
+  try {
+    // 獲取當前打包清單
+    const items = await this.getUserPackingItems(userId);
+    if (items === null) {
+      console.error('無法獲取當前打包清單');
+      return false;
+    }
+    
+    // 添加新項目
+    items.push(item);
+    
+    // 保存更新後的清單
+    return await this.saveUserPackingItems(userId, items);
+  } catch (error) {
+    console.error(`添加打包清單項目失敗:`, error);
+    return false;
+  }
+};
+
+// 更新打包清單項目狀態
+dbService.updatePackingItemStatus = async function(userId, itemId, checked) {
+  try {
+    // 獲取當前打包清單
+    const items = await this.getUserPackingItems(userId);
+    if (items === null) {
+      console.error('無法獲取當前打包清單');
+      return false;
+    }
+    
+    // 查找並更新項目
+    const itemIndex = items.findIndex(item => item.id === itemId);
+    if (itemIndex !== -1) {
+      items[itemIndex].checked = checked;
+      
+      // 保存更新後的清單
+      return await this.saveUserPackingItems(userId, items);
+    } else {
+      console.error(`找不到 ID 為 ${itemId} 的打包清單項目`);
+      return false;
+    }
+  } catch (error) {
+    console.error(`更新打包清單項目狀態失敗:`, error);
+    return false;
+  }
+};
+
+// 刪除打包清單項目
+dbService.deletePackingItem = async function(userId, itemId) {
+  try {
+    // 獲取當前打包清單
+    const items = await this.getUserPackingItems(userId);
+    if (items === null) {
+      console.error('無法獲取當前打包清單');
+      return false;
+    }
+    
+    // 過濾掉要刪除的項目
+    const updatedItems = items.filter(item => item.id !== itemId);
+    
+    // 保存更新後的清單
+    return await this.saveUserPackingItems(userId, updatedItems);
+  } catch (error) {
+    console.error(`刪除打包清單項目失敗:`, error);
+    return false;
+  }
+};
+
+// 重置用戶打包清單為預設項目
+dbService.resetUserPackingList = async function(userId, defaultItems) {
+  try {
+    return await this.saveUserPackingItems(userId, defaultItems);
+  } catch (error) {
+    console.error(`重置用戶 ${userId} 的打包清單失敗:`, error);
+    return false;
+  }
+};
+
+// 為了相容性，添加別名方法
+dbService.listenToUserPackingItems = dbService.onUserPackingItemsChange;

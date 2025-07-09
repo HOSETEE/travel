@@ -97,12 +97,504 @@
             background: #e67e22;
             transform: translateY(-2px);
         }
+        
+        .btn-info {
+            background: #9b59b6;
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background: #8e44ad;
+            transform: translateY(-2px);
+        }
 
         .main-content {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 30px;
             margin-bottom: 30px;
+        }
+        
+        /* 頁面切換 */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* 打包清單頁面樣式 */
+        .packing-page {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .packing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(52, 152, 219, 0.2);
+        }
+        
+        .packing-header h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .packing-header h2:before {
+            content: '🎒';
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+        
+        .packing-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .packing-actions .btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .packing-actions .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .packing-progress {
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar-container {
+            height: 24px;
+            background-color: #f0f3f6;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(255, 255, 255, 0.5);
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(5px);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.5s ease, background-color 0.5s ease;
+            background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+            background-size: 40px 40px;
+            animation: progress-bar-stripes 2s linear infinite;
+        }
+        
+        @keyframes progress-bar-stripes {
+            from { background-position: 40px 0; }
+            to { background-position: 0 0; }
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-size: 15px;
+            color: #34495e;
+            font-weight: 600;
+            margin-top: 8px;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .progress-text::before {
+            content: '📋';
+            font-size: 16px;
+            margin-right: 2px;
+        }
+        
+        .category-container {
+
+            margin-bottom: 20px;
+            border: 1px solid rgba(236, 240, 241, 0.8);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .category-container:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            background-image: linear-gradient(to right, #f8f9fa, #f1f3f5);
+            cursor: pointer;
+            border-radius: 10px 10px 0 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(236, 240, 241, 0.8);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+        
+        .category-header:hover {
+            background-color: #e9ecef;
+            background-image: linear-gradient(to right, #e9ecef, #dee2e6);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #2c3e50;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+        
+        .category-status {
+            font-size: 14px;
+            color: #7f8c8d;
+            background-color: rgba(236, 240, 241, 0.7);
+            padding: 4px 8px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .category-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-indicator::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 50% 50% 0 0;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-items {
+            padding: 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .category-items.expanded {
+            max-height: 1000px;
+        }
+        
+        .packing-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .packing-item:hover {
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+            border-left: 3px solid #3498db;
+        }
+        
+        .packing-item input[type="checkbox"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            border: 2px solid #3498db;
+            position: relative;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-color: white;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        
+        .packing-item input[type="checkbox"]:checked {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        
+        .packing-item input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .packing-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            padding: 2px 0;
+            color: #34495e;
+            font-weight: 500;
+        }
+        
+        .packing-item input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            color: #95a5a6;
+            font-weight: 400;
+            opacity: 0.8;
+            transform: translateX(3px);
+        }
+        
+        .delete-item {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #e74c3c;
+            margin-left: 5px;
+        }
+        
+        .delete-item:hover {
+            opacity: 1;
+            background-color: rgba(231, 76, 60, 0.1);
+            transform: scale(1.1);
+        }
+        
+        .delete-item:active {
+            transform: scale(0.95);
+        }
+        
+        .add-item-form {
+            margin-top: 20px;
+            padding: 25px;
+            background-color: rgba(248, 249, 250, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 2px 5px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(52, 152, 219, 0.15);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .add-item-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+        }
+        
+        .add-item-form .btn {
+            background-image: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+        }
+        
+        .add-item-form .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.3), rgba(255,255,255,0));
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .add-item-form .btn:hover {
+            background-image: linear-gradient(to right, #2980b9, #2573a7);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .add-item-form .btn:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .add-item-form .btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.2);
+        }
+        
+        .add-item-form .btn-cancel {
+            background-image: linear-gradient(to right, #e74c3c, #c0392b);
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);
+        }
+        
+        .add-item-form .btn-cancel:hover {
+            background-image: linear-gradient(to right, #c0392b, #a93226);
+            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .add-item-form .btn-cancel:active {
+            box-shadow: 0 3px 8px rgba(231, 76, 60, 0.2);
+        }
+        
+        .add-item-form.visible {
+            animation: fadeInDown 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+        
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.97);
+                box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08), 0 2px 5px rgba(0, 0, 0, 0.05);
+            }
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 18px;
+            align-items: center;
+            position: relative;
+        }
+        
+        .form-row label {
+            font-weight: 500;
+            color: #2c3e50;
+            min-width: 80px;
+            letter-spacing: 0.3px;
+        }
+        
+        .form-row input, .form-row select {
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(255, 255, 255, 0.5);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-size: 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #34495e;
+        }
+        
+        .form-row input::placeholder, .form-row select::placeholder {
+            color: #95a5a6;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .form-row input:focus::placeholder, .form-row select:focus::placeholder {
+            opacity: 0.5;
+        }
+        
+        .form-row input:focus, .form-row select:focus {
+            border-color: #3498db;
+            box-shadow: inset 0 1px 3px rgba(52, 152, 219, 0.1), 0 0 0 3px rgba(52, 152, 219, 0.15);
+            outline: none;
+            background-color: #fff;
+            transform: translateY(-1px);
+        }
+        
+        .form-row input {
+            flex: 1;
+        }
+        
+        .form-row select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath fill='%233498db' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            cursor: pointer;
+        }
+        
+        .form-row select:hover {
+            border-color: #bdc3c7;
+        }
+        
+        .back-to-main {
+            margin-top: 20px;
+            text-align: center;
         }
 
         /* 響應式設計 - 平板和手機 */
@@ -415,17 +907,77 @@
             top: 20px;
             right: 20px;
             padding: 15px 25px;
-            background: #27ae60;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
             color: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
             transform: translateX(400px);
-            transition: transform 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 1000;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            max-width: 350px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 15px;
+            letter-spacing: 0.3px;
+        }
+
+        .notification:before {
+            content: '✓';
+            margin-right: 12px;
+            font-size: 1.2em;
+            background: rgba(255, 255, 255, 0.2);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border-left: 4px solid #c0392b;
+        }
+
+        .notification.error:before {
+            content: '✕';
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .notification.warning {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            border-left: 4px solid #e67e22;
+        }
+
+        .notification.warning:before {
+            content: '⚠';
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .notification.show {
             transform: translateX(0);
+            animation: notification-pulse 0.5s ease;
+        }
+
+        @keyframes notification-pulse {
+            0% { transform: translateX(0) scale(0.95); opacity: 0.7; }
+            50% { transform: translateX(0) scale(1.05); opacity: 1; }
+            100% { transform: translateX(0) scale(1); }
+        }
+        
+        @media (max-width: 768px) {
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: calc(100% - 20px);
+                padding: 12px 20px;
+                font-size: 14px;
+            }
         }
 
         .weather-widget {
@@ -764,12 +1316,720 @@
                 <button class="btn btn-primary" onclick="showUpdateForm()" style="display: none;">📝 更新行程</button>
                 <button class="btn btn-success" onclick="toggleDiscussion()" style="display: none;">💬 家庭討論</button>
                 <button class="btn btn-warning" onclick="clearInviteCodeVerification()" title="清除邀請碼驗證狀態" style="display: none;">🔐 重置邀請碼</button>
-                
-                
+                <button class="btn btn-info" onclick="showPage('packing')">🎒 打包清單</button>
             </div>
         </div>
+        
+        <!-- 打包清單頁面 -->
+        <div id="packing-page" class="page packing-page">
+            <!-- 返回按鈕移動到頁面頂部 -->
+            <div class="back-to-main-top">
+                <button onclick="showPage('main')" class="btn btn-back-home-top">
+                    <div class="btn-icon">🏠</div>
+                    <div class="btn-text">返回主頁</div>
+                </button>
+            </div>
+            
+            <div class="packing-header">
+                <h2 class="packing-title">
+                    <span class="title-text">旅行打包清單</span>
+                    <span class="title-underline"></span>
+                </h2>
+                <div class="packing-actions">
+                    <button onclick="resetPackingList()" class="btn btn-common-items">
+                        <div class="btn-icon">🔄</div>
+                        <div class="btn-text">重置打包清單</div>
+                    </button>
+                    <button onclick="showAddPackingItemForm()" class="btn btn-add-item">
+                        <div class="btn-icon">➕</div>
+                        <div class="btn-text">新增物品</div>
+                    </button>
+                </div>
+            </div>
+                
+            <style>
+                /* 頂部返回按鈕樣式 */
+                .back-to-main-top {
+                    display: flex;
+                    justify-content: flex-start;
+                    margin-bottom: 20px;
+                    padding-top: 10px;
+                }
+                
+                .btn-back-home-top {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    padding: 10px 20px;
+                    border-radius: 25px;
+                    font-weight: 600;
+                    font-size: 14px;
+                    background-image: linear-gradient(to right, #3498db, #2980b9);
+                    color: white;
+                    box-shadow: 0 3px 12px rgba(52, 152, 219, 0.25);
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                    border: none;
+                    cursor: pointer;
+                }
+                
+                .btn-back-home-top::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+                    transform: translateX(-100%);
+                    transition: transform 0.5s;
+                    z-index: 1;
+                }
+                
+                .btn-back-home-top:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 18px rgba(52, 152, 219, 0.3);
+                }
+                
+                .btn-back-home-top:hover::before {
+                    transform: translateX(100%);
+                }
+                
+                .btn-back-home-top:active {
+                    transform: translateY(1px);
+                    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+                }
+                
+                .btn-back-home-top .btn-icon,
+                .btn-back-home-top .btn-text {
+                    position: relative;
+                    z-index: 2;
+                }
+                
+                .btn-back-home-top .btn-icon {
+                    font-size: 16px;
+                }
+                
+                /* 響應式設計 */
+                @media (max-width: 768px) {
+                    .back-to-main-top {
+                        justify-content: center;
+                    }
+                    
+                    .btn-back-home-top {
+                        width: auto;
+                        min-width: 140px;
+                    }
+                }
+                
+                /* 打包清單標題樣式 */
+                .packing-title {
+                    font-size: 28px; 
+                    position: relative; 
+                    display: inline-block; 
+                    margin-bottom: 20px;
+                }
+                
+                .title-text {
+                    background: linear-gradient(to right, #3498db, #2980b9); 
+                    -webkit-background-clip: text; 
+                    background-clip: text; 
+                    color: transparent; 
+                    font-weight: 700;
+                    letter-spacing: 0.5px;
+                }
+                
+                .title-underline {
+                    position: absolute; 
+                    bottom: -8px; 
+                    left: 0; 
+                    width: 60px; 
+                    height: 4px; 
+                    background: linear-gradient(to right, #3498db, #2980b9); 
+                    border-radius: 4px;
+                }
+                
+                /* 按鈕共用樣式 */
+                .packing-actions {
+                    display: flex;
+                    gap: 15px;
+                    margin-bottom: 20px;
+                }
+                
+                .packing-actions .btn {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    padding: 12px 20px;
+                    border-radius: 12px;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .packing-actions .btn::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+                    transform: translateX(-100%);
+                    transition: transform 0.5s;
+                    z-index: 1;
+                }
+                
+                .packing-actions .btn:hover::before {
+                    transform: translateX(100%);
+                }
+                
+                .packing-actions .btn:active {
+                    transform: translateY(2px);
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                }
+                
+                .packing-actions .btn-icon {
+                    font-size: 18px;
+                    position: relative;
+                    z-index: 2;
+                }
+                
+                .packing-actions .btn-text {
+                    position: relative;
+                    z-index: 2;
+                }
+                
+                /* 載入常用物品按鈕 */
+                .btn-common-items {
+                    background-image: linear-gradient(to right, #f39c12, #e67e22);
+                    color: white;
+                }
+                
+                .btn-common-items:hover {
+                    background-image: linear-gradient(to right, #e67e22, #d35400);
+                }
+                
+                /* 新增物品按鈕 */
+                .btn-add-item {
+                    background-image: linear-gradient(to right, #3498db, #2980b9);
+                    color: white;
+                }
+                
+                .btn-add-item:hover {
+                    background-image: linear-gradient(to right, #2980b9, #1f618d);
+                }
+                
+                /* 響應式設計 */
+                @media (max-width: 768px) {
+                    .packing-actions {
+                        flex-direction: column;
+                        gap: 10px;
+                    }
+                    
+                    .packing-actions .btn {
+                        width: 100%;
+                    }
+                }
+            </style>
+            
+            <!-- 總體進度條 -->
+            <div class="packing-progress">
+                <div class="progress-header">
+                    <div class="progress-title">打包進度</div>
+                    <div id="packing-progress-text" class="progress-text">已完成: 0/0 (0%)</div>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="packing-progress-bar" class="progress-bar"></div>
+                </div>
+            </div>
+            
+            <style>
+                /* 進度條樣式 */
+                .packing-progress {
+                    background: #ffffff;
+                    border-radius: 16px;
+                    padding: 20px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                    margin-bottom: 25px;
+                    border: 1px solid rgba(0, 0, 0, 0.03);
+                }
+                
+                .progress-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 12px;
+                }
+                
+                .progress-title {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #2c3e50;
+                }
+                
+                .progress-text {
+                    font-size: 14px;
+                    color: #7f8c8d;
+                    font-weight: 500;
+                }
+                
+                .progress-bar-container {
+                    height: 12px;
+                    background-color: #f1f2f6;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    position: relative;
+                }
+                
+                .progress-bar {
+                    height: 100%;
+                    width: 0%;
+                    background-color: #e74c3c;
+                    border-radius: 10px;
+                    transition: width 0.5s ease, background-color 0.5s ease;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                    position: relative;
+                }
+                
+                .progress-bar::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: linear-gradient(90deg, 
+                        rgba(255, 255, 255, 0.1) 0%, 
+                        rgba(255, 255, 255, 0.2) 20%, 
+                        rgba(255, 255, 255, 0.1) 40%
+                    );
+                    background-size: 200% 100%;
+                    animation: shimmer 1.5s infinite linear;
+                }
+                
+                @keyframes shimmer {
+                    0% {
+                        background-position: 100% 0;
+                    }
+                    100% {
+                        background-position: -100% 0;
+                    }
+                }
+            </style>
+            
+            <!-- 新增物品表單 -->
+            <div id="addPackingItemForm" class="add-item-form" style="display: none;">
+                <h3 class="form-title">新增打包物品</h3>
+                
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="newPackingItem">物品名稱</label>
+                        <input type="text" id="newPackingItem" placeholder="輸入物品名稱">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="newItemCategory">選擇分類</label>
+                        <select id="newItemCategory" onchange="toggleCustomCategoryInput()">
+                            <option value="clothing">衣物</option>
+                            <option value="toiletries">盥洗用品</option>
+                            <option value="protection">防護用品</option>
+                            <option value="electronics">電子產品</option>
+                            <option value="essentials">其他必需品</option>
+                            <option value="custom">自訂分類...</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="customCategoryRow" class="form-row" style="display: none; opacity: 0; transform: translateY(-10px); max-height: 0; overflow: hidden;">
+                    <div class="input-group">
+                        <label for="customCategory">自訂分類名稱</label>
+                        <input type="text" id="customCategory" placeholder="輸入自訂分類名稱">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button onclick="addPackingItem()" class="btn btn-submit">
+                        <div class="btn-icon">✅</div>
+                        <div class="btn-text">新增物品</div>
+                    </button>
+                    <button onclick="hideAddPackingItemForm()" class="btn btn-cancel">
+                        <div class="btn-icon">❌</div>
+                        <div class="btn-text">取消</div>
+                    </button>
+                </div>
+                
+                <style>
+                    /* 表單樣式 */
+                    .add-item-form {
+                        background: #ffffff;
+                        border-radius: 16px;
+                        padding: 24px;
+                        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+                        margin-bottom: 25px;
+                        animation: formSlideDown 0.4s ease-out;
+                        border: 1px solid rgba(0, 0, 0, 0.05);
+                    }
+                    
+                    @keyframes formSlideDown {
+                        from {
+                            opacity: 0;
+                            transform: translateY(-20px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                    
+                    .form-title {
+                        font-size: 20px;
+                        font-weight: 600;
+                        color: #2c3e50;
+                        margin-top: 0;
+                        margin-bottom: 20px;
+                        padding-bottom: 10px;
+                        border-bottom: 2px solid #f1f2f6;
+                    }
+                    
+                    .form-row {
+                        margin-bottom: 16px;
+                        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+                    }
+                    
+                    .input-group {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    
+                    .input-group label {
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: #34495e;
+                        margin-bottom: 6px;
+                    }
+                    
+                    .add-item-form input,
+                    .add-item-form select {
+                        padding: 12px 16px;
+                        border: 1px solid #e0e0e0;
+                        border-radius: 10px;
+                        font-size: 15px;
+                        transition: all 0.3s ease;
+                        background-color: #f9f9f9;
+                    }
+                    
+                    .add-item-form input:focus,
+                    .add-item-form select:focus {
+                        border-color: #3498db;
+                        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+                        outline: none;
+                        background-color: #ffffff;
+                    }
+                    
+                    .add-item-form select {
+                        cursor: pointer;
+                        appearance: none;
+                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+                        background-repeat: no-repeat;
+                        background-position: right 16px center;
+                        padding-right: 40px;
+                    }
+                    
+                    /* 表單按鈕樣式 */
+                    .form-actions {
+                        display: flex;
+                        gap: 12px;
+                        margin-top: 24px;
+                    }
+                    
+                    .form-actions .btn {
+                        flex: 1;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 8px;
+                        padding: 12px 20px;
+                        border-radius: 10px;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    
+                    .form-actions .btn::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+                        transform: translateX(-100%);
+                        transition: transform 0.5s;
+                        z-index: 1;
+                    }
+                    
+                    .form-actions .btn:hover::before {
+                        transform: translateX(100%);
+                    }
+                    
+                    .form-actions .btn:active {
+                        transform: translateY(2px);
+                    }
+                    
+                    .btn-submit {
+                        background-image: linear-gradient(to right, #2ecc71, #27ae60);
+                        color: white;
+                        box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
+                    }
+                    
+                    .btn-submit:hover {
+                        background-image: linear-gradient(to right, #27ae60, #219653);
+                    }
+                    
+                    .btn-cancel {
+                        background-image: linear-gradient(to right, #e74c3c, #c0392b);
+                        color: white;
+                        box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);
+                    }
+                    
+                    .btn-cancel:hover {
+                        background-image: linear-gradient(to right, #c0392b, #a93226);
+                    }
+                    
+                    /* 自訂分類輸入框動畫 */
+                    #customCategoryRow {
+                        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+                    }
+                    
+                    /* 響應式設計 */
+                    @media (max-width: 768px) {
+                        .form-actions {
+                            flex-direction: column;
+                        }
+                        
+                        .add-item-form {
+                            padding: 20px 16px;
+                        }
+                    }
+                </style>
+            </div>
+            
+            <!-- 分類容器 -->
+            <div id="packing-categories" class="packing-categories-container">
+                <!-- 分類會由 JavaScript 動態生成 -->
+            </div>
+            
+            <style>
+                /* 分類容器樣式 */
+                .packing-categories-container {
+                    margin-bottom: 30px;
+                }
+                
+                /* 分類容器 */
+                .category-container {
+                    background: #ffffff;
+                    border-radius: 16px;
+                    margin-bottom: 16px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                    overflow: hidden;
+                    border: 1px solid rgba(0, 0, 0, 0.03);
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
+                
+                .category-container:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+                }
+                
+                /* 分類標題 */
+                .category-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 16px 20px;
+                    cursor: pointer;
+                    background: linear-gradient(to right, rgba(52, 152, 219, 0.05), rgba(52, 152, 219, 0.02));
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+                    transition: background-color 0.3s ease;
+                }
+                
+                .category-header:hover {
+                    background: linear-gradient(to right, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.05));
+                }
+                
+                .category-title {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-weight: 600;
+                    color: #2c3e50;
+                    font-size: 16px;
+                }
+                
+                .category-title span:last-child {
+                    position: relative;
+                }
+                
+                .category-status {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 14px;
+                    color: #7f8c8d;
+                }
+                
+                .status-indicator {
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 50%;
+                    display: inline-block;
+                    transition: background-color 0.3s ease;
+                }
+                
+                /* 分類項目容器 */
+                .category-items {
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: max-height 0.4s ease;
+                }
+                
+                .category-items.expanded {
+                    max-height: 1000px; /* 足夠大的高度以顯示所有內容 */
+                }
+                
+                /* 打包物品 */
+                .packing-item {
+                    display: flex;
+                    align-items: center;
+                    padding: 14px 20px;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+                    transition: background-color 0.2s ease;
+                }
+                
+                .packing-item:last-child {
+                    border-bottom: none;
+                }
+                
+                .packing-item:hover {
+                    background-color: rgba(52, 152, 219, 0.05);
+                }
+                
+                /* 核取方塊樣式 */
+                .packing-item input[type="checkbox"] {
+                    appearance: none;
+                    -webkit-appearance: none;
+                    width: 22px;
+                    height: 22px;
+                    border: 2px solid #bdc3c7;
+                    border-radius: 6px;
+                    margin-right: 12px;
+                    position: relative;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    flex-shrink: 0;
+                }
+                
+                .packing-item input[type="checkbox"]:checked {
+                    background-color: #2ecc71;
+                    border-color: #2ecc71;
+                }
+                
+                .packing-item input[type="checkbox"]:checked::after {
+                    content: '✓';
+                    position: absolute;
+                    color: white;
+                    font-size: 14px;
+                    font-weight: bold;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+                
+                .packing-item input[type="checkbox"]:focus {
+                    outline: none;
+                    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+                }
+                
+                /* 標籤樣式 */
+                .packing-item label {
+                    flex-grow: 1;
+                    margin-left: 5px;
+                    font-size: 15px;
+                    color: #34495e;
+                    cursor: pointer;
+                    transition: color 0.2s ease, text-decoration 0.2s ease;
+                }
+                
+                .packing-item input[type="checkbox"]:checked + label {
+                    color: #7f8c8d;
+                    text-decoration: line-through;
+                }
+                
+                /* 刪除按鈕樣式 */
+                .delete-item {
+                    background: none;
+                    border: none;
+                    font-size: 16px;
+                    cursor: pointer;
+                    opacity: 0.5;
+                    transition: opacity 0.2s ease, transform 0.2s ease;
+                    padding: 5px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-left: 5px;
+                }
+                
+                .delete-item:hover {
+                    opacity: 1;
+                    transform: scale(1.1);
+                    background-color: rgba(231, 76, 60, 0.1);
+                }
+                
+                /* 空清單提示 */
+                .empty-list-message {
+                    text-align: center;
+                    color: #7f8c8d;
+                    padding: 30px 20px;
+                    font-size: 16px;
+                    background: #ffffff;
+                    border-radius: 16px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                    margin-bottom: 25px;
+                    border: 1px solid rgba(0, 0, 0, 0.03);
+                }
+                
+                /* 響應式設計 */
+                @media (max-width: 768px) {
+                    .category-header {
+                        padding: 14px 16px;
+                    }
+                    
+                    .packing-item {
+                        padding: 12px 16px;
+                    }
+                    
+                    .category-title {
+                        font-size: 15px;
+                    }
+                }
+            </style>
+            
 
-        <div class="main-content">
+        </div>
+
+        <div id="main-page" class="page active">
+            <div class="main-content">
             <!-- 主要行程區域 -->
             <div class="itinerary-section">
                 <h2>🗓️ 旅行行程</h2>
@@ -1039,29 +2299,15 @@
                     <p>建議攜帶防曬用品</p>
                 </div>
                 
-                <!-- 打包清單 -->
+                <!-- 打包清單入口 -->
                 <div class="info-card">
                     <h3 style="display: flex; justify-content: space-between; align-items: center;">
-                        🎒 打包清單
-                        <div style="display: flex; gap: 5px;">
-                            <button onclick="resetPackingList()" style="font-size: 11px; padding: 3px 8px; background-color: #e67e22; color: white; border: none; border-radius: 15px; cursor: pointer;">
-                                🔄 重置清單
-                            </button>
-                            <button onclick="showAddPackingItemForm()" style="font-size: 11px; padding: 3px 8px; background-color: #3498db; color: white; border: none; border-radius: 15px; cursor: pointer;">
-                                ➕ 新增物品
-                            </button>
-                        </div>
+                        🎒個人打包清單
                     </h3>
-                    <div id="addPackingItemForm" style="display: none; margin-bottom: 15px; background: #f8f9fa; padding: 10px; border-radius: 8px;">
-                        <input type="text" id="newPackingItem" placeholder="輸入物品名稱" style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                        <div style="display: flex; gap: 10px;">
-                            <button onclick="addPackingItem()" style="flex: 1; padding: 8px; font-size: 12px; background-color: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer;">新增</button>
-                            <button onclick="hideAddPackingItemForm()" style="flex: 1; padding: 8px; font-size: 12px; background-color: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer;">取消</button>
-                        </div>
+                    <p style="margin-bottom: 15px;">規劃你的旅行必備物品，確保不會遺漏任何重要物品。</p>
+                    <div style="text-align: center;">
+                        <button onclick="showPage('packing')" class="btn btn-primary" style="width: 100%;">查看完整打包清單</button>
                     </div>
-                    <ul id="packingList" class="checklist">
-                        <!-- 打包清單項目將由JavaScript動態生成 -->
-                    </ul>
                 </div>
             </div>
         </div>
@@ -1351,15 +2597,72 @@
 
 
         // 顯示通知
-        function showNotification(message, type = 'success') {
+        function showNotification(message, type = 'success', duration = 3000) {
             const notification = document.getElementById('notification');
-            notification.textContent = message;
+            
+            // 清除之前的計時器
+            if (window.notificationTimer) {
+                clearTimeout(window.notificationTimer);
+                window.notificationTimer = null;
+            }
+            
+            // 創建關閉按鈕
+            const closeButton = document.createElement('span');
+            closeButton.innerHTML = '&times;';
+            closeButton.style.cssText = `
+                position: absolute;
+                top: 8px;
+                right: 10px;
+                font-size: 18px;
+                cursor: pointer;
+                opacity: 0.7;
+                transition: opacity 0.2s ease;
+            `;
+            closeButton.addEventListener('mouseover', () => {
+                closeButton.style.opacity = '1';
+            });
+            closeButton.addEventListener('mouseout', () => {
+                closeButton.style.opacity = '0.7';
+            });
+            closeButton.addEventListener('click', () => {
+                hideNotification();
+            });
+            
+            // 設置通知內容
+            notification.innerHTML = '';
             notification.className = `notification ${type}`;
             notification.classList.add('show');
+            notification.style.position = 'relative';
             
-            setTimeout(() => {
+            // 創建消息文本節點
+            const messageText = document.createElement('span');
+            messageText.textContent = message;
+            messageText.style.cssText = `
+                display: block;
+                padding-right: 30px;
+            `;
+            
+            notification.appendChild(messageText);
+            notification.appendChild(closeButton);
+            
+            // 統一的隱藏函數
+            function hideNotification() {
+                if (window.notificationTimer) {
+                    clearTimeout(window.notificationTimer);
+                    window.notificationTimer = null;
+                }
                 notification.classList.remove('show');
-            }, 3000);
+                setTimeout(() => {
+                    if (!notification.classList.contains('show')) {
+                        notification.innerHTML = '';
+                    }
+                }, 300);
+            }
+            
+            // 設置自動隱藏計時器（簡化版本，確保一定會執行）
+            window.notificationTimer = setTimeout(() => {
+                hideNotification();
+            }, duration);
         }
 
         // 儲存到本地存儲 (已棄用，保留作為相容性支援)
@@ -1371,26 +2674,36 @@
         // 檢查活動是否有未讀留言
         async function hasUnreadComments(activityId) {
             try {
-                if (!currentUser) return false;
+                if (!currentUser) {
+                    console.log(`檢查 ${activityId} 未讀留言：用戶未登入`);
+                    return false;
+                }
                 
                 // 獲取最後查看時間
                 const lastViewTime = await getLastViewTime(activityId);
                 const comments = activityComments[activityId] || [];
                 
+                console.log(`檢查 ${activityId} 未讀留言：用戶=${currentUser.name}, 最後查看時間=${lastViewTime.toLocaleString()}, 留言數=${comments.length}`);
+                
                 // 檢查是否有新留言或回復
                 for (let comment of comments) {
-                    if (new Date(comment.timestamp) > lastViewTime) {
+                    const commentTime = new Date(comment.timestamp);
+                    if (commentTime > lastViewTime) {
+                        console.log(`發現未讀主留言：${comment.author} 在 ${comment.timestamp}`);
                         return true;
                     }
                     // 檢查回復
                     if (comment.replies) {
                         for (let reply of comment.replies) {
-                            if (new Date(reply.timestamp) > lastViewTime) {
+                            const replyTime = new Date(reply.timestamp);
+                            if (replyTime > lastViewTime) {
+                                console.log(`發現未讀回復：${reply.author} 在 ${reply.timestamp}`);
                                 return true;
                             }
                         }
                     }
                 }
+                console.log(`${activityId} 沒有未讀留言`);
                 return false;
             } catch (error) {
                 console.error('檢查未讀留言失敗:', error);
@@ -1456,15 +2769,19 @@
         // 更新單個未讀指示器
         async function updateUnreadIndicator(activityId, button) {
             try {
+                console.log(`開始更新 ${activityId} 的未讀指示器`);
+                
                 // 移除現有的未讀指示器
                 const existingIndicator = button.querySelector('.unread-indicator');
                 if (existingIndicator) {
+                    console.log(`移除 ${activityId} 的現有未讀指示器`);
                     existingIndicator.remove();
                 }
     
                 // 如果有未讀留言，添加指示器
                 const hasUnread = await hasUnreadComments(activityId);
                 if (hasUnread) {
+                    console.log(`為 ${activityId} 添加未讀指示器`);
                     const indicator = document.createElement('span');
                     indicator.className = 'unread-indicator';
                     indicator.innerHTML = '🔴';
@@ -1477,6 +2794,9 @@
                     `;
                     button.style.position = 'relative';
                     button.appendChild(indicator);
+                    console.log(`${activityId} 未讀指示器已添加`);
+                } else {
+                    console.log(`${activityId} 沒有未讀留言，不添加指示器`);
                 }
             } catch (error) {
                 console.error(`更新 ${activityId} 的未讀指示器失敗:`, error);
@@ -1577,6 +2897,9 @@
                 
                 // 更新 Firebase
                 await dbService.saveActivityComments(activityId, activityComments[activityId]);
+                
+                // 重新渲染留言列表
+                renderActivityComments(activityId);
                 
                 // 更新未讀指示器
                 updateUnreadIndicators();
@@ -1744,6 +3067,9 @@
                     // 更新 Firebase
                     await dbService.saveActivityComments(activityId, activityComments[activityId]);
                     
+                    // 重新渲染留言列表
+                    renderActivityComments(activityId);
+                    
                     hideActivityReplyForm(activityId, commentId);
                     
                     // 更新未讀指示器
@@ -1793,23 +3119,27 @@
             await checkUserIdentity();
             await loadComments();
             
+            // 打包清單將在 Firebase 初始化後載入，這裡不再從 localStorage 載入
+            if (!window.packingItems) {
+                window.packingItems = [];
+                console.log('打包清單初始化為空陣列，等待 Firebase 載入');
+            } else {
+                console.log('打包清單已在其他地方初始化，跳過重複初始化');
+            }
+            
+            // 初始化打包清單系統
+            await initializePackingSystem();
+            
+            // 顯示主頁面
+            showPage('main');
+            
+            // 確保打包清單被渲染
+            renderPackingItems();
+            
             // 初始化未讀指示器
             setTimeout(async () => {
                 await updateUnreadIndicators();
             }, 500);
-            
-            // 載入打包清單狀態
-            const checkboxes = document.querySelectorAll('.checklist input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                const saved = localStorage.getItem(checkbox.id);
-                if (saved === 'true') {
-                    checkbox.checked = true;
-                }
-                
-                checkbox.addEventListener('change', function() {
-                    localStorage.setItem(this.id, this.checked);
-                });
-            });
             
             // 載入待確認事項
             await loadConfirmationItems();
@@ -3143,6 +4473,17 @@
                     renderComments();
                 }
                 
+                // 預載入所有活動留言
+                try {
+                    const allActivityComments = await window.dbService.getAllActivityComments();
+                    window.activityComments = allActivityComments || {};
+                    console.log('已載入所有活動留言:', Object.keys(window.activityComments).length, '個活動');
+                } catch (error) {
+                    console.error('載入活動留言失敗:', error);
+                    const savedActivityComments = localStorage.getItem('activityComments');
+                    window.activityComments = savedActivityComments ? JSON.parse(savedActivityComments) : {};
+                }
+                
                 // 監聽活動留言變化
                 if (typeof window.dbService.listenToAllActivityComments === 'function') {
                     window.dbService.listenToAllActivityComments(activityCommentsData => {
@@ -3152,9 +4493,14 @@
                     });
                 } else {
                     console.warn('活動留言監聽功能不可用');
-                    const savedActivityComments = localStorage.getItem('activityComments');
-                    window.activityComments = savedActivityComments ? JSON.parse(savedActivityComments) : {};
-                    updateUnreadIndicators();
+                }
+                
+                // 載入當前用戶（優先載入，確保未讀指示器能正確檢查用戶狀態）
+                const savedUser = localStorage.getItem('currentUser');
+                if (savedUser) {
+                    window.currentUser = JSON.parse(savedUser);
+                    updateCurrentUserDisplay();
+                    console.log('當前用戶已載入:', window.currentUser.name);
                 }
                 
                 // 監聽用戶資料變化
@@ -3189,12 +4535,11 @@
                     loadConfirmationItems();
                 }
                 
-                // 載入當前用戶
-                const savedUser = localStorage.getItem('currentUser');
-                if (savedUser) {
-                    window.currentUser = JSON.parse(savedUser);
-                    updateCurrentUserDisplay();
-                }
+                // 初始化未讀指示器（在用戶載入後執行）
+                setTimeout(async () => {
+                    console.log('開始初始化未讀指示器，當前用戶:', window.currentUser ? window.currentUser.name : '未設置');
+                    await updateUnreadIndicators();
+                }, 1000);
                 
                 console.log('Firebase 資料初始化完成');
             } catch (error) {
@@ -3206,7 +4551,21 @@
         }
         
         // 從本地儲存載入資料
-        function loadDataFromLocalStorage() {
+        async function loadDataFromLocalStorage() {
+            // 載入當前用戶（優先載入）
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                window.currentUser = JSON.parse(savedUser);
+                updateCurrentUserDisplay();
+                console.log('從本地載入當前用戶:', window.currentUser.name);
+            } else {
+                // 如果沒有用戶設置，創建預設用戶
+                window.currentUser = { name: '測試用戶' };
+                localStorage.setItem('currentUser', JSON.stringify(window.currentUser));
+                updateCurrentUserDisplay();
+                console.log('創建預設用戶:', window.currentUser.name);
+            }
+            
             // 載入留言
             const savedComments = localStorage.getItem('comments');
             window.comments = savedComments ? JSON.parse(savedComments) : [];
@@ -3215,7 +4574,44 @@
             // 載入活動留言
             const savedActivityComments = localStorage.getItem('activityComments');
             window.activityComments = savedActivityComments ? JSON.parse(savedActivityComments) : {};
-            updateUnreadIndicators();
+            
+            // 如果沒有活動留言數據，創建一些測試數據
+            if (Object.keys(window.activityComments).length === 0) {
+                const testComments = {
+                    'day1-activity1': [
+                        {
+                            id: 1,
+                            author: '小雷',
+                            text: '這個景點看起來很不錯！',
+                            timestamp: new Date().toLocaleString('zh-TW'),
+                            replies: [
+                                {
+                                    id: 2,
+                                    author: '阿苦',
+                                    text: '同意，我也很期待！',
+                                    timestamp: new Date().toLocaleString('zh-TW')
+                                }
+                            ]
+                        }
+                    ],
+                    'day2-activity1': [
+                        {
+                            id: 3,
+                            author: '泉成',
+                            text: '日月潭真的很美！',
+                            timestamp: new Date().toLocaleString('zh-TW'),
+                            replies: []
+                        }
+                    ]
+                };
+                window.activityComments = testComments;
+                localStorage.setItem('activityComments', JSON.stringify(testComments));
+                console.log('創建測試活動留言數據');
+            }
+            // 延遲更新未讀指示器，確保用戶已載入
+            setTimeout(() => {
+                updateUnreadIndicators();
+            }, 100);
             
             // 載入用戶資料
             const savedUserProfiles = localStorage.getItem('userProfiles');
@@ -3256,96 +4652,280 @@
             // 初始化待確認事項未讀指示器
             updateConfirmationItemUnreadIndicators();
             
-            // 載入打包清單
-            const savedPackingItems = localStorage.getItem('packingItems');
-            // 定義預設打包清單
-            const defaultPackingItems = [
-                // 衣物類
-                { id: 'item1', name: '換洗衣物', checked: false },
-                { id: 'item2', name: '內衣褲', checked: false },
-                { id: 'item3', name: '襪子', checked: false },
-                { id: 'item4', name: '睡衣', checked: false },
-                { id: 'item5', name: '泳衣/泳褲', checked: false },
-                { id: 'item6', name: '外套/薄長袖', checked: false },
-                { id: 'item7', name: '運動鞋', checked: false },
-                { id: 'item8', name: '拖鞋/涼鞋', checked: false },
-                { id: 'item9', name: '遮陽帽', checked: false },
-                
-                // 盥洗用品
-                { id: 'item10', name: '牙刷牙膏', checked: false },
-                { id: 'item11', name: '洗髮精/沐浴乳', checked: false },
-                { id: 'item12', name: '毛巾/浴巾', checked: false },
-                { id: 'item13', name: '梳子/髮圈', checked: false },
-                { id: 'item14', name: '刮鬍刀', checked: false },
-                { id: 'item15', name: '化妝品/保養品', checked: false },
-                
-                // 防護用品
-                { id: 'item16', name: '防曬乳/防曬衣', checked: false },
-                { id: 'item17', name: '防蚊液', checked: false },
-                { id: 'item18', name: '雨具/雨傘', checked: false },
-                { id: 'item19', name: '口罩', checked: false },
-                { id: 'item20', name: '乾洗手/濕紙巾', checked: false },
-                
-                // 電子產品
-                { id: 'item21', name: '手機充電器', checked: false },
-                { id: 'item22', name: '行動電源', checked: false },
-                { id: 'item23', name: '相機/攝影機', checked: false },
-                { id: 'item24', name: '耳機', checked: false },
-                
-                // 其他必需品
-                { id: 'item25', name: '個人藥品/常備藥', checked: false },
-                { id: 'item26', name: '零食/飲料', checked: false },
-                { id: 'item27', name: '證件/錢包', checked: false },
-                { id: 'item28', name: '太陽眼鏡', checked: false },
-                { id: 'item29', name: '水壺', checked: false },
-                { id: 'item30', name: '小背包/腰包', checked: false }
-            ];
-            
-            try {
-                // 嘗試解析localStorage中的資料
-                window.packingItems = savedPackingItems ? JSON.parse(savedPackingItems) : defaultPackingItems;
-                
-                // 檢查解析後的資料是否為有效的陣列
-                if (!Array.isArray(window.packingItems) || window.packingItems.length === 0) {
-                    console.log('打包清單資料無效或為空，載入預設物品');
-                    window.packingItems = defaultPackingItems;
-                    // 儲存預設物品到localStorage
-                    localStorage.setItem('packingItems', JSON.stringify(defaultPackingItems));
-                }
-            } catch (error) {
-                console.error('解析打包清單資料時發生錯誤:', error);
-                window.packingItems = defaultPackingItems;
-                // 儲存預設物品到localStorage
-                localStorage.setItem('packingItems', JSON.stringify(defaultPackingItems));
-            }
-            
-            renderPackingItems();
-            
-            // 載入當前用戶
-            const savedUser = localStorage.getItem('currentUser');
-            if (savedUser) {
-                window.currentUser = JSON.parse(savedUser);
-                updateCurrentUserDisplay();
-            }
+            // 初始化打包清單系統（使用即時同步模式）
+            await initializePackingSystem();
             
             console.log('本地資料載入完成');
+            
+            // 添加測試按鈕來手動觸發未讀圖標
+            setTimeout(() => {
+                addTestUnreadButton();
+                addTestPackingButton();
+            }, 500);
+        }
+        
+        // 添加測試未讀圖標的按鈕
+        function addTestUnreadButton() {
+            const existingBtn = document.getElementById('testUnreadBtn');
+            if (existingBtn) return;
+            
+            const testBtn = document.createElement('button');
+            testBtn.id = 'testUnreadBtn';
+            testBtn.innerHTML = '🧪 測試未讀圖標';
+            testBtn.style.cssText = `
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                z-index: 1000;
+                background: #e74c3c;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 12px;
+            `;
+            testBtn.onclick = function() {
+                testUnreadIndicators();
+            };
+            document.body.appendChild(testBtn);
+        }
+        
+        // 測試未讀圖標功能
+        function testUnreadIndicators() {
+            console.log('開始測試未讀圖標功能');
+            console.log('當前用戶:', window.currentUser);
+            console.log('活動留言數據:', window.activityComments);
+            
+            // 強制更新未讀指示器
+            updateUnreadIndicators();
+            
+            // 顯示測試結果
+            setTimeout(() => {
+                const indicators = document.querySelectorAll('.unread-indicator');
+                console.log('找到的未讀指示器數量:', indicators.length);
+                if (indicators.length > 0) {
+                    alert(`成功！找到 ${indicators.length} 個未讀指示器`);
+                } else {
+                    alert('未找到未讀指示器，請檢查控制台日誌');
+                }
+            }, 1000);
+        }
+        
+        // 添加測試打包清單的按鈕
+        function addTestPackingButton() {
+            const existingBtn = document.getElementById('testPackingBtn');
+            if (existingBtn) return;
+            
+            const testBtn = document.createElement('button');
+            testBtn.id = 'testPackingBtn';
+            testBtn.innerHTML = '📦 測試打包清單';
+            testBtn.style.cssText = `
+                position: fixed;
+                top: 60px;
+                right: 10px;
+                z-index: 1000;
+                background: #27ae60;
+                color: white;
+                border: none;
+                padding: 10px 15px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 12px;
+            `;
+            testBtn.onclick = function() {
+                testPackingList();
+            };
+            document.body.appendChild(testBtn);
+        }
+        
+        // 測試打包清單功能
+        async function testPackingList() {
+            console.log('=== 開始測試打包清單功能 ===');
+            console.log('當前 window.packingItems:', window.packingItems);
+            console.log('Firebase 服務狀態:', window.dbService ? '已初始化' : '未初始化');
+            console.log('當前用戶:', window.currentUser ? window.currentUser.name : '未設置');
+            
+            // 檢查第一個項目的狀態
+            if (window.packingItems && window.packingItems.length > 0) {
+                const firstItem = window.packingItems[0];
+                console.log('第一個項目:', firstItem);
+                
+                // 切換第一個項目的狀態
+                const newStatus = !firstItem.checked;
+                console.log(`將第一個項目狀態從 ${firstItem.checked} 改為 ${newStatus}`);
+                await updatePackingItemStatus(firstItem.id, newStatus);
+                
+                // 檢查更新後的狀態
+                setTimeout(() => {
+                    console.log('更新後的第一個項目:', window.packingItems[0]);
+                    console.log('Firebase 同步狀態: 已更新');
+                    
+                    // 重新渲染以確保視覺同步
+                    renderPackingItems();
+                    
+                    alert(`測試完成！第一個項目狀態已切換為: ${newStatus}\n請檢查控制台日誌查看詳細信息`);
+                }, 100);
+            } else {
+                alert('打包清單為空或未載入');
+            }
         }
         
         // 打包清單相關功能
         // 顯示新增打包物品表單
         function showAddPackingItemForm() {
-            document.getElementById('addPackingItemForm').style.display = 'block';
+            const form = document.getElementById('addPackingItemForm');
+            form.style.display = 'block';
+            // 添加 visible 類別以觸發動畫
+            setTimeout(() => {
+                form.classList.add('visible');
+            }, 10);
             document.getElementById('newPackingItem').focus();
         }
         
         // 隱藏新增打包物品表單
         function hideAddPackingItemForm() {
-            document.getElementById('addPackingItemForm').style.display = 'none';
-            document.getElementById('newPackingItem').value = '';
+            const form = document.getElementById('addPackingItemForm');
+            // 移除 visible 類別以觸發淡出動畫
+            form.classList.remove('visible');
+            // 等待動畫完成後隱藏表單
+            setTimeout(() => {
+                form.style.display = 'none';
+                document.getElementById('newPackingItem').value = '';
+            }, 300);
+        }
+        
+        // 將函數暴露到全域作用域
+        window.showAddPackingItemForm = showAddPackingItemForm;
+        window.hideAddPackingItemForm = hideAddPackingItemForm;
+        
+        // 初始化打包清單系統 - 使用即時同步模式
+        async function initializePackingSystem() {
+            console.log('初始化打包清單系統 - 即時同步模式');
+            
+            // 第一步：優先從本地儲存載入數據（本地優先策略）
+            const savedPackingItems = localStorage.getItem('packingItems');
+            if (savedPackingItems) {
+                window.packingItems = JSON.parse(savedPackingItems);
+                console.log('從本地儲存初始化打包清單:', window.packingItems.length, '個項目');
+            } else {
+                // 如果本地沒有數據，直接載入預設常用物品清單
+                window.packingItems = [
+                    // 衣物類
+                    { id: 'item1', name: '換洗衣物', category: 'clothing', checked: false },
+                    { id: 'item2', name: '內衣褲', category: 'clothing', checked: false },
+                    { id: 'item3', name: '襪子', category: 'clothing', checked: false },
+                    { id: 'item4', name: '睡衣', category: 'clothing', checked: false },
+                    { id: 'item5', name: '泳衣/泳褲', category: 'clothing', checked: false },
+                    { id: 'item6', name: '外套/薄長袖', category: 'clothing', checked: false },
+                    { id: 'item7', name: '運動鞋', category: 'clothing', checked: false },
+                    { id: 'item8', name: '拖鞋/涼鞋', category: 'clothing', checked: false },
+                    { id: 'item9', name: '遮陽帽', category: 'clothing', checked: false },
+                    
+                    // 盥洗用品
+                    { id: 'item10', name: '牙刷牙膏', category: 'toiletries', checked: false },
+                    { id: 'item11', name: '洗髮精/沐浴乳', category: 'toiletries', checked: false },
+                    { id: 'item12', name: '毛巾/浴巾', category: 'toiletries', checked: false },
+                    { id: 'item13', name: '梳子/髮圈', category: 'toiletries', checked: false },
+                    { id: 'item14', name: '刮鬍刀', category: 'toiletries', checked: false },
+                    { id: 'item15', name: '化妝品/保養品', category: 'toiletries', checked: false },
+                    
+                    // 防護用品
+                    { id: 'item16', name: '防曬乳/防曬衣', category: 'protection', checked: false },
+                    { id: 'item17', name: '防蚊液', category: 'protection', checked: false },
+                    { id: 'item18', name: '雨具/雨傘', category: 'protection', checked: false },
+                    { id: 'item19', name: '口罩', category: 'protection', checked: false },
+                    { id: 'item20', name: '乾洗手/濕紙巾', category: 'protection', checked: false },
+                    
+                    // 電子產品
+                    { id: 'item21', name: '手機充電器', category: 'electronics', checked: false },
+                    { id: 'item22', name: '行動電源', category: 'electronics', checked: false },
+                    { id: 'item23', name: '相機/攝影機', category: 'electronics', checked: false },
+                    { id: 'item24', name: '耳機', category: 'electronics', checked: false },
+                    
+                    // 其他必需品
+                    { id: 'item25', name: '個人藥品/常備藥', category: 'essentials', checked: false },
+                    { id: 'item26', name: '零食/飲料', category: 'essentials', checked: false },
+                    { id: 'item27', name: '證件/錢包', category: 'essentials', checked: false },
+                    { id: 'item28', name: '太陽眼鏡', category: 'essentials', checked: false },
+                    { id: 'item29', name: '水壺', category: 'essentials', checked: false },
+                    { id: 'item30', name: '小背包/腰包', category: 'essentials', checked: false }
+                ];
+                localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
+                console.log('初始化預設打包清單:', window.packingItems.length, '個項目');
+            }
+            
+            // 立即渲染本地數據，確保用戶界面快速響應
+            renderPackingItems();
+            
+            // 第二步：設置 Firebase 同步（如果可用）
+            setupFirebaseSync();
+        }
+        
+        // 設置 Firebase 同步機制
+        async function setupFirebaseSync() {
+            // 檢查用戶和 Firebase 服務是否可用
+            if (!window.currentUser || !window.currentUser.name || !window.dbService || !window.dbService.initialized) {
+                console.log('Firebase 同步未啟用：用戶未設置或 Firebase 服務未初始化');
+                return;
+            }
+            
+            try {
+                console.log(`嘗試從 Firebase 同步用戶 ${window.currentUser.name} 的打包清單...`);
+                
+                // 從 Firebase 獲取最新數據
+                const firebaseItems = await window.dbService.getUserPackingItems(window.currentUser.name);
+                
+                if (firebaseItems !== null) {
+                    // 如果 Firebase 有數據，則更新本地數據
+                    // 但我們需要進行智能合併，而不是簡單覆蓋
+                    if (window.packingItems.length === 0) {
+                        // 如果本地是空的，直接使用 Firebase 數據
+                        window.packingItems = firebaseItems;
+                        console.log(`從 Firebase 同步打包清單: ${firebaseItems.length} 個項目`);
+                    } else {
+                        // 如果本地有數據，我們需要決定使用哪個版本
+                        // 這裡我們選擇使用 Firebase 版本，但在實際應用中可能需要更複雜的合併策略
+                        console.log('本地和 Firebase 都有打包清單數據，使用 Firebase 版本');
+                        window.packingItems = firebaseItems;
+                    }
+                    
+                    // 同步到本地儲存
+                    localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
+                    renderPackingItems();
+                } else {
+                    // 如果 Firebase 沒有數據但本地有，則將本地數據同步到 Firebase
+                    if (window.packingItems.length > 0) {
+                        console.log('Firebase 中沒有打包清單，將本地數據同步到 Firebase');
+                        await window.dbService.saveUserPackingItems(window.currentUser.name, window.packingItems);
+                    }
+                }
+                
+                // 設置實時監聽器，自動接收 Firebase 數據變更
+                window.dbService.onUserPackingItemsChange(window.currentUser.name, (updatedItems) => {
+                    console.log('檢測到 Firebase 打包清單變化，更新本地數據');
+                    window.packingItems = updatedItems;
+                    // 同時保存到本地儲存
+                    localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
+                    renderPackingItems();
+                });
+                
+                console.log('Firebase 同步設置完成');
+            } catch (error) {
+                console.error('設置 Firebase 同步失敗:', error);
+                // 發生錯誤時，我們已經有本地數據，所以不需要額外處理
+                // 只需記錄錯誤並繼續使用本地數據
+            }
+        }
+        
+        // 為了向後兼容，保留舊函數名稱但改為調用新函數
+        async function loadPackingItemsFromFirebase() {
+            console.log('使用新的即時同步模式替代舊的載入方式');
+            await initializePackingSystem();
         }
         
         // 新增打包物品
-        function addPackingItem() {
+        async function addPackingItem() {
             const itemName = document.getElementById('newPackingItem').value.trim();
             
             if (!itemName) {
@@ -3353,37 +4933,80 @@
                 return;
             }
             
+            if (!window.currentUser || !window.currentUser.name) {
+                showNotification('請先設置用戶身份', 'error');
+                return;
+            }
+            
+            // 獲取分類
+            let category = document.getElementById('newItemCategory').value;
+            
+            // 處理自訂分類
+            if (category === 'custom') {
+                const customCategory = document.getElementById('customCategory').value.trim();
+                if (!customCategory) {
+                    showNotification('請輸入自訂分類名稱', 'error');
+                    return;
+                }
+                category = customCategory;
+            }
+            
             // 創建新物品
             const newItem = {
                 id: 'item_' + Date.now(),
                 name: itemName,
+                category: category,
                 checked: false
             };
             
-            // 確保 packingItems 存在
-            if (!window.packingItems) {
-                window.packingItems = [];
+            try {
+                // 使用 Firebase 服務添加項目
+                if (window.dbService && window.dbService.initialized) {
+                    const success = await window.dbService.addPackingItem(window.currentUser.name, newItem);
+                    if (success) {
+                        // 本地也更新（Firebase 監聽器會自動更新，但為了即時反應先手動更新）
+                        if (!window.packingItems) {
+                            window.packingItems = [];
+                        }
+                        window.packingItems.push(newItem);
+                        // 同時保存到本地儲存
+                        localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
+                        renderPackingItems();
+                        
+                        showNotification('已新增物品到打包清單');
+                    } else {
+                        showNotification('新增物品失敗，請重試', 'error');
+                    }
+                } else {
+                    showNotification('Firebase 服務未可用', 'error');
+                }
+            } catch (error) {
+                console.error('新增打包物品失敗:', error);
+                showNotification('新增物品失敗，請重試', 'error');
             }
-            
-            // 添加到列表
-            window.packingItems.push(newItem);
-            
-            // 保存到本地儲存
-            localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
-            
-            // 重新渲染列表
-            renderPackingItems();
             
             // 隱藏表單並清空輸入
             hideAddPackingItemForm();
             
-            showNotification('已新增物品到打包清單');
+            // 重置表單
+            document.getElementById('newPackingItem').value = '';
+            document.getElementById('newItemCategory').value = 'clothing';
+            document.getElementById('customCategoryRow').style.display = 'none';
+            document.getElementById('customCategory').value = '';
         }
         
+        // 將 addPackingItem 暴露到全域作用域
+        window.addPackingItem = addPackingItem;
+        
         // 刪除打包物品
-        function deletePackingItem(itemId) {
+        async function deletePackingItem(itemId) {
             // 確保 packingItems 存在
             if (!window.packingItems) {
+                return;
+            }
+            
+            if (!window.currentUser || !window.currentUser.name) {
+                showNotification('請先設置用戶身份', 'error');
                 return;
             }
             
@@ -3394,22 +5017,42 @@
                 return;
             }
             
-            // 從列表中移除
-            window.packingItems.splice(itemIndex, 1);
-            
-            // 保存到本地儲存
-            localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
-            
-            // 重新渲染列表
-            renderPackingItems();
-            
-            showNotification('已從打包清單中移除物品');
+            try {
+                // 使用 Firebase 服務刪除項目
+                if (window.dbService && window.dbService.initialized) {
+                    const success = await window.dbService.deletePackingItem(window.currentUser.name, itemId);
+                    if (success) {
+                        // 本地也更新（Firebase 監聽器會自動更新，但為了即時反應先手動更新）
+                        window.packingItems.splice(itemIndex, 1);
+                        // 同時保存到本地儲存
+                        localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
+                        renderPackingItems();
+                        
+                        showNotification('已從打包清單中移除物品');
+                    } else {
+                        showNotification('刪除物品失敗，請重試', 'error');
+                    }
+                } else {
+                    showNotification('Firebase 服務未可用', 'error');
+                }
+            } catch (error) {
+                console.error('刪除打包物品失敗:', error);
+                showNotification('刪除物品失敗，請重試', 'error');
+            }
         }
         
         // 更新打包物品狀態
-        function updatePackingItemStatus(itemId, checked) {
+        async function updatePackingItemStatus(itemId, checked) {
+            console.log(`更新打包物品狀態: ${itemId} = ${checked}`);
+            
             // 確保 packingItems 存在
             if (!window.packingItems) {
+                console.error('window.packingItems 不存在');
+                return;
+            }
+            
+            if (!window.currentUser || !window.currentUser.name) {
+                console.error('用戶未設置，無法更新打包物品狀態');
                 return;
             }
             
@@ -3417,140 +5060,457 @@
             const item = window.packingItems.find(item => item.id === itemId);
             
             if (!item) {
+                console.error(`找不到 ID 為 ${itemId} 的物品`);
                 return;
             }
             
-            // 更新狀態
-            item.checked = checked;
-            
-            // 保存到本地儲存
-            localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
+            try {
+                // 使用 Firebase 服務更新項目狀態
+                if (window.dbService && window.dbService.initialized) {
+                    const success = await window.dbService.updatePackingItemStatus(window.currentUser.name, itemId, checked);
+                    if (success) {
+                        // 本地也更新（Firebase 監聽器會自動更新，但為了即時反應先手動更新）
+                        item.checked = checked;
+                        // 同時保存到本地儲存
+                        localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
+                        
+                        // 添加調試信息
+                        console.log('當前打包物品狀態:', window.packingItems.map(item => ({id: item.id, name: item.name, checked: item.checked})));
+                        
+                        // 延遲更新進度，確保數據同步完成
+                        setTimeout(() => {
+                            updatePackingProgress();
+                        }, 100);
+                        
+                        console.log('打包清單狀態已保存到 Firebase 和本地儲存:', window.packingItems);
+                    } else {
+                        console.error('更新打包物品狀態失敗');
+                        // 恢復原狀態
+                        const checkbox = document.getElementById(itemId);
+                        if (checkbox) {
+                            checkbox.checked = item.checked;
+                        }
+                    }
+                } else {
+                    console.error('Firebase 服務未可用');
+                    // 恢復原狀態
+                    const checkbox = document.getElementById(itemId);
+                    if (checkbox) {
+                        checkbox.checked = item.checked;
+                    }
+                }
+            } catch (error) {
+                console.error('更新打包物品狀態失敗:', error);
+                // 恢復原狀態
+                const checkbox = document.getElementById(itemId);
+                if (checkbox) {
+                    checkbox.checked = item.checked;
+                }
+            }
         }
         
         // 重置打包清單
-        function resetPackingList() {
-            if (confirm('確定要重置打包清單嗎？這將清除所有已勾選的狀態並恢復預設物品。')) {
-                // 清除localStorage中的打包清單資料
-                localStorage.removeItem('packingItems');
+        async function resetPackingList() {
+            if (confirm('確定要重置打包清單嗎？這將清除目前的打包清單並載入預設的常用物品。')) {
+                if (!window.currentUser || !window.currentUser.name) {
+                    showNotification('請先設置用戶身份', 'error');
+                    return;
+                }
                 
-                // 重新載入預設物品
-                window.packingItems = [
+                // 預設物品清單
+                const defaultItems = [
                     // 衣物類
-                    { id: 'item1', name: '換洗衣物', checked: false },
-                    { id: 'item2', name: '內衣褲', checked: false },
-                    { id: 'item3', name: '襪子', checked: false },
-                    { id: 'item4', name: '睡衣', checked: false },
-                    { id: 'item5', name: '泳衣/泳褲', checked: false },
-                    { id: 'item6', name: '外套/薄長袖', checked: false },
-                    { id: 'item7', name: '運動鞋', checked: false },
-                    { id: 'item8', name: '拖鞋/涼鞋', checked: false },
-                    { id: 'item9', name: '遮陽帽', checked: false },
+                    { id: 'item1', name: '換洗衣物', category: 'clothing', checked: false },
+                    { id: 'item2', name: '內衣褲', category: 'clothing', checked: false },
+                    { id: 'item3', name: '襪子', category: 'clothing', checked: false },
+                    { id: 'item4', name: '睡衣', category: 'clothing', checked: false },
+                    { id: 'item5', name: '泳衣/泳褲', category: 'clothing', checked: false },
+                    { id: 'item6', name: '外套/薄長袖', category: 'clothing', checked: false },
+                    { id: 'item7', name: '運動鞋', category: 'clothing', checked: false },
+                    { id: 'item8', name: '拖鞋/涼鞋', category: 'clothing', checked: false },
+                    { id: 'item9', name: '遮陽帽', category: 'clothing', checked: false },
                     
                     // 盥洗用品
-                    { id: 'item10', name: '牙刷牙膏', checked: false },
-                    { id: 'item11', name: '洗髮精/沐浴乳', checked: false },
-                    { id: 'item12', name: '毛巾/浴巾', checked: false },
-                    { id: 'item13', name: '梳子/髮圈', checked: false },
-                    { id: 'item14', name: '刮鬍刀', checked: false },
-                    { id: 'item15', name: '化妝品/保養品', checked: false },
+                    { id: 'item10', name: '牙刷牙膏', category: 'toiletries', checked: false },
+                    { id: 'item11', name: '洗髮精/沐浴乳', category: 'toiletries', checked: false },
+                    { id: 'item12', name: '毛巾/浴巾', category: 'toiletries', checked: false },
+                    { id: 'item13', name: '梳子/髮圈', category: 'toiletries', checked: false },
+                    { id: 'item14', name: '刮鬍刀', category: 'toiletries', checked: false },
+                    { id: 'item15', name: '化妝品/保養品', category: 'toiletries', checked: false },
                     
                     // 防護用品
-                    { id: 'item16', name: '防曬乳/防曬衣', checked: false },
-                    { id: 'item17', name: '防蚊液', checked: false },
-                    { id: 'item18', name: '雨具/雨傘', checked: false },
-                    { id: 'item19', name: '口罩', checked: false },
-                    { id: 'item20', name: '乾洗手/濕紙巾', checked: false },
+                    { id: 'item16', name: '防曬乳/防曬衣', category: 'protection', checked: false },
+                    { id: 'item17', name: '防蚊液', category: 'protection', checked: false },
+                    { id: 'item18', name: '雨具/雨傘', category: 'protection', checked: false },
+                    { id: 'item19', name: '口罩', category: 'protection', checked: false },
+                    { id: 'item20', name: '乾洗手/濕紙巾', category: 'protection', checked: false },
                     
                     // 電子產品
-                    { id: 'item21', name: '手機充電器', checked: false },
-                    { id: 'item22', name: '行動電源', checked: false },
-                    { id: 'item23', name: '相機/攝影機', checked: false },
-                    { id: 'item24', name: '耳機', checked: false },
+                    { id: 'item21', name: '手機充電器', category: 'electronics', checked: false },
+                    { id: 'item22', name: '行動電源', category: 'electronics', checked: false },
+                    { id: 'item23', name: '相機/攝影機', category: 'electronics', checked: false },
+                    { id: 'item24', name: '耳機', category: 'electronics', checked: false },
                     
                     // 其他必需品
-                    { id: 'item25', name: '個人藥品/常備藥', checked: false },
-                    { id: 'item26', name: '零食/飲料', checked: false },
-                    { id: 'item27', name: '證件/錢包', checked: false },
-                    { id: 'item28', name: '太陽眼鏡', checked: false },
-                    { id: 'item29', name: '水壺', checked: false },
-                    { id: 'item30', name: '小背包/腰包', checked: false }
+                    { id: 'item25', name: '個人藥品/常備藥', category: 'essentials', checked: false },
+                    { id: 'item26', name: '零食/飲料', category: 'essentials', checked: false },
+                    { id: 'item27', name: '證件/錢包', category: 'essentials', checked: false },
+                    { id: 'item28', name: '太陽眼鏡', category: 'essentials', checked: false },
+                    { id: 'item29', name: '水壺', category: 'essentials', checked: false },
+                    { id: 'item30', name: '小背包/腰包', category: 'essentials', checked: false }
                 ];
                 
-                // 重新渲染清單
-                renderPackingItems();
-                
-                showNotification('打包清單已重置為預設物品');
+                try {
+                    // 使用 Firebase 服務重置打包清單
+                    if (window.dbService && window.dbService.initialized) {
+                        const success = await window.dbService.resetUserPackingList(window.currentUser.name, defaultItems);
+                        if (success) {
+                            // 本地也更新
+                            window.packingItems = defaultItems;
+                            // 同時保存到本地儲存
+                            localStorage.setItem('packingItems', JSON.stringify(window.packingItems));
+                            renderPackingItems();
+                            
+                            showNotification('已重置打包清單');
+                        } else {
+                            showNotification('重置打包清單失敗，請重試', 'error');
+                        }
+                    } else {
+                        showNotification('Firebase 服務未可用', 'error');
+                    }
+                } catch (error) {
+                    console.error('重置打包清單失敗:', error);
+                    showNotification('重置打包清單失敗，請重試', 'error');
+                }
             }
+        }
+        
+        // 將 resetPackingList 暴露到全域作用域
+        window.resetPackingList = resetPackingList;
+        
+        // 頁面切換功能
+        function showPage(pageId) {
+            // 隱藏所有頁面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // 顯示指定頁面
+            const targetPage = document.getElementById(pageId + '-page');
+            if (targetPage) {
+                targetPage.classList.add('active');
+                
+                // 如果是打包清單頁面，更新進度條
+                if (pageId === 'packing') {
+                    renderPackingItems();
+                    updatePackingProgress();
+                }
+            }
+        }
+        
+        // 將 showPage 暴露到全域作用域
+        window.showPage = showPage;
+        
+        // 顯示自訂分類輸入框
+        function toggleCustomCategoryInput() {
+            const categorySelect = document.getElementById('newItemCategory');
+            const customCategoryRow = document.getElementById('customCategoryRow');
+            
+            if (categorySelect.value === 'custom') {
+                // 先顯示元素
+                customCategoryRow.style.display = 'flex';
+                customCategoryRow.style.maxHeight = '0px';
+                // 添加動畫效果
+                setTimeout(() => {
+                    customCategoryRow.style.opacity = '1';
+                    customCategoryRow.style.transform = 'translateY(0)';
+                    customCategoryRow.style.maxHeight = '60px'; // 足夠的高度以顯示內容
+                }, 10);
+                setTimeout(() => {
+                    document.getElementById('customCategory').focus();
+                }, 400); // 等待動畫完成後聚焦
+            } else {
+                // 先添加淡出動畫
+                customCategoryRow.style.opacity = '0';
+                customCategoryRow.style.transform = 'translateY(-10px)';
+                customCategoryRow.style.maxHeight = '0px';
+                // 等待動畫完成後隱藏元素
+                setTimeout(() => {
+                    customCategoryRow.style.display = 'none';
+                }, 400);
+            }
+        }
+        
+        // 切換分類展開/收合狀態
+        function toggleCategory(categoryId) {
+            const categoryItems = document.getElementById('category-items-' + categoryId);
+            if (categoryItems) {
+                categoryItems.classList.toggle('expanded');
+                
+                // 更新展開/收合圖標
+                const toggleIcon = document.getElementById('category-toggle-' + categoryId);
+                if (toggleIcon) {
+                    toggleIcon.textContent = categoryItems.classList.contains('expanded') ? '🔽' : '▶️';
+                }
+            }
+        }
+        
+        // 更新打包進度條
+        function updatePackingProgress() {
+            if (!window.packingItems || window.packingItems.length === 0) {
+                document.getElementById('packing-progress-bar').style.width = '0%';
+                document.getElementById('packing-progress-text').textContent = '已完成: 0/0 (0%)';
+                return;
+            }
+            
+            const total = window.packingItems.length;
+            const completed = window.packingItems.filter(item => item.checked).length;
+            const percentage = Math.round((completed / total) * 100);
+            
+            // 更新進度條寬度
+            document.getElementById('packing-progress-bar').style.width = percentage + '%';
+            
+            // 根據完成百分比變換顏色
+            let color = '#e74c3c'; // 紅色 < 30%
+            if (percentage > 70) {
+                color = '#2ecc71'; // 綠色 > 70%
+            } else if (percentage >= 30) {
+                color = '#f39c12'; // 黃色 30-70%
+            }
+            document.getElementById('packing-progress-bar').style.backgroundColor = color;
+            
+            // 更新進度文字
+            document.getElementById('packing-progress-text').textContent = `已完成: ${completed}/${total} (${percentage}%)`;
+            
+            // 更新各分類的進度指示器
+            updateCategoryIndicators();
+        }
+        
+        // 更新各分類的進度指示器
+        function updateCategoryIndicators() {
+            // 獲取所有分類
+            const categories = getCategorizedItems();
+            
+            // 更新每個分類的進度指示器
+            Object.keys(categories).forEach(category => {
+                const items = categories[category];
+                const total = items.length;
+                const completed = items.filter(item => item.checked).length;
+                const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+                
+                // 更新分類標題中的完成數量
+                const statusElement = document.getElementById('category-status-' + category);
+                if (statusElement) {
+                    statusElement.textContent = `${completed}/${total}`;
+                }
+                
+                // 更新分類指示器顏色
+                const indicatorElement = document.getElementById('category-indicator-' + category);
+                if (indicatorElement) {
+                    let color = '#e74c3c'; // 紅色 < 30%
+                    if (percentage > 70) {
+                        color = '#2ecc71'; // 綠色 > 70%
+                    } else if (percentage >= 30) {
+                        color = '#f39c12'; // 黃色 30-70%
+                    }
+                    indicatorElement.style.backgroundColor = color;
+                }
+            });
+        }
+        
+        // 獲取按分類組織的物品
+        function getCategorizedItems() {
+            if (!window.packingItems || window.packingItems.length === 0) {
+                return {};
+            }
+            
+            // 預設分類
+            const categories = {
+                'clothing': [],      // 衣物
+                'toiletries': [],    // 盥洗用品
+                'protection': [],    // 防護用品
+                'electronics': [],   // 電子產品
+                'essentials': []     // 其他必需品
+            };
+            
+            // 將物品分類
+            window.packingItems.forEach(item => {
+                // 如果物品有分類屬性，使用該分類，否則放入「其他必需品」
+                const category = item.category || 'essentials';
+                
+                // 如果分類不存在，創建新分類
+                if (!categories[category]) {
+                    categories[category] = [];
+                }
+                
+                // 將物品添加到對應分類
+                categories[category].push(item);
+            });
+            
+            return categories;
         }
         
         // 渲染打包清單
         function renderPackingItems() {
-            const container = document.getElementById('packingList');
-            if (!container) return;
+            // 檢查舊版打包清單容器（向後兼容）
+            const oldContainer = document.getElementById('packingList');
+            if (oldContainer) {
+                // 確保 packingItems 存在
+                if (!window.packingItems || window.packingItems.length === 0) {
+                    oldContainer.innerHTML = '<div style="text-align: center; color: #7f8c8d; padding: 10px;">打包清單是空的，請新增物品</div>';
+                } else {
+                    // 清空容器
+                    oldContainer.innerHTML = '<div style="text-align: center; padding: 10px;"><button onclick="showPage(\'packing\')" class="btn btn-primary">查看完整打包清單</button></div>';
+                }
+            }
+            
+            // 獲取新版打包清單容器
+            const categoriesContainer = document.getElementById('packing-categories');
+            if (!categoriesContainer) return;
             
             // 確保 packingItems 存在
             if (!window.packingItems || window.packingItems.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: #7f8c8d; padding: 10px;">打包清單是空的，請新增物品</div>';
+                categoriesContainer.innerHTML = '<div style="text-align: center; color: #7f8c8d; padding: 20px;">打包清單是空的，請新增物品</div>';
                 return;
             }
             
-            // 清空容器
-            container.innerHTML = '';
+            // 獲取按分類組織的物品
+            const categorizedItems = getCategorizedItems();
             
-            // 渲染每個物品
-            window.packingItems.forEach(item => {
-                const li = document.createElement('li');
-                li.style.display = 'flex';
-                li.style.justifyContent = 'space-between';
-                li.style.alignItems = 'center';
+            // 清空容器
+            categoriesContainer.innerHTML = '';
+            
+            // 分類名稱對照表
+            const categoryNames = {
+                'clothing': '衣物',
+                'toiletries': '盥洗用品',
+                'protection': '防護用品',
+                'electronics': '電子產品',
+                'essentials': '其他必需品'
+            };
+            
+            // 渲染每個分類
+            Object.keys(categorizedItems).forEach(category => {
+                const items = categorizedItems[category];
+                if (items.length === 0) return; // 跳過空分類
                 
-                // 創建核取方塊和標籤
-                const checkboxContainer = document.createElement('div');
-                checkboxContainer.style.flex = '1';
+                // 計算分類完成進度
+                const total = items.length;
+                const completed = items.filter(item => item.checked).length;
+                const percentage = Math.round((completed / total) * 100);
                 
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = item.id;
-                checkbox.checked = item.checked;
-                checkbox.addEventListener('change', function() {
-                    updatePackingItemStatus(item.id, this.checked);
+                // 決定指示器顏色
+                let indicatorColor = '#e74c3c'; // 紅色 < 30%
+                if (percentage > 70) {
+                    indicatorColor = '#2ecc71'; // 綠色 > 70%
+                } else if (percentage >= 30) {
+                    indicatorColor = '#f39c12'; // 黃色 30-70%
+                }
+                
+                // 創建分類容器
+                const categoryContainer = document.createElement('div');
+                categoryContainer.className = 'category-container';
+                
+                // 創建分類標題
+                const categoryHeader = document.createElement('div');
+                categoryHeader.className = 'category-header';
+                categoryHeader.onclick = function() { toggleCategory(category); };
+                
+                // 分類標題左側（名稱和圖標）
+                const categoryTitle = document.createElement('div');
+                categoryTitle.className = 'category-title';
+                
+                const toggleIcon = document.createElement('span');
+                toggleIcon.id = 'category-toggle-' + category;
+                toggleIcon.textContent = '🔽'; // 預設展開
+                
+                const categoryNameSpan = document.createElement('span');
+                categoryNameSpan.textContent = categoryNames[category] || category; // 使用對照表或原始名稱
+                
+                categoryTitle.appendChild(toggleIcon);
+                categoryTitle.appendChild(categoryNameSpan);
+                
+                // 分類標題右側（狀態和指示器）
+                const categoryStatus = document.createElement('div');
+                categoryStatus.className = 'category-status';
+                
+                const statusText = document.createElement('span');
+                statusText.id = 'category-status-' + category;
+                statusText.textContent = `${completed}/${total}`;
+                
+                const statusIndicator = document.createElement('span');
+                statusIndicator.id = 'category-indicator-' + category;
+                statusIndicator.className = 'status-indicator';
+                statusIndicator.style.backgroundColor = indicatorColor;
+                
+                categoryStatus.appendChild(statusText);
+                categoryStatus.appendChild(statusIndicator);
+                
+                // 組合分類標題
+                categoryHeader.appendChild(categoryTitle);
+                categoryHeader.appendChild(categoryStatus);
+                
+                // 創建分類項目容器
+                const categoryItems = document.createElement('div');
+                categoryItems.id = 'category-items-' + category;
+                categoryItems.className = 'category-items expanded'; // 預設展開
+                
+                // 渲染分類中的每個物品
+                items.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'packing-item';
+                    
+                    // 創建核取方塊
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = item.id;
+                    checkbox.checked = item.checked;
+                    checkbox.addEventListener('change', function() {
+                        updatePackingItemStatus(item.id, this.checked);
+                        // 更新進度條
+                        updatePackingProgress();
+                    });
+                    
+                    // 創建標籤
+                    const label = document.createElement('label');
+                    label.htmlFor = item.id;
+                    label.textContent = item.name;
+                    
+                    // 創建刪除按鈕
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-item';
+                    deleteBtn.innerHTML = '❌';
+                    deleteBtn.title = '刪除物品';
+                    deleteBtn.addEventListener('click', function(e) {
+                        e.stopPropagation(); // 防止觸發分類展開/收合
+                        if (confirm(`確定要刪除「${item.name}」嗎？`)) {
+                            deletePackingItem(item.id);
+                            // 刪除後更新進度條
+                            setTimeout(() => {
+                                updatePackingProgress();
+                            }, 100);
+                        }
+                    });
+                    
+                    // 組合物品元素
+                    itemElement.appendChild(checkbox);
+                    itemElement.appendChild(label);
+                    itemElement.appendChild(deleteBtn);
+                    
+                    // 添加到分類項目容器
+                    categoryItems.appendChild(itemElement);
                 });
                 
-                const label = document.createElement('label');
-                label.htmlFor = item.id;
-                label.textContent = item.name;
+                // 組合分類容器
+                categoryContainer.appendChild(categoryHeader);
+                categoryContainer.appendChild(categoryItems);
                 
-                checkboxContainer.appendChild(checkbox);
-                checkboxContainer.appendChild(label);
-                
-                // 創建刪除按鈕
-                const deleteBtn = document.createElement('button');
-                deleteBtn.innerHTML = '❌';
-                deleteBtn.style.background = '#f8f9fa';
-                deleteBtn.style.border = 'none';
-                deleteBtn.style.borderRadius = '50%';
-                deleteBtn.style.cursor = 'pointer';
-                deleteBtn.style.fontSize = '12px';
-                deleteBtn.style.padding = '3px';
-                deleteBtn.style.width = '22px';
-                deleteBtn.style.height = '22px';
-                deleteBtn.style.display = 'flex';
-                deleteBtn.style.alignItems = 'center';
-                deleteBtn.style.justifyContent = 'center';
-                deleteBtn.title = '刪除物品';
-                deleteBtn.addEventListener('click', function() {
-                    if (confirm(`確定要刪除「${item.name}」嗎？`)) {
-                        deletePackingItem(item.id);
-                    }
-                });
-                
-                // 添加到列表項
-                li.appendChild(checkboxContainer);
-                li.appendChild(deleteBtn);
-                
-                // 添加到容器
-                container.appendChild(li);
+                // 添加到主容器
+                categoriesContainer.appendChild(categoryContainer);
             });
+            
+            // 更新進度條
+            updatePackingProgress();
         }
     </script>
 </body>
