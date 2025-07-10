@@ -2372,6 +2372,40 @@
                     border: 1px solid rgba(222, 184, 135, 0.3);
                 }
                 
+                /* 行程按鈕樣式優化 */
+                .activity-links .btn {
+                    background: none !important;
+                    border: none !important;
+                    padding: 8px !important;
+                    font-size: 24px !important;
+                    border-radius: 0 !important;
+                    box-shadow: none !important;
+                    transition: transform 0.2s ease !important;
+                }
+                
+                .activity-links .btn:hover {
+                    background: none !important;
+                    transform: scale(1.2) !important;
+                }
+                
+                .activity-links .link-btn {
+                    background: none !important;
+                    border: none !important;
+                    padding: 8px !important;
+                    border-radius: 0 !important;
+                    transition: transform 0.2s ease !important;
+                }
+                
+                .activity-links .link-btn:hover {
+                    background: none !important;
+                    transform: scale(1.2) !important;
+                }
+                
+                .activity-links .link-btn img {
+                    width: 28px !important;
+                    height: 28px !important;
+                }
+
                 /* 響應式設計 */
                 @media (max-width: 768px) {
                     .category-header {
@@ -2384,6 +2418,24 @@
                     
                     .category-title {
                         font-size: 15px;
+                    }
+                    
+                    /* 手機版行程按鈕優化 */
+                    .activity-links {
+                        display: flex !important;
+                        flex-direction: row !important;
+                        gap: 8px !important;
+                        align-items: center !important;
+                    }
+                    
+                    .activity-links .btn {
+                        font-size: 20px !important;
+                        padding: 6px !important;
+                    }
+                    
+                    .activity-links .link-btn img {
+                        width: 24px !important;
+                        height: 24px !important;
                     }
                 }
             </style>
