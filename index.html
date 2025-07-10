@@ -1674,8 +1674,7 @@
                 <button class="btn btn-primary" onclick="showUpdateForm()" style="display: none;">📝 更新行程</button>
                 <button class="btn btn-success" onclick="toggleDiscussion()" style="display: none;" title="家庭討論">💬</button>
                 <button class="btn btn-warning" onclick="clearInviteCodeVerification()" title="清除邀請碼驗證狀態" style="display: none;">🔐 重置邀請碼</button>
-                        <button class="btn btn-info" onclick="debugUserAndComments()" title="檢查調試信息">🔍 調試</button>
-                        <button class="btn btn-secondary" onclick="clearAllComments()" title="清除所有留言數據">🗑️ 清除留言</button>
+
                 <button class="btn btn-info" onclick="forceUserRelogin()" title="重新設定用戶身份和頭像">👤 更新個人資訊</button>
                 <button class="btn btn-info" onclick="window.open('user-manual.html', '_blank')" title="查看使用說明">📖 使用者手冊</button>
                 <button class="btn btn-info" onclick="showPage('packing')">🎒 個人打包清單</button>
@@ -2732,7 +2731,7 @@
                 <div class="info-card">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h3 style="margin: 0;">🍴 附近美食</h3>
-                        <button onclick="showAddFoodForm()" class="btn btn-success" style="font-size: 12px; padding: 6px 12px;" title="新增美食">➕</button>
+                        <button onclick="showAddFoodForm()" class="confirmation-btn btn-confirm" style="font-size: 12px; padding: 6px 12px;" title="新增美食">➕</button>
                     </div>
                     <div id="foodList">
                         <!-- 美食列表將由 JavaScript 動態生成 -->
@@ -2767,8 +2766,8 @@
                             </select>
                         </div>
                         <div class="form-actions">
-                            <button onclick="addFoodItem()" class="btn btn-success" title="新增">➕</button>
-                            <button onclick="hideAddFoodForm()" class="btn btn-secondary" title="取消">❌</button>
+                            <button onclick="addFoodItem()" class="confirmation-btn btn-confirm" title="新增">➕</button>
+                            <button onclick="hideAddFoodForm()" class="confirmation-btn" style="background: #95a5a6; color: white;" title="取消">❌</button>
                         </div>
                     </div>
                 </div>
@@ -2777,11 +2776,11 @@
                 <div class="info-card weather-widget" id="weatherWidget">
                     <div class="weather-header" onclick="toggleWeatherCard()" style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h3 style="margin: 0;">🌤️ 天氣預報</h3>
-                        <span class="weather-toggle-icon" id="weatherToggleIcon" style="font-size: 1.2em; transition: transform 0.3s ease;">▼</span>
+                        <span class="weather-toggle-icon" id="weatherToggleIcon" style="font-size: 1.2em; transition: transform 0.3s ease;">▶</span>
                     </div>
                     
                     <!-- 簡化顯示（收摺狀態） -->
-                    <div class="weather-summary" id="weatherSummary" style="display: none;">
+                    <div class="weather-summary" id="weatherSummary" style="display: block;">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <span class="weather-icon" id="weatherIconSummary" style="font-size: 1.5em;">☀️</span>
                             <div>
@@ -2792,7 +2791,7 @@
                     </div>
                     
                     <!-- 詳細內容（展開狀態） -->
-                    <div class="weather-details-container" id="weatherDetailsContainer">
+                    <div class="weather-details-container" id="weatherDetailsContainer" style="display: none;">
                         <div class="weather-loading" id="weatherLoading" style="text-align: center; padding: 20px;">
                             <div style="font-size: 2em; margin-bottom: 10px;">⏳</div>
                             <p>載入天氣資訊中...</p>
@@ -4327,56 +4326,7 @@
                     
                     showNotification('用戶身份已清除，請重新設定個人資訊。', 'warning');
                     
-        // 調試函數：清除所有留言數據（用於測試頭像修復）
-        function clearAllComments() {
-            if (confirm('這將清除所有留言數據，確定要繼續嗎？此操作無法復原。')) {
-                try {
-                    // 清除本地留言數據
-                    localStorage.removeItem('comments');
-                    localStorage.removeItem('activityComments');
-                    
-                    // 清除全域變數
-                    window.comments = [];
-                    window.activityComments = {};
-                    
-                    // 如果Firebase可用，也清除雲端數據
-                    if (window.dbService && window.dbService.isInitialized()) {
-                        // 這裡可以添加清除Firebase留言數據的邏輯
-                        console.log('Firebase留言數據清除功能待實現');
-                    }
-                    
-                    showNotification('所有留言數據已清除，新留言將正確顯示頭像。', 'success');
-                    
-                    // 重新載入頁面以刷新顯示
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
-                } catch (error) {
-                    console.error('清除留言數據失敗:', error);
-                    showNotification('清除留言數據失敗', 'error');
-                }
-            }
-        }
-        
-        // 調試函數：檢查當前用戶和留言數據
-        function debugUserAndComments() {
-            console.log('=== 調試信息 ===');
-            console.log('當前用戶:', currentUser);
-            console.log('選中的頭像:', window.selectedAvatar);
-            console.log('全域留言:', window.comments);
-            console.log('活動留言:', window.activityComments);
-            console.log('================');
-            
-            // 在頁面上顯示調試信息
-            const debugInfo = `
-當前用戶: ${currentUser ? JSON.stringify(currentUser) : '未設定'}
-選中頭像: ${window.selectedAvatar || '未選擇'}
-全域留言數量: ${window.comments ? window.comments.length : 0}
-活動留言數量: ${window.activityComments ? Object.keys(window.activityComments).length : 0}
-            `;
-            
-            alert(debugInfo);
-        }
+
                     
                     // 立即顯示用戶身份設定彈窗
                     setTimeout(() => {
