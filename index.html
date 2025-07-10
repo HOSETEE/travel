@@ -774,25 +774,58 @@
         .day-tab {
             display: flex;
             margin-bottom: 30px;
-            background: #f0e6d6;
-            border-radius: 10px;
-            padding: 5px;
+            background: rgba(240, 230, 214, 0.7);
+            border-radius: 20px;
+            padding: 8px;
+            box-shadow: 0 6px 16px rgba(139, 115, 85, 0.1);
+            border: 1px solid rgba(222, 184, 135, 0.3);
+            transition: all 0.3s ease;
+            width: 100%;
         }
 
         .day-tab button {
             flex: 1;
-            padding: 15px;
+            padding: 16px 24px;
             border: none;
             background: transparent;
             cursor: pointer;
-            border-radius: 8px;
-            font-weight: bold;
+            border-radius: 16px;
+            font-weight: 600;
+            color: #8b7355;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .day-tab button:hover {
+            background: rgba(212, 184, 150, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(212, 184, 150, 0.2);
         }
 
         .day-tab button.active {
             background: #d4b896;
             color: #5d4e37;
+            box-shadow: 0 4px 12px rgba(212, 184, 150, 0.5);
+            transform: translateY(-3px);
+        }
+        
+        .day-tab button.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 40%;
+            height: 3px;
+            background-color: #8b7355;
+            border-radius: 3px;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 3px;
+            background: #8b7355;
+            border-radius: 3px 3px 0 0;
         }
 
         .day-content {
@@ -1007,149 +1040,7 @@
             }
         }
 
-        .weather-widget {
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .weather-header {
-            -webkit-user-select: none;
-            user-select: none;
-            transition: background-color 0.2s ease;
-        }
-        
-        .weather-header:hover {
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
-            padding: 8px;
-            margin: -8px;
-        }
-        
-        .weather-toggle-icon {
-            transition: transform 0.3s ease;
-        }
-        
-        .weather-details-container {
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-        
-        .weather-summary {
-            transition: all 0.3s ease;
-            opacity: 0;
-        }
-        
-        .weather-summary.show {
-            opacity: 1;
-            animation: fadeInUp 0.3s ease forwards;
-        }
-        
-        @keyframes fadeInUp {
-            from { 
-                opacity: 0; 
-                transform: translateY(-10px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
-        }
 
-        .weather-icon {
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
-        
-        .weather-content {
-            text-align: left;
-        }
-        
-        .weather-location {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #5d4e37;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-        
-        .weather-temp {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #d4b896;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-        
-        .weather-condition {
-            font-size: 1em;
-            color: #8b7355;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        .weather-details {
-            background: #faf8f4;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(222, 184, 135, 0.3);
-        }
-        
-        .weather-detail-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 0.9em;
-        }
-        
-        .weather-detail-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .forecast-items {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .forecast-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            background: #faf8f4;
-            border-radius: 6px;
-            font-size: 0.85em;
-            border: 1px solid rgba(222, 184, 135, 0.2);
-        }
-        
-        .forecast-date {
-            font-weight: bold;
-            color: #5d4e37;
-            min-width: 60px;
-        }
-        
-        .forecast-icon {
-            font-size: 1.2em;
-            margin: 0 8px;
-        }
-        
-        .forecast-temp {
-            color: #d4b896;
-            font-weight: bold;
-            min-width: 80px;
-            text-align: right;
-        }
-        
-        .weather-loading {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
 
         .checklist {
             list-style: none;
@@ -2450,10 +2341,21 @@
                 <h2>🗓️ 旅行行程</h2>
                 
                 <!-- 日期切換標籤 -->
-                <div class="day-tab">
-                    <button class="active" onclick="showDay(1)">8/8 (五)</button>
-                    <button onclick="showDay(2)">8/9 (六)</button>
-                    <button onclick="showDay(3)">8/10 (日)</button>
+                <div class="day-tab-container" style="display: flex; justify-content: center; align-items: center; margin-bottom: 40px; flex-wrap: wrap; gap: 15px; width: 100%;">
+                    <div class="day-tab">
+                        <button class="active" onclick="showDay(1)">
+                            <span style="display: block; font-size: 18px; margin-bottom: 2px;">8/8</span>
+                            <span style="display: block; font-size: 14px; opacity: 0.8;">(五)</span>
+                        </button>
+                        <button onclick="showDay(2)">
+                            <span style="display: block; font-size: 18px; margin-bottom: 2px;">8/9</span>
+                            <span style="display: block; font-size: 14px; opacity: 0.8;">(六)</span>
+                        </button>
+                        <button onclick="showDay(3)">
+                            <span style="display: block; font-size: 18px; margin-bottom: 2px;">8/10</span>
+                            <span style="display: block; font-size: 14px; opacity: 0.8;">(日)</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- 第一天行程 -->
@@ -2772,59 +2674,7 @@
                     </div>
                 </div>
 
-                <!-- 天氣資訊 -->
-                <div class="info-card weather-widget" id="weatherWidget">
-                    <div class="weather-header" onclick="toggleWeatherCard()" style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h3 style="margin: 0;">🌤️ 天氣預報</h3>
-                        <span class="weather-toggle-icon" id="weatherToggleIcon" style="font-size: 1.2em; transition: transform 0.3s ease;">▶</span>
-                    </div>
-                    
-                    <!-- 簡化顯示（收摺狀態） -->
-                    <div class="weather-summary" id="weatherSummary" style="display: block;">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <span class="weather-icon" id="weatherIconSummary" style="font-size: 1.5em;">☀️</span>
-                            <div>
-                                <div class="weather-temp" id="weatherTempSummary" style="font-weight: bold;">溫度：--°C</div>
-                                <div class="weather-condition" id="weatherConditionSummary" style="font-size: 0.9em; color: #666;">--</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 詳細內容（展開狀態） -->
-                    <div class="weather-details-container" id="weatherDetailsContainer" style="display: none;">
-                        <div class="weather-loading" id="weatherLoading" style="text-align: center; padding: 20px;">
-                            <div style="font-size: 2em; margin-bottom: 10px;">⏳</div>
-                            <p>載入天氣資訊中...</p>
-                        </div>
-                        <div class="weather-content" id="weatherContent" style="display: none;">
-                            <div class="weather-icon" id="weatherIcon" style="font-size: 3em; text-align: center; margin-bottom: 10px;">☀️</div>
-                            <div class="weather-location" id="weatherLocation" style="text-align: center; font-weight: bold; margin-bottom: 5px;">日月潭地區</div>
-                            <div class="weather-temp" id="weatherTemp" style="text-align: center; font-size: 1.2em; margin-bottom: 5px;">溫度：--°C</div>
-                            <div class="weather-condition" id="weatherCondition" style="text-align: center; color: #666; margin-bottom: 15px;">--</div>
-                            <div class="weather-details" id="weatherDetails">
-                                <div class="weather-detail-item">
-                                    <span>💧 濕度：</span><span id="weatherHumidity">--%</span>
-                                </div>
-                                <div class="weather-detail-item">
-                                    <span>💨 風速：</span><span id="weatherWind">-- km/h</span>
-                                </div>
-                                <div class="weather-detail-item">
-                                    <span>👁️ 能見度：</span><span id="weatherVisibility">-- km</span>
-                                </div>
-                            </div>
-                            <div class="weather-forecast" id="weatherForecast">
-                                <h4 style="margin: 15px 0 10px 0; font-size: 0.9em; color: #666;">未來3天預報</h4>
-                                <div class="forecast-items" id="forecastItems"></div>
-                            </div>
-                            <div class="weather-update-time" id="weatherUpdateTime" style="font-size: 0.8em; color: #999; margin-top: 10px; text-align: center;"></div>
-                        </div>
-                        <div class="weather-error" id="weatherError" style="display: none; text-align: center; padding: 20px; color: #e74c3c;">
-                            <div style="font-size: 2em; margin-bottom: 10px;">⚠️</div>
-                            <p>無法載入天氣資訊</p>
-                            <button onclick="loadWeatherData()" class="btn btn-primary" style="margin-top: 10px; font-size: 0.8em; padding: 5px 10px;" title="重新載入">🔄</button>
-                        </div>
-                    </div>
-                </div>
+
                 
                 <!-- 打包清單入口 -->
                 <div class="info-card">
@@ -3883,15 +3733,16 @@
             modal.innerHTML = `
                 <div style="
                     background: #fcf8f0;
-                    padding: 30px;
+                    padding: 20px;
                     border-radius: 15px;
                     box-shadow: 0 10px 30px rgba(222, 184, 135, 0.3);
                     border: 2px solid #deb887;
-                    max-width: 500px;
+                    max-width: 600px;
                     width: 95%;
                     text-align: center;
                     max-height: 90vh;
                     overflow-y: auto;
+                    box-sizing: border-box;
                 ">
                     <h2 style="color: #5d4e37; margin-bottom: 20px; font-size: 24px;">👤 歡迎來到個人旅行手冊</h2>
                     <p style="color: #8b7355; margin-bottom: 25px; line-height: 1.6;">請告訴我們您的個人ID，並選擇一個頭像！</p>
@@ -3911,14 +3762,16 @@
                     <div style="margin-bottom: 25px;">
                         <h3 style="color: #5d4e37; margin-bottom: 15px; font-size: 18px;">選擇您的頭像：</h3>
                         <div id="avatarSelection" style="
-                            display: grid;
-                            grid-template-columns: repeat(3, 1fr);
-                            gap: 15px;
-                            justify-items: center;
+                            display: flex;
+                            flex-wrap: wrap;
+                            justify-content: center;
+                            align-items: center;
+                            gap: 10px;
                             margin-bottom: 20px;
-                            max-height: 500px;
+                            max-height: 400px;
                             overflow-y: auto;
-                            padding: 10px;
+                            padding: 20px 10px;
+                            box-sizing: border-box;
                         ">
                             ${generateAvatarOptions()}
                         </div>
@@ -3959,20 +3812,25 @@
                 const avatarId = `ID-${i.toString().padStart(2, '0')}`;
                 avatarHTML += `
                     <div class="avatar-option" data-avatar="${avatarId}" style="
-                        width: 120px;
-                        height: 120px;
+                        width: clamp(80px, 15vw, 100px);
+                        height: clamp(80px, 15vw, 100px);
                         border: 3px solid transparent;
                         border-radius: 50%;
                         cursor: pointer;
                         transition: all 0.3s ease;
-                        overflow: hidden;
+                        overflow: visible;
                         position: relative;
+                        margin: 8px;
+                        flex-shrink: 0;
+                        box-sizing: border-box;
                     " onclick="selectAvatar('${avatarId}')">
                         <img src="./img/${avatarId}.png" alt="頭像 ${i}" style="
                             width: 100%;
                             height: 100%;
                             object-fit: cover;
                             border-radius: 50%;
+                            display: block;
+                            box-sizing: border-box;
                         ">
                     </div>
                 `;
@@ -6883,355 +6741,9 @@
             updatePackingProgress();
         }
         
-        // ==================== 天氣預報功能 ====================
+
         
-        // 天氣 API 配置
-        const WEATHER_CONFIG = {
-            // 使用 WeatherAPI.com 免費方案
-            API_KEY: 'demo', // 請替換為您的 API Key
-            BASE_URL: 'https://api.weatherapi.com/v1',
-            // 日月潭座標
-            LOCATION: '23.8647,120.9150', // 日月潭的經緯度
-            LOCATION_NAME: '日月潭'
-        };
-        
-        // 天氣圖標對照表
-        const WEATHER_ICONS = {
-            1000: '☀️', // 晴天
-            1003: '⛅', // 部分多雲
-            1006: '☁️', // 多雲
-            1009: '☁️', // 陰天
-            1030: '🌫️', // 霧
-            1063: '🌦️', // 可能有雨
-            1066: '🌨️', // 可能有雪
-            1069: '🌨️', // 可能有雨夾雪
-            1072: '🌨️', // 可能有凍雨
-            1087: '⛈️', // 可能有雷雨
-            1114: '❄️', // 吹雪
-            1117: '❄️', // 暴雪
-            1135: '🌫️', // 霧
-            1147: '🌫️', // 凍霧
-            1150: '🌦️', // 小雨
-            1153: '🌦️', // 小雨
-            1168: '🌨️', // 凍雨
-            1171: '🌨️', // 重凍雨
-            1180: '🌦️', // 小雨
-            1183: '🌧️', // 小雨
-            1186: '🌧️', // 中雨
-            1189: '🌧️', // 中雨
-            1192: '🌧️', // 大雨
-            1195: '🌧️', // 大雨
-            1198: '🌨️', // 小凍雨
-            1201: '🌨️', // 中或大凍雨
-            1204: '🌨️', // 小雨夾雪
-            1207: '🌨️', // 中或大雨夾雪
-            1210: '❄️', // 小雪
-            1213: '❄️', // 小雪
-            1216: '❄️', // 中雪
-            1219: '❄️', // 中雪
-            1222: '❄️', // 大雪
-            1225: '❄️', // 大雪
-            1237: '🧊', // 冰雹
-            1240: '🌦️', // 小陣雨
-            1243: '🌧️', // 中或大陣雨
-            1246: '🌧️', // 暴雨
-            1249: '🌨️', // 小雨夾雪
-            1252: '🌨️', // 中或大雨夾雪
-            1255: '❄️', // 小陣雪
-            1258: '❄️', // 中或大陣雪
-            1261: '🧊', // 小冰雹
-            1264: '🧊', // 中或大冰雹
-            1273: '⛈️', // 小雷雨
-            1276: '⛈️', // 中或大雷雨
-            1279: '⛈️', // 小雷雨夾雪
-            1282: '⛈️'  // 中或大雷雨夾雪
-        };
-        
-        // 載入天氣資料
-        async function loadWeatherData() {
-            try {
-                // 顯示載入狀態
-                showWeatherLoading();
-                
-                // 構建 API URL
-                const currentWeatherUrl = `${WEATHER_CONFIG.BASE_URL}/current.json?key=${WEATHER_CONFIG.API_KEY}&q=${WEATHER_CONFIG.LOCATION}&lang=zh`;
-                const forecastUrl = `${WEATHER_CONFIG.BASE_URL}/forecast.json?key=${WEATHER_CONFIG.API_KEY}&q=${WEATHER_CONFIG.LOCATION}&days=3&lang=zh`;
-                
-                // 同時請求當前天氣和預報
-                const fetchOptions = {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Content-Type-Options': 'nosniff'
-                    }
-                };
-                
-                const [currentResponse, forecastResponse] = await Promise.all([
-                    fetch(currentWeatherUrl, fetchOptions),
-                    fetch(forecastUrl, fetchOptions)
-                ]);
-                
-                if (!currentResponse.ok || !forecastResponse.ok) {
-                    throw new Error('天氣 API 請求失敗');
-                }
-                
-                const currentData = await currentResponse.json();
-                const forecastData = await forecastResponse.json();
-                
-                // 更新天氣顯示
-                updateWeatherDisplay(currentData, forecastData);
-                
-                // 顯示成功狀態
-                showWeatherContent();
-                
-            } catch (error) {
-                console.error('載入天氣資料失敗:', error);
-                
-                // 如果是 demo key，使用模擬資料
-                if (WEATHER_CONFIG.API_KEY === 'demo') {
-                    loadMockWeatherData();
-                } else {
-                    showWeatherError();
-                }
-            }
-        }
-        
-        // 載入模擬天氣資料（用於演示）
-        function loadMockWeatherData() {
-            const mockCurrentData = {
-                location: {
-                    name: WEATHER_CONFIG.LOCATION_NAME,
-                    localtime: new Date().toLocaleString('zh-TW')
-                },
-                current: {
-                    temp_c: 26,
-                    condition: {
-                        text: '部分多雲',
-                        code: 1003
-                    },
-                    humidity: 75,
-                    wind_kph: 8.5,
-                    vis_km: 10
-                }
-            };
-            
-            const mockForecastData = {
-                forecast: {
-                    forecastday: [
-                        {
-                            date: new Date().toISOString().split('T')[0],
-                            day: {
-                                maxtemp_c: 28,
-                                mintemp_c: 22,
-                                condition: {
-                                    text: '部分多雲',
-                                    code: 1003
-                                }
-                            }
-                        },
-                        {
-                            date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
-                            day: {
-                                maxtemp_c: 30,
-                                mintemp_c: 24,
-                                condition: {
-                                    text: '晴天',
-                                    code: 1000
-                                }
-                            }
-                        },
-                        {
-                            date: new Date(Date.now() + 172800000).toISOString().split('T')[0],
-                            day: {
-                                maxtemp_c: 27,
-                                mintemp_c: 21,
-                                condition: {
-                                    text: '小雨',
-                                    code: 1183
-                                }
-                            }
-                        }
-                    ]
-                }
-            };
-            
-            updateWeatherDisplay(mockCurrentData, mockForecastData);
-            showWeatherContent();
-        }
-        
-        // 天氣卡片收摺狀態
-        let isWeatherExpanded = false;
-        
-        // 切換天氣卡片展開/收摺
-        function toggleWeatherCard() {
-            const detailsContainer = document.getElementById('weatherDetailsContainer');
-            const summary = document.getElementById('weatherSummary');
-            const toggleIcon = document.getElementById('weatherToggleIcon');
-            
-            if (isWeatherExpanded) {
-                // 收摺
-                detailsContainer.style.transition = 'all 0.3s ease';
-                detailsContainer.style.opacity = '0';
-                detailsContainer.style.transform = 'translateY(-10px)';
-                
-                setTimeout(() => {
-                    detailsContainer.style.display = 'none';
-                    summary.style.display = 'block';
-                    summary.classList.add('show');
-                }, 150);
-                
-                toggleIcon.textContent = '▶';
-                toggleIcon.style.transform = 'rotate(-90deg)';
-                isWeatherExpanded = false;
-            } else {
-                // 展開
-                summary.classList.remove('show');
-                summary.style.display = 'none';
-                
-                detailsContainer.style.display = 'block';
-                detailsContainer.style.opacity = '0';
-                detailsContainer.style.transform = 'translateY(-10px)';
-                
-                setTimeout(() => {
-                    detailsContainer.style.opacity = '1';
-                    detailsContainer.style.transform = 'translateY(0)';
-                }, 50);
-                
-                toggleIcon.textContent = '▼';
-                toggleIcon.style.transform = 'rotate(0deg)';
-                isWeatherExpanded = true;
-            }
-        }
-        
-        // 更新天氣顯示
-        function updateWeatherDisplay(currentData, forecastData) {
-            // 更新當前天氣（詳細顯示）
-            const weatherIcon = document.getElementById('weatherIcon');
-            const weatherLocation = document.getElementById('weatherLocation');
-            const weatherTemp = document.getElementById('weatherTemp');
-            const weatherCondition = document.getElementById('weatherCondition');
-            const weatherHumidity = document.getElementById('weatherHumidity');
-            const weatherWind = document.getElementById('weatherWind');
-            const weatherVisibility = document.getElementById('weatherVisibility');
-            const weatherUpdateTime = document.getElementById('weatherUpdateTime');
-            
-            // 更新簡化顯示
-            const weatherIconSummary = document.getElementById('weatherIconSummary');
-            const weatherTempSummary = document.getElementById('weatherTempSummary');
-            const weatherConditionSummary = document.getElementById('weatherConditionSummary');
-            
-            const iconCode = currentData.current.condition.code;
-            const icon = WEATHER_ICONS[iconCode] || '🌤️';
-            const temp = `溫度：${Math.round(currentData.current.temp_c)}°C`;
-            const condition = currentData.current.condition.text;
-            
-            // 更新詳細顯示
-            if (weatherIcon) {
-                weatherIcon.textContent = icon;
-            }
-            
-            if (weatherLocation) {
-                weatherLocation.textContent = currentData.location.name || WEATHER_CONFIG.LOCATION_NAME;
-            }
-            
-            if (weatherTemp) {
-                weatherTemp.textContent = temp;
-            }
-            
-            if (weatherCondition) {
-                weatherCondition.textContent = condition;
-            }
-            
-            if (weatherHumidity) {
-                weatherHumidity.textContent = `${currentData.current.humidity}%`;
-            }
-            
-            if (weatherWind) {
-                weatherWind.textContent = `${currentData.current.wind_kph} km/h`;
-            }
-            
-            if (weatherVisibility) {
-                weatherVisibility.textContent = `${currentData.current.vis_km} km`;
-            }
-            
-            if (weatherUpdateTime) {
-                weatherUpdateTime.textContent = `更新時間：${new Date().toLocaleString('zh-TW')}`;
-            }
-            
-            // 更新簡化顯示
-            if (weatherIconSummary) {
-                weatherIconSummary.textContent = icon;
-            }
-            
-            if (weatherTempSummary) {
-                weatherTempSummary.textContent = temp;
-            }
-            
-            if (weatherConditionSummary) {
-                weatherConditionSummary.textContent = condition;
-            }
-            
-            // 更新預報
-            const forecastItems = document.getElementById('forecastItems');
-            if (forecastItems && forecastData.forecast) {
-                forecastItems.innerHTML = '';
-                
-                forecastData.forecast.forecastday.forEach((day, index) => {
-                    if (index === 0) return; // 跳過今天
-                    
-                    const forecastItem = document.createElement('div');
-                    forecastItem.className = 'forecast-item';
-                    
-                    const date = new Date(day.date);
-                    const dateStr = index === 1 ? '明天' : index === 2 ? '後天' : `${date.getMonth() + 1}/${date.getDate()}`;
-                    
-                    const iconCode = day.day.condition.code;
-                    const icon = WEATHER_ICONS[iconCode] || '🌤️';
-                    
-                    forecastItem.innerHTML = `
-                        <span class="forecast-date">${dateStr}</span>
-                        <span class="forecast-icon">${icon}</span>
-                        <span class="forecast-temp">${Math.round(day.day.mintemp_c)}°-${Math.round(day.day.maxtemp_c)}°C</span>
-                    `;
-                    
-                    forecastItems.appendChild(forecastItem);
-                });
-            }
-        }
-        
-        // 顯示載入狀態
-        function showWeatherLoading() {
-            document.getElementById('weatherLoading').style.display = 'block';
-            document.getElementById('weatherContent').style.display = 'none';
-            document.getElementById('weatherError').style.display = 'none';
-        }
-        
-        // 顯示天氣內容
-        function showWeatherContent() {
-            document.getElementById('weatherLoading').style.display = 'none';
-            document.getElementById('weatherContent').style.display = 'block';
-            document.getElementById('weatherError').style.display = 'none';
-        }
-        
-        // 顯示錯誤狀態
-        function showWeatherError() {
-            document.getElementById('weatherLoading').style.display = 'none';
-            document.getElementById('weatherContent').style.display = 'none';
-            document.getElementById('weatherError').style.display = 'block';
-        }
-        
-        // 頁面載入時初始化天氣
-        document.addEventListener('DOMContentLoaded', function() {
-            // 延遲載入天氣資料，避免阻塞頁面渲染
-            setTimeout(() => {
-                loadWeatherData();
-            }, 1000);
-            
-            // 每30分鐘更新一次天氣資料
-            setInterval(() => {
-                loadWeatherData();
-            }, 30 * 60 * 1000);
-        });
+
         
         // ===== 行程管理功能 =====
         
