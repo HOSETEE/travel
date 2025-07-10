@@ -1427,12 +1427,22 @@
         }
         
         .btn-delete {
-            background: #cd853f;
-            color: #5d4e37;
+            background: #e74c3c;
+            color: white;
         }
         
         .btn-delete:hover {
-            background: #b8860b;
+            background: #c0392b;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+            border: none;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
         }
         
         .add-confirmation-form {
@@ -7194,10 +7204,9 @@
                 return;
             }
             
-            // 生成新的活動 ID
-            const dayContainer = document.getElementById(`day${dayNumber}`);
-            const existingActivities = dayContainer.querySelectorAll('.activity');
-            const activityId = `day${dayNumber}-activity${existingActivities.length}`;
+            // 生成新的活動 ID（使用時間戳確保唯一性）
+            const timestamp = Date.now();
+            const activityId = `day${dayNumber}-activity${timestamp}`;
             
             // 創建活動資料物件
             const activityData = {
@@ -7258,6 +7267,7 @@
             `;
             
             // 按時間順序插入新活動
+            const dayContainer = document.getElementById(`day${dayNumber}`);
             insertActivityByTime(dayContainer, activityHtml, time);
             
             hideAddActivityForm();
