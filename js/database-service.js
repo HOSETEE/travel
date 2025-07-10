@@ -29,7 +29,8 @@ class DatabaseService {
         lastViewTimes: this.database.ref('lastViewTimes'),
         confirmationItems: this.database.ref('confirmationItems'),
         packingItems: this.database.ref('packingItems'),
-        foodItems: this.database.ref('foodItems')
+        foodItems: this.database.ref('foodItems'),
+        activities: this.database.ref('activities')
       };
       
       // 標記初始化成功
@@ -999,3 +1000,168 @@ dbService.deleteFoodItem = async function(itemId) {
 
 // 為了相容性，添加別名方法
 dbService.listenToFoodItems = dbService.onFoodItemsChange;
+
+// ===== 行程管理相關方法 =====
+
+// 獲取所有行程資料
+dbService.getActivities = async function() {
+  try {
+    // 檢查服務是否已初始化
+    if (!this.initialized) {
+      console.warn('DatabaseService 未初始化，無法獲取行程資料');
+      return null;
+    }
+    
+    // 檢查 refs 和 activities 是否存在
+    if (!this.refs || !this.refs.activities) {
+      console.error('activities 引用不存在');
+      return null;
+    }
+    
+    const snapshot = await this.refs.activities.once('value');
+    return snapshot.val() || {};
+  } catch (error) {
+    console.error('從 Firebase 獲取行程資料失敗:', error);
+    return null;
+  }
+};
+
+// 保存行程資料
+dbService.saveActivities = async function(activities) {
+  try {
+    // 檢查服務是否已初始化
+    if (!this.initialized) {
+      console.warn('DatabaseService 未初始化，無法保存行程資料');
+      return false;
+    }
+    
+    // 檢查 refs 和 activities 是否存在
+    if (!this.refs || !this.refs.activities) {
+      console.error('activities 引用不存在');
+      return false;
+    }
+    
+    // 處理數據，確保沒有 undefined 值
+    const processedActivities = {};
+    Object.keys(activities).forEach(dayKey => {
+      processedActivities[dayKey] = activities[dayKey].map(activity => {
+        const processedActivity = {...activity};
+        // 確保所有屬性都不是 undefined，Firebase 不接受 undefined 值
+        Object.keys(processedActivity).forEach(key => {
+          if (processedActivity[key] === undefined) {
+            processedActivity[key] = '';
+          }
+        });
+        return processedActivity;
+      });
+    });
+    
+    await this.refs.activities.set(processedActivities);
+    console.log('成功保存行程資料到 Firebase');
+    return true;
+  } catch (error) {
+    console.error('保存行程資料到 Firebase 失敗:', error);
+    return false;
+  }
+};
+
+// 監聽行程資料變化
+dbService.onActivitiesChange = function(callback) {
+  // 檢查服務是否已初始化
+  if (!this.initialized) {
+    console.warn('DatabaseService 未初始化，無法監聽行程資料變化');
+    return;
+  }
+  
+  // 檢查 refs 和 activities 是否存在
+  if (!this.refs || !this.refs.activities) {
+    console.error('activities 引用不存在');
+    return;
+  }
+  
+  this.refs.activities.on('value', (snapshot) => {
+    const activities = snapshot.val() || {};
+    callback(activities);
+  });
+};
+
+// 獲取特定天數的行程
+dbService.getDayActivities = async function(dayNumber) {
+  try {
+    const allActivities = await this.getActivities();
+    if (allActivities === null) {
+      return null;
+    }
+    return allActivities[`day${dayNumber}`] || [];
+  } catch (error) {
+    console.error(`獲取第${dayNumber}天行程失敗:`, error);
+    return null;
+  }
+};
+
+// 保存特定天數的行程
+dbService.saveDayActivities = async function(dayNumber, activities) {
+  try {
+    const allActivities = await this.getActivities() || {};
+    allActivities[`day${dayNumber}`] = activities;
+    return await this.saveActivities(allActivities);
+  } catch (error) {
+    console.error(`保存第${dayNumber}天行程失敗:`, error);
+    return false;
+  }
+};
+
+// 添加行程
+dbService.addActivity = async function(dayNumber, activity) {
+  try {
+    const dayActivities = await this.getDayActivities(dayNumber) || [];
+    dayActivities.push(activity);
+    return await this.saveDayActivities(dayNumber, dayActivities);
+  } catch (error) {
+    console.error(`添加第${dayNumber}天行程失敗:`, error);
+    return false;
+  }
+};
+
+// 更新行程
+dbService.updateActivity = async function(dayNumber, activityId, updatedActivity) {
+  try {
+    const dayActivities = await this.getDayActivities(dayNumber);
+    if (dayActivities === null) {
+      console.error('無法獲取當前行程列表');
+      return false;
+    }
+    
+    const activityIndex = dayActivities.findIndex(activity => activity.id === activityId);
+    if (activityIndex !== -1) {
+      dayActivities[activityIndex] = { ...dayActivities[activityIndex], ...updatedActivity };
+      return await this.saveDayActivities(dayNumber, dayActivities);
+    } else {
+      console.error(`找不到 ID 為 ${activityId} 的行程`);
+      return false;
+    }
+  } catch (error) {
+    console.error(`更新第${dayNumber}天行程失敗:`, error);
+    return false;
+  }
+};
+
+// 刪除行程
+dbService.deleteActivity = async function(dayNumber, activityId) {
+  try {
+    const dayActivities = await this.getDayActivities(dayNumber);
+    if (dayActivities === null) {
+      console.error('無法獲取當前行程列表');
+      return false;
+    }
+    
+    const updatedActivities = dayActivities.filter(activity => activity.id !== activityId);
+    return await this.saveDayActivities(dayNumber, updatedActivities);
+  } catch (error) {
+    console.error(`刪除第${dayNumber}天行程失敗:`, error);
+    return false;
+  }
+};
+
+// 為了相容性，添加別名方法
+dbService.listenToActivities = dbService.onActivitiesChange;

@@ -2396,11 +2396,18 @@
 
                 <!-- 第一天行程 -->
                 <div id="day1" class="day-content active">
+                    <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #d4b896, #c9a876); border-radius: 10px; box-shadow: 0 4px 15px rgba(212, 184, 150, 0.3);">
+                    <button class="btn btn-success" onclick="showAddActivityForm(1)" style="font-size: 16px; padding: 12px 24px; background: white; color: #5d4e37; border: none; border-radius: 25px; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: all 0.3s ease;" title="新增行程" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">➕ 新增行程</button>
+                </div>
                     <div class="activity">
                         <div class="activity-time">09:00</div>
                         <div class="activity-title">🚗 高雄出發</div>
                         <div class="activity-details">開始我們的日月潭之旅！</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity1')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity1')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity1')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity1')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
+                        </div>
                         <div id="day1-activity1" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2408,11 +2415,12 @@
                         <div class="activity-time">12:00</div>
                         <div class="activity-title">🍜 午餐 - 竹香園</div>
                         <div class="activity-details">路程約1小時45分鐘</div>
-                        <div class="activity-links">
-                            <a href="https://maps.app.goo.gl/Z4FwX1HCSUiFjLgW8" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 16px; height: 16px;"></a>
-                            <a href="https://maps.app.goo.gl/J3GT86WiSKWocXieA" target="_blank" class="link-btn tesla-btn" style="background: #e74c3c; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 32px; padding: 0;"><img src="img/Tesla.svg" alt="Tesla" style="width: 20px; height: 20px; filter: brightness(0) invert(1);"></a>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <a href="https://maps.app.goo.gl/EEwipRYsvP4pkDuq5" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity2')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity2')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity2')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
                         </div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity2')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day1-activity2" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2420,7 +2428,11 @@
                         <div class="activity-time">15:00</div>
                         <div class="activity-title">🥾 步道健走</div>
                         <div class="activity-details">地點待確認，享受大自然的美景</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity3')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity3')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity3')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity3')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
+                        </div>
                         <div id="day1-activity3" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2431,22 +2443,30 @@
                             選項：市區買現成食物（燒烤、鹹酥雞）或火鍋（全聯食材）<br>
                             飲品：紅酒、啤酒、小孩無酒精飲料
                         </div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity4')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity4')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity4')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity4')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
+                        </div>
                         <div id="day1-activity4" class="activity-discussion" style="display: none;"></div>
                     </div>
                 </div>
 
                 <!-- 第二天行程 -->
                 <div id="day2" class="day-content">
+                    <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #d4b896, #c9a876); border-radius: 10px; box-shadow: 0 4px 15px rgba(212, 184, 150, 0.3);">
+                    <button class="btn btn-success" onclick="showAddActivityForm(2)" style="font-size: 16px; padding: 12px 24px; background: white; color: #5d4e37; border: none; border-radius: 25px; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: all 0.3s ease;" title="新增行程" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">➕ 新增行程</button>
+                </div>
                     <div class="activity">
                         <div class="activity-time">09:00</div>
                         <div class="activity-title">🏄‍♀️ 日月潭立槳SUP體驗</div>
                         <div class="activity-details">路程約10分鐘，體驗水上運動的樂趣</div>
-                        <div class="activity-links">
-                            <a href="https://maps.app.goo.gl/YiyeqhiqPpJHWoxD6" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 16px; height: 16px;"></a>
-                            <a href="https://maps.app.goo.gl/JoViJpmjYGrQbKRL6" target="_blank" class="link-btn tesla-btn" style="background: #e74c3c; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 32px; padding: 0;"><img src="img/Tesla.svg" alt="Tesla" style="width: 20px; height: 20px; filter: brightness(0) invert(1);"></a>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <a href="https://maps.app.goo.gl/5XZRuy9ZFbCBo29E7" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity1')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(2, 'day2-activity1')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(2, 'day2-activity1')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
                         </div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity1')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day2-activity1" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2454,7 +2474,11 @@
                         <div class="activity-time">12:00</div>
                         <div class="activity-title">🍱 午餐 + 盥洗</div>
                         <div class="activity-details">回飯店盥洗，路上隨便買回飯店吃</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity2')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity2')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(2, 'day2-activity2')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(2, 'day2-activity2')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
+                        </div>
                         <div id="day2-activity2" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2462,11 +2486,12 @@
                         <div class="activity-time">15:00</div>
                         <div class="activity-title">☕ 下午茶 - 鹿篙咖啡莊園</div>
                         <div class="activity-details">路程約15分鐘，享受山景咖啡</div>
-                        <div class="activity-links">
-                            <a href="https://maps.app.goo.gl/st5HA5XjiPttuzMB7" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 16px; height: 16px;"></a>
-                            <a href="https://maps.app.goo.gl/jFBJEradwCgeQ7QZ6" target="_blank" class="link-btn tesla-btn" style="background: #e74c3c; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 32px; padding: 0;"><img src="img/Tesla.svg" alt="Tesla" style="width: 20px; height: 20px; filter: brightness(0) invert(1);"></a>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <a href="https://maps.app.goo.gl/K64H8VAq8EToSDWD9" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity3')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(2, 'day2-activity3')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(2, 'day2-activity3')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
                         </div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity3')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day2-activity3" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2474,18 +2499,29 @@
                         <div class="activity-time">19:00</div>
                         <div class="activity-title">🍽️ 晚餐</div>
                         <div class="activity-details">餐廳待訂</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity4')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity4')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(2, 'day2-activity4')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(2, 'day2-activity4')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
+                        </div>
                         <div id="day2-activity4" class="activity-discussion" style="display: none;"></div>
                     </div>
                 </div>
 
                 <!-- 第三天行程 -->
                 <div id="day3" class="day-content">
+                    <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #d4b896, #c9a876); border-radius: 10px; box-shadow: 0 4px 15px rgba(212, 184, 150, 0.3);">
+                    <button class="btn btn-success" onclick="showAddActivityForm(3)" style="font-size: 16px; padding: 12px 24px; background: white; color: #5d4e37; border: none; border-radius: 25px; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: all 0.3s ease;" title="新增行程" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">➕ 新增行程</button>
+                </div>
                     <div class="activity">
                         <div class="activity-time">06:30</div>
                         <div class="activity-title">🥐 民宿早餐</div>
                         <div class="activity-details">享用民宿提供的早餐</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity1')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity1')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(3, 'day3-activity1')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(3, 'day3-activity1')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
+                        </div>
                         <div id="day3-activity1" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2493,11 +2529,12 @@
                         <div class="activity-time">07:00</div>
                         <div class="activity-title">🚴‍♀️ 單車環湖日月潭</div>
                         <div class="activity-details">路程約10分鐘，自由參加，沒參加的人可以睡晚一點</div>
-                        <div class="activity-links">
-                            <a href="https://maps.app.goo.gl/yKeRJjKdjiHf5nT5A" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 16px; height: 16px;"></a>
-                            <a href="https://maps.app.goo.gl/8ANMfrNSWh1BnKUK7" target="_blank" class="link-btn tesla-btn" style="background: #e74c3c; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 32px; padding: 0;"><img src="img/Tesla.svg" alt="Tesla" style="width: 20px; height: 20px; filter: brightness(0) invert(1);"></a>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <a href="https://maps.app.goo.gl/DYkHo7L7Q9F5DLhr9" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity2')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(3, 'day3-activity2')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(3, 'day3-activity2')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
                         </div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity2')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
                         <div id="day3-activity2" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2505,7 +2542,11 @@
                         <div class="activity-time">11:00</div>
                         <div class="activity-title">🏨 退房</div>
                         <div class="activity-details">整理行李，準備離開</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity3')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity3')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(3, 'day3-activity3')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(3, 'day3-activity3')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
+                        </div>
                         <div id="day3-activity3" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2513,7 +2554,11 @@
                         <div class="activity-time">12:00</div>
                         <div class="activity-title">🍜 午餐</div>
                         <div class="activity-details">餐廳待訂</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity4')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity4')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(3, 'day3-activity4')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(3, 'day3-activity4')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
+                        </div>
                         <div id="day3-activity4" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
@@ -2521,7 +2566,11 @@
                         <div class="activity-time">14:00</div>
                         <div class="activity-title">👋 解散</div>
                         <div class="activity-details">結束愉快的旅程，各自回家</div>
-                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity5')" style="margin-top: 10px; font-size: 12px; padding: 6px 12px;" title="討論">💬</button>
+                        <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity5')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(3, 'day3-activity5')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                            <button class="btn btn-danger" onclick="confirmDeleteActivity(3, 'day3-activity5')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
+                        </div>
                         <div id="day3-activity5" class="activity-discussion" style="display: none;"></div>
                     </div>
                 </div>
@@ -2865,20 +2914,46 @@
             }
             
             commentDiv.innerHTML = `
-                <div class="comment-header">
-                    <span class="comment-author">${comment.author}</span>
-                    <span class="comment-time">${formatTimestamp(comment.timestamp)}</span>
-                    <button class="reply-btn" onclick="showReplyForm(${comment.id})" style="margin-left: 10px; font-size: 12px; padding: 2px 8px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;" title="回復">↩️</button>
+                <div class="flex items-center gap-4 mb-4">
+                    <img src="${currentUser.photoURL || 'img/ID-01.png'}" alt="使用者頭像" class="w-12 h-12 rounded-full object-cover shadow-md">
+                    <div class="flex-1">
+                        <p class="text-lg font-medium text-gray-800 dark:text-gray-200">${currentUser.displayName || '匿名使用者'}</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 mb-4">
+                     <img src="${comment.authorPhotoURL || 'img/ID-01.png'}" alt="評論者頭像" class="w-12 h-12 rounded-full object-cover shadow-md">
+                     <div class="flex-1">
+                         <p class="text-lg font-medium text-gray-800 dark:text-gray-200">${comment.author}</p>
+                         <span class="text-sm text-gray-500 dark:text-gray-400 ml-2">${formatTimestamp(comment.timestamp)}</span>
+                         <button class="ml-4 px-3 py-1 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors duration-200 flex items-center gap-1" onclick="showReplyForm(${comment.id})" title="回復">
+                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+                             </svg>
+                             <span>回覆</span>
+                         </button>
                 </div>
                 <div class="comment-text">${comment.text}</div>
-                <div id="reply-form-${comment.id}" class="reply-form" style="display: none; margin-top: 10px; padding: 10px; background: #ecf0f1; border-radius: 5px;">
-                    <div style="margin-bottom: 8px; padding: 5px; background: #f8f9fa; border-radius: 3px; color: #2c3e50; font-size: 12px;">
-                        回覆者：<span class="current-user-name">${currentUser ? currentUser.name : '未登入'}</span>
+                <div id="reply-form-${comment.id}" class="reply-form hidden mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="${currentUser.photoURL || 'img/ID-01.png'}" alt="回覆者頭像" class="w-12 h-12 rounded-full object-cover shadow-md">
+                        <div class="flex-1">
+                            <p class="text-lg font-medium text-gray-800 dark:text-gray-200">${currentUser ? currentUser.name : '未登入'}</p>
+                        </div>
                     </div>
-                    <textarea id="reply-text-${comment.id}" placeholder="回復 ${comment.author} 的留言..." style="width: 100%; padding: 5px; border: 1px solid #ddd; border-radius: 3px; resize: vertical; min-height: 60px;"></textarea>
-                    <div style="margin-top: 8px;">
-                        <button onclick="submitReply(${comment.id})" style="padding: 5px 12px; background: #27ae60; color: white; border: none; border-radius: 3px; cursor: pointer; margin-right: 5px;" title="發表回復">💬</button>
-                        <button onclick="hideReplyForm(${comment.id})" style="padding: 5px 12px; background: #95a5a6; color: white; border: none; border-radius: 3px; cursor: pointer;" title="取消">❌</button>
+                    <textarea id="reply-text-${comment.id}" placeholder="回復 ${comment.author} 的留言..." class="w-full p-3 mb-4 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg resize-none min-h-[100px] focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                    <div class="flex justify-end gap-3">
+                        <button onclick="hideReplyForm(${comment.id})" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded-md transition-colors duration-200 flex items-center gap-2" title="取消">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                            <span>取消</span>
+                        </button>
+                        <button onclick="submitReply(${comment.id})" class="px-4 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 rounded-md transition-colors duration-200 flex items-center gap-2" title="發表回復">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>發表回復</span>
+                        </button>
                     </div>
                 </div>
             `;
@@ -2917,13 +2992,13 @@
         function showReplyForm(commentId) {
             // 隱藏所有其他回復表單
             document.querySelectorAll('.reply-form').forEach(form => {
-                form.style.display = 'none';
+                form.classList.add('hidden');
             });
             
             // 顯示指定的回復表單
             const replyForm = document.getElementById(`reply-form-${commentId}`);
             if (replyForm) {
-                replyForm.style.display = 'block';
+                replyForm.classList.remove('hidden');
                 document.getElementById(`reply-text-${commentId}`).focus();
             }
         }
@@ -2932,7 +3007,7 @@
         function hideReplyForm(commentId) {
             const replyForm = document.getElementById(`reply-form-${commentId}`);
             if (replyForm) {
-                replyForm.style.display = 'none';
+                replyForm.classList.add('hidden');
                 // 清空表單
                 document.getElementById(`reply-text-${commentId}`).value = '';
             }
@@ -3284,8 +3359,9 @@
                 discussionDiv.innerHTML = `
                      <h4 style="margin-bottom: 15px; color: #2c3e50; font-size: 16px;">💬 針對此行程的討論</h4>
                      <div class="activity-comment-form">
-                         <div style="margin-bottom: 10px; padding: 8px; background: #f8f9fa; border-radius: 5px; color: #2c3e50; font-weight: bold; font-size: 14px;">
-                             發表者：<span class="current-user-name">${currentUser ? currentUser.name : '未登入'}</span>
+                         <div style="margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 8px; color: #2c3e50; display: flex; align-items: center; gap: 10px;">
+                             <img src="./img/${currentUser ? currentUser.avatar : 'ID-01'}.png" alt="頭像" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                             <span style="font-weight: bold; font-size: 16px;">${currentUser ? currentUser.name : '未登入'}</span>
                          </div>
                          <textarea id="activity-text-${activityId}" placeholder="對這個行程有什麼想法或建議？"></textarea>
                          <button class="btn btn-success" onclick="addActivityComment('${activityId}')" style="font-size: 12px; padding: 6px 12px;" title="發表留言">💬</button>
@@ -3399,9 +3475,12 @@
             }
             
             commentDiv.innerHTML = `
-                <div class="activity-comment-header">
-                    <span class="activity-comment-author">${comment.author}</span>
-                    <span class="activity-comment-time">${formatTimestamp(comment.timestamp)}</span>
+                <div class="activity-comment-header" style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                    <img src="./img/${comment.avatar || 'ID-01'}.png" alt="頭像" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                    <div style="flex-grow: 1;">
+                        <div style="font-weight: bold; font-size: 16px; margin-bottom: 2px;">${comment.author}</div>
+                        <div style="color: #666; font-size: 12px;">${formatTimestamp(comment.timestamp)}</div>
+                    </div>
                     <button onclick="showActivityReplyForm('${activityId}', ${comment.id})" style="margin-left: 8px; font-size: 11px; padding: 2px 6px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;" title="回復">↩️</button>
                 </div>
                 <div class="activity-comment-text">${comment.text}</div>
@@ -3683,7 +3762,7 @@
                     box-shadow: 0 10px 30px rgba(222, 184, 135, 0.3);
                     border: 2px solid #deb887;
                     max-width: 500px;
-                    width: 90%;
+                    width: 95%;
                     text-align: center;
                     max-height: 90vh;
                     overflow-y: auto;
@@ -3707,10 +3786,13 @@
                         <h3 style="color: #5d4e37; margin-bottom: 15px; font-size: 18px;">選擇您的頭像：</h3>
                         <div id="avatarSelection" style="
                             display: grid;
-                            grid-template-columns: repeat(5, 1fr);
-                            gap: 10px;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 15px;
                             justify-items: center;
                             margin-bottom: 20px;
+                            max-height: 500px;
+                            overflow-y: auto;
+                            padding: 10px;
                         ">
                             ${generateAvatarOptions()}
                         </div>
@@ -3747,12 +3829,12 @@
         // 生成頭像選項
         function generateAvatarOptions() {
             let avatarHTML = '';
-            for (let i = 1; i <= 10; i++) {
+            for (let i = 1; i <= 15; i++) {
                 const avatarId = `ID-${i.toString().padStart(2, '0')}`;
                 avatarHTML += `
                     <div class="avatar-option" data-avatar="${avatarId}" style="
-                        width: 60px;
-                        height: 60px;
+                        width: 120px;
+                        height: 120px;
                         border: 3px solid transparent;
                         border-radius: 50%;
                         cursor: pointer;
@@ -3791,8 +3873,8 @@
             const selectedAvatar = document.querySelector(`[data-avatar="${avatarId}"]`);
             if (selectedAvatar) {
                 selectedAvatar.style.border = '3px solid #d4a574';
-                selectedAvatar.style.transform = 'scale(1.1)';
-                selectedAvatar.style.boxShadow = '0 4px 12px rgba(212, 165, 116, 0.4)';
+                selectedAvatar.style.transform = 'scale(1.05)';
+                selectedAvatar.style.boxShadow = '0 6px 16px rgba(212, 165, 116, 0.5)';
             }
             
             // 儲存選擇的頭像
@@ -7007,6 +7089,517 @@
             }, 30 * 60 * 1000);
         });
         
-    </script>
+        // ===== 行程管理功能 =====
+        
+        // 顯示新增行程表單
+        function showAddActivityForm(dayNumber) {
+            const formHtml = `
+                <div id="addActivityModal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+                    <div class="modal-content" style="background: white; padding: 30px; border-radius: 10px; width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto;">
+                        <h3 style="margin-bottom: 20px; color: #2c3e50;">➕ 新增第${dayNumber}天行程</h3>
+                        <form id="addActivityForm">
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">時間：</label>
+                                <input type="time" id="activityTime" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">標題：</label>
+                                <input type="text" id="activityTitle" placeholder="例如：🍽️ 午餐" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">詳細資訊：</label>
+                                <textarea id="activityDetails" placeholder="詳細說明..." rows="3" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; resize: vertical;"></textarea>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Google Maps 連結（選填）：</label>
+                                <input type="url" id="activityMapUrl" placeholder="https://maps.app.goo.gl/..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                            </div>
+                            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                                <button type="button" onclick="hideAddActivityForm()" style="padding: 10px 20px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer;">取消</button>
+                                <button type="submit" style="padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer;">新增</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', formHtml);
+            
+            // 綁定表單提交事件
+            document.getElementById('addActivityForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addActivity(dayNumber);
+            });
+        }
+        
+        // 隱藏新增行程表單
+        function hideAddActivityForm() {
+            const modal = document.getElementById('addActivityModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        // 按時間順序插入行程
+        function insertActivityByTime(dayContainer, activityHtml, newTime) {
+            const existingActivities = dayContainer.querySelectorAll('.activity');
+            const newTimeMinutes = timeToMinutes(newTime);
+            let insertPosition = null;
+            
+            // 找到適當的插入位置
+            for (let i = 0; i < existingActivities.length; i++) {
+                const activity = existingActivities[i];
+                const timeElement = activity.querySelector('.activity-time');
+                if (timeElement) {
+                    const existingTime = timeElement.textContent.trim();
+                    const existingTimeMinutes = timeToMinutes(existingTime);
+                    
+                    if (newTimeMinutes < existingTimeMinutes) {
+                        insertPosition = activity;
+                        break;
+                    }
+                }
+            }
+            
+            if (insertPosition) {
+                // 在找到的位置前插入
+                insertPosition.insertAdjacentHTML('beforebegin', activityHtml);
+            } else {
+                // 如果沒有找到合適位置，插入到最後一個行程後面
+                if (existingActivities.length > 0) {
+                    existingActivities[existingActivities.length - 1].insertAdjacentHTML('afterend', activityHtml);
+                } else {
+                    // 如果沒有任何行程，插入到新增按鈕後面
+                    const addButton = dayContainer.querySelector('button[onclick*="showAddActivityForm"]').parentElement;
+                    addButton.insertAdjacentHTML('afterend', activityHtml);
+                }
+            }
+        }
+        
+        // 將時間字串轉換為分鐘數（用於排序）
+        function timeToMinutes(timeStr) {
+            const [hours, minutes] = timeStr.split(':').map(num => parseInt(num));
+            return hours * 60 + minutes;
+        }
+        
+        // 新增行程
+        async function addActivity(dayNumber) {
+            const time = document.getElementById('activityTime').value;
+            const title = document.getElementById('activityTitle').value;
+            const details = document.getElementById('activityDetails').value;
+            const mapUrl = document.getElementById('activityMapUrl').value;
+            
+            if (!time || !title) {
+                showNotification('請填寫必要欄位', 'error');
+                return;
+            }
+            
+            // 生成新的活動 ID
+            const dayContainer = document.getElementById(`day${dayNumber}`);
+            const existingActivities = dayContainer.querySelectorAll('.activity');
+            const activityId = `day${dayNumber}-activity${existingActivities.length}`;
+            
+            // 創建活動資料物件
+            const activityData = {
+                id: activityId,
+                time: time,
+                title: title,
+                details: details,
+                mapUrl: mapUrl || '',
+                createdAt: new Date().toISOString(),
+                createdBy: currentUser ? currentUser.name : '匿名用戶',
+                createdByAvatar: currentUser ? currentUser.avatar : 'ID-01'
+            };
+            
+            // 先保存到本地存儲
+            try {
+                const existingActivities = JSON.parse(localStorage.getItem('activities') || '{}');
+                if (!existingActivities[`day${dayNumber}`]) {
+                    existingActivities[`day${dayNumber}`] = [];
+                }
+                existingActivities[`day${dayNumber}`].push(activityData);
+                localStorage.setItem('activities', JSON.stringify(existingActivities));
+                console.log('行程已保存到本地存儲');
+            } catch (error) {
+                console.error('保存行程到本地存儲失敗:', error);
+            }
+            
+            // 如果 Firebase 可用，保存到資料庫
+            if (window.dbService && window.dbService.isInitialized()) {
+                try {
+                    const success = await window.dbService.addActivity(dayNumber, activityData);
+                    if (!success) {
+                        showNotification('保存到雲端失敗，但已在本地新增', 'warning');
+                    }
+                } catch (error) {
+                    console.error('保存行程到 Firebase 失敗:', error);
+                    showNotification('保存到雲端失敗，但已在本地新增', 'warning');
+                }
+            }
+            
+            // 創建新的活動 HTML
+            const activityHtml = `
+                <div class="activity">
+                    <div class="activity-time">${time}</div>
+                    <div class="activity-title">${title}</div>
+                    <div class="activity-details">${details}</div>
+                    <div class="activity-creator" style="display: flex; align-items: center; gap: 8px; margin-top: 8px; padding: 8px; background: rgba(212, 184, 150, 0.1); border-radius: 8px; font-size: 14px; color: #8b7355;">
+                        <img src="./img/${activityData.createdByAvatar}.png" alt="${activityData.createdBy}的頭像" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover;">
+                        <span>由 ${activityData.createdBy} 建立</span>
+                    </div>
+                    <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                        ${mapUrl ? `<a href="${mapUrl}" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>` : ''}
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('${activityId}')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                        <button class="btn btn-warning" onclick="showEditActivityForm(${dayNumber}, '${activityId}')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                        <button class="btn btn-danger" onclick="confirmDeleteActivity(${dayNumber}, '${activityId}')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
+                    </div>
+                    <div id="${activityId}" class="activity-discussion" style="display: none;"></div>
+                </div>
+            `;
+            
+            // 按時間順序插入新活動
+            insertActivityByTime(dayContainer, activityHtml, time);
+            
+            hideAddActivityForm();
+            showNotification('行程新增成功！', 'success');
+        }
+        
+        // 顯示編輯行程表單
+        function showEditActivityForm(dayNumber, activityId) {
+            const activityElement = document.getElementById(activityId).parentElement;
+            const timeElement = activityElement.querySelector('.activity-time');
+            const titleElement = activityElement.querySelector('.activity-title');
+            const detailsElement = activityElement.querySelector('.activity-details');
+            const mapLink = activityElement.querySelector('a[href*="maps"]');
+            
+            const currentTime = timeElement.textContent;
+            const currentTitle = titleElement.textContent;
+            const currentDetails = detailsElement.textContent;
+            const currentMapUrl = mapLink ? mapLink.href : '';
+            
+            const formHtml = `
+                <div id="editActivityModal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+                    <div class="modal-content" style="background: white; padding: 30px; border-radius: 10px; width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto;">
+                        <h3 style="margin-bottom: 20px; color: #2c3e50;">✏️ 編輯第${dayNumber}天行程</h3>
+                        <form id="editActivityForm">
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">時間：</label>
+                                <input type="time" id="editActivityTime" value="${currentTime}" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">標題：</label>
+                                <input type="text" id="editActivityTitle" value="${currentTitle}" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">詳細資訊：</label>
+                                <textarea id="editActivityDetails" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; resize: vertical;">${currentDetails}</textarea>
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 5px; font-weight: bold;">Google Maps 連結（選填）：</label>
+                                <input type="url" id="editActivityMapUrl" value="${currentMapUrl}" placeholder="https://maps.app.goo.gl/..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px;">
+                            </div>
+                            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                                <button type="button" onclick="hideEditActivityForm()" style="padding: 10px 20px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer;">取消</button>
+                                <button type="submit" style="padding: 10px 20px; background: #f39c12; color: white; border: none; border-radius: 5px; cursor: pointer;">更新</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', formHtml);
+            
+            // 綁定表單提交事件
+            document.getElementById('editActivityForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                updateActivity(dayNumber, activityId);
+            });
+        }
+        
+        // 隱藏編輯行程表單
+        function hideEditActivityForm() {
+            const modal = document.getElementById('editActivityModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        // 更新行程
+        async function updateActivity(dayNumber, activityId) {
+            const time = document.getElementById('editActivityTime').value;
+            const title = document.getElementById('editActivityTitle').value;
+            const details = document.getElementById('editActivityDetails').value;
+            const mapUrl = document.getElementById('editActivityMapUrl').value;
+            
+            if (!time || !title) {
+                showNotification('請填寫必要欄位', 'error');
+                return;
+            }
+            
+            // 創建更新的活動資料物件
+            const updatedActivityData = {
+                time: time,
+                title: title,
+                details: details,
+                mapUrl: mapUrl || '',
+                updatedAt: new Date().toISOString()
+            };
+            
+            // 先更新本地存儲
+            try {
+                const existingActivities = JSON.parse(localStorage.getItem('activities') || '{}');
+                if (existingActivities[`day${dayNumber}`]) {
+                    const activityIndex = existingActivities[`day${dayNumber}`].findIndex(
+                        activity => activity.id === activityId
+                    );
+                    if (activityIndex !== -1) {
+                        // 保留原有的創建者資訊和其他欄位，只更新指定的欄位
+                        existingActivities[`day${dayNumber}`][activityIndex] = {
+                            ...existingActivities[`day${dayNumber}`][activityIndex],
+                            ...updatedActivityData
+                        };
+                        localStorage.setItem('activities', JSON.stringify(existingActivities));
+                        console.log('行程已在本地存儲中更新');
+                    }
+                }
+            } catch (error) {
+                console.error('更新本地存儲行程失敗:', error);
+            }
+            
+            // 如果 Firebase 可用，更新到資料庫
+            if (window.dbService && window.dbService.isInitialized()) {
+                try {
+                    const success = await window.dbService.updateActivity(dayNumber, activityId, updatedActivityData);
+                    if (!success) {
+                        showNotification('保存到雲端失敗，但已在本地更新', 'warning');
+                    }
+                } catch (error) {
+                    console.error('更新行程到 Firebase 失敗:', error);
+                    showNotification('保存到雲端失敗，但已在本地更新', 'warning');
+                }
+            }
+            
+            const activityElement = document.getElementById(activityId).parentElement;
+            const timeElement = activityElement.querySelector('.activity-time');
+            const titleElement = activityElement.querySelector('.activity-title');
+            const detailsElement = activityElement.querySelector('.activity-details');
+            const linksElement = activityElement.querySelector('.activity-links');
+            
+            // 更新內容
+            timeElement.textContent = time;
+            titleElement.textContent = title;
+            detailsElement.textContent = details;
+            
+            // 重新生成連結區域
+            const mapLinkHtml = mapUrl ? `<a href="${mapUrl}" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>` : '';
+            
+            linksElement.innerHTML = `
+                ${mapLinkHtml}
+                <button class="btn btn-primary" onclick="toggleActivityDiscussion('${activityId}')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                <button class="btn btn-warning" onclick="showEditActivityForm(${dayNumber}, '${activityId}')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                <button class="btn btn-danger" onclick="confirmDeleteActivity(${dayNumber}, '${activityId}')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
+            `;
+            
+            hideEditActivityForm();
+            showNotification('行程更新成功！', 'success');
+        }
+        
+        // 確認刪除行程
+        function confirmDeleteActivity(dayNumber, activityId) {
+            const activityElement = document.getElementById(activityId).parentElement;
+            const titleElement = activityElement.querySelector('.activity-title');
+            const activityTitle = titleElement.textContent;
+            
+            const confirmHtml = `
+                <div id="deleteActivityModal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+                    <div class="modal-content" style="background: white; padding: 30px; border-radius: 10px; width: 90%; max-width: 400px; text-align: center;">
+                        <h3 style="margin-bottom: 20px; color: #e74c3c;">🗑️ 確認刪除</h3>
+                        <p style="margin-bottom: 20px; color: #2c3e50;">確定要刪除「${activityTitle}」這個行程嗎？</p>
+                        <p style="margin-bottom: 20px; color: #7f8c8d; font-size: 14px;">此操作無法復原</p>
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <button onclick="hideDeleteActivityConfirm()" style="padding: 10px 20px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer;">取消</button>
+                            <button onclick="deleteActivity(${dayNumber}, '${activityId}')" style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer;">確認刪除</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', confirmHtml);
+        }
+        
+        // 隱藏刪除確認對話框
+        function hideDeleteActivityConfirm() {
+            const modal = document.getElementById('deleteActivityModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        // 刪除行程
+        async function deleteActivity(dayNumber, activityId) {
+            const activityElement = document.getElementById(activityId).parentElement;
+            const titleElement = activityElement.querySelector('.activity-title');
+            const activityTitle = titleElement.textContent;
+            
+            // 先從本地存儲中刪除
+            try {
+                const existingActivities = JSON.parse(localStorage.getItem('activities') || '{}');
+                if (existingActivities[`day${dayNumber}`]) {
+                    existingActivities[`day${dayNumber}`] = existingActivities[`day${dayNumber}`].filter(
+                        activity => activity.id !== activityId
+                    );
+                    // 如果該天沒有行程了，可以選擇保留空陣列或刪除該天的記錄
+                    if (existingActivities[`day${dayNumber}`].length === 0) {
+                        delete existingActivities[`day${dayNumber}`];
+                    }
+                    localStorage.setItem('activities', JSON.stringify(existingActivities));
+                    console.log('行程已從本地存儲中刪除');
+                }
+            } catch (error) {
+                console.error('從本地存儲刪除行程失敗:', error);
+            }
+            
+            // 如果 Firebase 可用，從資料庫中刪除
+            if (window.dbService && window.dbService.isInitialized()) {
+                try {
+                    const success = await window.dbService.deleteActivity(parseInt(dayNumber), activityId);
+                    if (!success) {
+                        showNotification('從雲端刪除失敗，但已在本地刪除', 'warning');
+                    }
+                } catch (error) {
+                    console.error('從 Firebase 刪除行程失敗:', error);
+                    showNotification('從雲端刪除失敗，但已在本地刪除', 'warning');
+                }
+            }
+            
+            activityElement.remove();
+            hideDeleteActivityConfirm();
+            showNotification(`「${activityTitle}」已刪除`, 'success');
+        }
+        
+        // 渲染行程到頁面
+        function renderActivityToPage(dayNumber, activityId, activityData) {
+            const dayContainer = document.querySelector(`#day${dayNumber}`);
+            if (!dayContainer) {
+                console.warn(`找不到第${dayNumber}天的容器`);
+                return;
+            }
+            
+            // 檢查是否已存在此行程
+            if (document.getElementById(activityId)) {
+                console.log(`行程 ${activityId} 已存在，跳過渲染`);
+                return;
+            }
+            
+            const { time, title, details, mapUrl, createdBy, createdByAvatar } = activityData;
+            
+            // 創建者資訊顯示（如果有的話）
+            const creatorInfo = (createdBy && createdByAvatar) ? `
+                <div class="activity-creator" style="display: flex; align-items: center; gap: 8px; margin-top: 8px; padding: 8px; background: rgba(212, 184, 150, 0.1); border-radius: 8px; font-size: 14px; color: #8b7355;">
+                    <img src="./img/${createdByAvatar}.png" alt="${createdBy}的頭像" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover;">
+                    <span>由 ${createdBy} 建立</span>
+                </div>
+            ` : '';
+            
+            const activityHtml = `
+                <div class="activity">
+                    <div class="activity-time">${time}</div>
+                    <div class="activity-title">${title}</div>
+                    <div class="activity-details">${details}</div>
+                    ${creatorInfo}
+                    <div class="activity-links" style="display: flex; gap: 12px; align-items: center; margin-top: 8px;">
+                        ${mapUrl ? `<a href="${mapUrl}" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>` : ''}
+                        <button class="btn btn-primary" onclick="toggleActivityDiscussion('${activityId}')" style="font-size: 14px; padding: 8px 16px;" title="討論">💬</button>
+                        <button class="btn btn-warning" onclick="showEditActivityForm(${dayNumber}, '${activityId}')" style="font-size: 14px; padding: 8px 16px;" title="編輯行程">✏️</button>
+                        <button class="btn btn-danger" onclick="confirmDeleteActivity(${dayNumber}, '${activityId}')" style="font-size: 14px; padding: 8px 16px;" title="刪除行程">🗑️</button>
+                    </div>
+                    <div id="${activityId}" class="activity-discussion" style="display: none;"></div>
+                </div>
+            `;
+            
+            // 按時間順序插入新活動
+            insertActivityByTime(dayContainer, activityHtml, time);
+        }
+        
+        // 初始化行程同步功能
+        async function initializeActivitySync() {
+            if (!window.dbService || !window.dbService.isInitialized()) {
+                console.log('Firebase 未初始化，跳過行程同步');
+                return;
+            }
+            
+            try {
+                // 載入現有的行程資料
+                const activities = await window.dbService.getActivities();
+                if (activities) {
+                    console.log('從 Firebase 載入行程資料:', activities);
+                    
+                    // 渲染所有行程到頁面
+                    Object.keys(activities).forEach(dayKey => {
+                        const dayNumber = dayKey.replace('day', '');
+                        const dayActivities = activities[dayKey];
+                        
+                        // dayActivities 是陣列格式
+                        if (Array.isArray(dayActivities)) {
+                            dayActivities.forEach(activityData => {
+                                if (activityData && activityData.id && activityData.title) {
+                                    renderActivityToPage(dayNumber, activityData.id, activityData);
+                                }
+                            });
+                        }
+                    });
+                    
+                    console.log('行程資料已渲染到頁面');
+                }
+                
+                // 設置監聽器以同步資料變化
+                window.dbService.onActivitiesChange((activities) => {
+                    console.log('行程資料已更新:', activities);
+                    // 這裡可以根據需要實現即時更新邏輯
+                    // 暫時不自動重新載入，避免無限循環
+                });
+                
+                console.log('行程同步功能已初始化');
+            } catch (error) {
+                console.error('初始化行程同步失敗:', error);
+            }
+        }
+        
+        // 載入本地存儲的行程數據
+        function loadLocalActivities() {
+            try {
+                const localActivities = JSON.parse(localStorage.getItem('activities') || '{}');
+                console.log('從本地存儲載入行程資料:', localActivities);
+                
+                // 渲染所有本地行程到頁面
+                Object.keys(localActivities).forEach(dayKey => {
+                    const dayNumber = dayKey.replace('day', '');
+                    const dayActivities = localActivities[dayKey];
+                    
+                    if (Array.isArray(dayActivities)) {
+                        dayActivities.forEach(activityData => {
+                            if (activityData && activityData.id && activityData.title) {
+                                renderActivityToPage(dayNumber, activityData.id, activityData);
+                            }
+                        });
+                    }
+                });
+                
+                console.log('本地行程資料已渲染到頁面');
+            } catch (error) {
+                console.error('載入本地行程資料失敗:', error);
+            }
+        }
+        
+        // 在頁面載入完成後初始化
+         document.addEventListener('DOMContentLoaded', function() {
+             // 先載入本地存儲的行程
+             loadLocalActivities();
+             
+             // 延遲執行以確保 Firebase 已初始化，然後同步雲端資料
+             setTimeout(initializeActivitySync, 1000);
+         });
+         
+     </script>
 </body>
 </html>
