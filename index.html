@@ -3398,20 +3398,80 @@
             }
         }
 
+
+        // 滾動監聽器變數
+        let discussionScrollListener = null;
+        let currentOpenDiscussionId = null;
+        
         // 切換活動討論區顯示
         async function toggleActivityDiscussion(activityId) {
             const discussionDiv = document.getElementById(activityId);
             
             if (discussionDiv.style.display === 'none') {
+                // 先關閉其他已開啟的討論區
+                if (currentOpenDiscussionId && currentOpenDiscussionId !== activityId) {
+                    const otherDiscussion = document.getElementById(currentOpenDiscussionId);
+                    if (otherDiscussion) {
+                        otherDiscussion.style.display = 'none';
+                    }
+                }
+                
+                // 移除之前的滾動監聽器
+                if (discussionScrollListener) {
+                    window.removeEventListener('scroll', discussionScrollListener);
+                    discussionScrollListener = null;
+                }
+                
                 // 顯示討論區並初始化內容
                 discussionDiv.style.display = 'block';
                 initActivityDiscussion(activityId);
                 await loadActivityComments(activityId);
                 // 更新最後查看時間
                 await updateLastViewTime(activityId);
+                
+                // 設定當前開啟的討論ID
+                currentOpenDiscussionId = activityId;
+                
+                // 添加滾動監聽器
+                let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                discussionScrollListener = function() {
+                    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    // 檢查是否向下滾動且滾動距離超過50px
+                    if (currentScrollTop > lastScrollTop + 50) {
+                        // 自動收合討論區
+                        const openDiscussion = document.getElementById(currentOpenDiscussionId);
+                        if (openDiscussion && openDiscussion.style.display === 'block') {
+                            openDiscussion.style.display = 'none';
+                            currentOpenDiscussionId = null;
+                            
+                            // 移除滾動監聽器
+                            window.removeEventListener('scroll', discussionScrollListener);
+                            discussionScrollListener = null;
+                            
+                            // 顯示提示訊息
+                            showNotification('討論區已自動收合', 'info');
+                        }
+                    }
+                    
+                    lastScrollTop = currentScrollTop;
+                };
+                
+                // 延遲添加滾動監聽器，避免立即觸發
+                setTimeout(() => {
+                    window.addEventListener('scroll', discussionScrollListener, { passive: true });
+                }, 500);
+                
             } else {
                 // 隱藏討論區
                 discussionDiv.style.display = 'none';
+                currentOpenDiscussionId = null;
+                
+                // 移除滾動監聽器
+                if (discussionScrollListener) {
+                    window.removeEventListener('scroll', discussionScrollListener);
+                    discussionScrollListener = null;
+                }
             }
         }
 
