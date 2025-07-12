@@ -7224,8 +7224,16 @@
         // 載入本地存儲的行程數據
         function loadLocalActivities() {
             try {
-                const localActivities = JSON.parse(localStorage.getItem('activities') || '{}');
+                let localActivities = JSON.parse(localStorage.getItem('activities') || '{}');
                 console.log('從本地存儲載入行程資料:', localActivities);
+                
+                // 檢查是否有行程數據，如果沒有則設置預設行程數據
+                if (Object.keys(localActivities).length === 0) {
+                    console.log('未找到行程數據，設置預設行程');
+                    localActivities = setupDefaultActivities();
+                    // 保存預設行程到本地存儲
+                    localStorage.setItem('activities', JSON.stringify(localActivities));
+                }
                 
                 // 渲染所有本地行程到頁面
                 Object.keys(localActivities).forEach(dayKey => {
@@ -7245,6 +7253,151 @@
             } catch (error) {
                 console.error('載入本地行程資料失敗:', error);
             }
+        }
+        
+        // 設置預設行程數據
+        function setupDefaultActivities() {
+            const timestamp = Date.now();
+            const defaultActivities = {
+                'day1': [
+                    {
+                        id: 'day1-activity1',
+                        time: '09:00',
+                        title: '集合出發',
+                        details: '台北車站東三門集合，請準時到達，逾時不候。',
+                        mapUrl: 'https://maps.app.goo.gl/JGRUBBdNPRZfzKSx5',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    },
+                    {
+                        id: 'day1-activity2',
+                        time: '12:00',
+                        title: '午餐',
+                        details: '享用當地特色料理。',
+                        mapUrl: '',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    },
+                    {
+                        id: 'day1-activity3',
+                        time: '14:00',
+                        title: '日月潭遊湖',
+                        details: '搭乘遊艇環湖，欣賞日月潭美景。',
+                        mapUrl: 'https://maps.app.goo.gl/5zU8kX8vinQKhpVU6',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    },
+                    {
+                        id: 'day1-activity4',
+                        time: '18:00',
+                        title: '晚餐',
+                        details: '飯店內用餐。',
+                        mapUrl: '',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    }
+                ],
+                'day2': [
+                    {
+                        id: 'day2-activity1',
+                        time: '08:00',
+                        title: '早餐',
+                        details: '飯店內用早餐。',
+                        mapUrl: '',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    },
+                    {
+                        id: 'day2-activity2',
+                        time: '10:00',
+                        title: '清境農場',
+                        details: '參觀清境農場，與綿羊互動。',
+                        mapUrl: 'https://maps.app.goo.gl/Vr2GBkxmdQF5qH8y6',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    },
+                    {
+                        id: 'day2-activity3',
+                        time: '15:30',
+                        title: '下午茶',
+                        details: '享用當地特色下午茶。',
+                        mapUrl: '',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    },
+                    {
+                        id: 'day2-activity4',
+                        time: '18:30',
+                        title: '晚餐',
+                        details: '飯店內用餐。',
+                        mapUrl: '',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    }
+                ],
+                'day3': [
+                    {
+                        id: 'day3-activity1',
+                        time: '08:00',
+                        title: '早餐',
+                        details: '飯店內用早餐。',
+                        mapUrl: '',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    },
+                    {
+                        id: 'day3-activity2',
+                        time: '09:30',
+                        title: '單車環湖',
+                        details: '騎單車環繞日月潭，欣賞湖光山色。',
+                        mapUrl: 'https://maps.app.goo.gl/5zU8kX8vinQKhpVU6',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    },
+                    {
+                        id: 'day3-activity3',
+                        time: '11:00',
+                        title: '退房',
+                        details: '辦理飯店退房手續。',
+                        mapUrl: '',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    },
+                    {
+                        id: 'day3-activity4',
+                        time: '12:30',
+                        title: '午餐',
+                        details: '享用當地特色料理。',
+                        mapUrl: '',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    },
+                    {
+                        id: 'day3-activity5',
+                        time: '15:00',
+                        title: '賦歸',
+                        details: '踏上歸途，結束愉快的旅程。',
+                        mapUrl: '',
+                        createdAt: new Date().toISOString(),
+                        createdBy: '行程管理員',
+                        createdByAvatar: 'ID-01'
+                    }
+                ]
+            };
+            
+            return defaultActivities;
         }
         
         // 在頁面載入完成後初始化
