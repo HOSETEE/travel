@@ -1580,6 +1580,7 @@
                 <button class="btn btn-info" onclick="forceUserRelogin()" title="重新設定用戶身份和頭像">👤 更新個人資訊</button>
                 <button class="btn btn-info" onclick="window.open('user-manual.html', '_blank')" title="查看使用說明">📖 使用者手冊</button>
                 <button class="btn btn-info" onclick="showPage('packing')">🎒 個人打包清單</button>
+                <button class="btn btn-danger" onclick="clearAllActivities()" title="刪除所有行程（包括預設行程）">🗑️ 清空所有行程</button>
             </div>
         </div>
         
@@ -2385,6 +2386,46 @@
                         </div>
                         <div id="day1-activity1" class="activity-discussion" style="display: none;"></div>
                     </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">12:00</div>
+                        <div class="activity-title">🍜 午餐 - 竹香園</div>
+                        <div class="activity-details">路程約1小時45分鐘</div>
+                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
+                            <a href="https://maps.app.goo.gl/EEwipRYsvP4pkDuq5" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity2')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="討論">💬</button>
+                    <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity2')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="編輯行程">✏️</button>
+                    <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity2')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="刪除行程">🗑️</button>
+                        </div>
+                        <div id="day1-activity2" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">15:00</div>
+                        <div class="activity-title">🥾 步道健走</div>
+                        <div class="activity-details">地點待確認，享受大自然的美景</div>
+                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity3')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="討論">💬</button>
+                            <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity3')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="編輯行程">✏️</button>
+                             <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity3')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="刪除行程">🗑️</button>
+                        </div>
+                        <div id="day1-activity3" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">18:00</div>
+                        <div class="activity-title">🍽️ 晚餐 - 民宿</div>
+                        <div class="activity-details">
+                            選項：市區買現成食物（燒烤、鹹酥雞）或火鍋（全聯食材）<br>
+                            飲品：紅酒、啤酒、小孩無酒精飲料
+                        </div>
+                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
+                             <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity4')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="討論">💬</button>
+                             <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity4')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="編輯行程">✏️</button>
+                             <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity4')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="刪除行程">🗑️</button>
+                        </div>
+                        <div id="day1-activity4" class="activity-discussion" style="display: none;"></div>
+                    </div>
                 </div>
 
                 <!-- 第二天行程 -->
@@ -2429,6 +2470,18 @@
                         </div>
                         <div id="day2-activity3" class="activity-discussion" style="display: none;"></div>
                     </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">19:00</div>
+                        <div class="activity-title">🍽️ 晚餐</div>
+                        <div class="activity-details">餐廳待訂</div>
+                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity4')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="討論">💬</button>
+                             <button class="btn btn-warning" onclick="showEditActivityForm(2, 'day2-activity4')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="編輯行程">✏️</button>
+                             <button class="btn btn-danger" onclick="confirmDeleteActivity(2, 'day2-activity4')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="刪除行程">🗑️</button>
+                        </div>
+                        <div id="day2-activity4" class="activity-discussion" style="display: none;"></div>
+                    </div>
                 </div>
 
                 <!-- 第三天行程 -->
@@ -2471,6 +2524,18 @@
                              <button class="btn btn-danger" onclick="confirmDeleteActivity(3, 'day3-activity3')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="刪除行程">🗑️</button>
                         </div>
                         <div id="day3-activity3" class="activity-discussion" style="display: none;"></div>
+                    </div>
+                    
+                    <div class="activity">
+                        <div class="activity-time">12:00</div>
+                        <div class="activity-title">🍜 午餐</div>
+                        <div class="activity-details">餐廳待訂</div>
+                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
+                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity4')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="討論">💬</button>
+                             <button class="btn btn-warning" onclick="showEditActivityForm(3, 'day3-activity4')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="編輯行程">✏️</button>
+                             <button class="btn btn-danger" onclick="confirmDeleteActivity(3, 'day3-activity4')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="刪除行程">🗑️</button>
+                        </div>
+                        <div id="day3-activity4" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
                     <div class="activity">
@@ -3442,7 +3507,7 @@
                         <div style="font-weight: bold; font-size: 16px; margin-bottom: 2px;">${comment.author}</div>
                         <div style="color: #666; font-size: 12px;">${formatTimestamp(comment.timestamp)}</div>
                     </div>
-                    <button onclick="showActivityReplyForm('${activityId}', ${comment.id})" style="margin-left: 8px; font-size: 13px; padding: 4px 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;" title="回復">↩️ 回覆</button>
+                    <button onclick="showActivityReplyForm('${activityId}', ${comment.id})" style="margin-left: 8px; font-size: 13px; padding: 4px 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;" title="回復">↩️</button>
                 </div>
                 <div class="activity-comment-text" style="margin: 10px 0; line-height: 1.5; font-size: 15px;">${comment.text}</div>
                 <div id="activity-reply-form-${activityId}-${comment.id}" class="activity-reply-form" style="display: none; margin-top: 12px; padding: 12px; background: #ecf0f1; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
@@ -3453,7 +3518,7 @@
                     <textarea id="activity-reply-text-${activityId}-${comment.id}" placeholder="回復 ${comment.author} 的留言..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; resize: vertical; min-height: 60px; font-size: 14px; margin-bottom: 10px;"></textarea>
                     <div style="display: flex; justify-content: flex-end; gap: 10px;">
                         <button onclick="hideActivityReplyForm('${activityId}', ${comment.id})" style="padding: 6px 12px; background: #95a5a6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;" title="取消">取消</button>
-                        <button onclick="submitActivityReply('${activityId}', ${comment.id})" style="padding: 6px 12px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;" title="發表回復">💬 發表回覆</button>
+                        <button onclick="submitActivityReply('${activityId}', ${comment.id})" style="padding: 6px 12px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;" title="發表回復">💬</button>
                     </div>
                 </div>
             `;
