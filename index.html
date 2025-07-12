@@ -2375,47 +2375,6 @@
                         <div id="day1-activity1" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
-                    <div class="activity">
-                        <div class="activity-time">12:00</div>
-                        <div class="activity-title">🍜 午餐 - 竹香園</div>
-                        <div class="activity-details">路程約1小時45分鐘</div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                            <a href="https://maps.app.goo.gl/EEwipRYsvP4pkDuq5" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>
-                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity2')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="討論">💬</button>
-                    <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity2')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="編輯行程">✏️</button>
-                    <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity2')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day1-activity2" class="activity-discussion" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="activity">
-                        <div class="activity-time">15:00</div>
-                        <div class="activity-title">🥾 步道健走</div>
-                        <div class="activity-details">地點待確認，享受大自然的美景</div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity3')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="討論">💬</button>
-                            <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity3')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="編輯行程">✏️</button>
-                             <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity3')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day1-activity3" class="activity-discussion" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="activity">
-                        <div class="activity-time">18:00</div>
-                        <div class="activity-title">🍽️ 晚餐 - 民宿</div>
-                        <div class="activity-details">
-                            選項：市區買現成食物（燒烤、鹹酥雞）或火鍋（全聯食材）<br>
-                            飲品：紅酒、啤酒、小孩無酒精飲料
-                        </div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                             <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity4')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="討論">💬</button>
-                             <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity4')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="編輯行程">✏️</button>
-                             <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity4')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day1-activity4" class="activity-discussion" style="display: none;"></div>
-                    </div>
-                </div>
-
                 <!-- 第二天行程 -->
                 <div id="day2" class="day-content">
                     <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #d4b896, #c9a876); border-radius: 10px; box-shadow: 0 4px 15px rgba(212, 184, 150, 0.3);">
@@ -3287,20 +3246,33 @@
                 discussionScrollListener = function() {
                     const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
                     
-                    // 檢查是否向下滾動且滾動距離超過50px
-                    if (currentScrollTop > lastScrollTop + 50) {
-                        // 自動收合討論區
-                        const openDiscussion = document.getElementById(currentOpenDiscussionId);
-                        if (openDiscussion && openDiscussion.style.display === 'block') {
-                            openDiscussion.style.display = 'none';
-                            currentOpenDiscussionId = null;
-                            
-                            // 移除滾動監聽器
-                            window.removeEventListener('scroll', discussionScrollListener);
-                            discussionScrollListener = null;
-                            
-                            // 顯示提示訊息
-                            showNotification('討論區已自動收合', 'info');
+                    // 檢查是否向下滾動且滾動距離超過300px
+                    if (currentScrollTop > lastScrollTop + 300) {
+                        // 檢查是否有活動的輸入框
+                        const activeTextarea = document.querySelector(`#activity-text-${currentOpenDiscussionId}:focus`);
+                        const activeReplyTextarea = document.querySelector(`textarea[id^="activity-reply-text-${currentOpenDiscussionId}"]:focus`);
+                        const activeElement = document.activeElement;
+                        const isInputActive = activeElement && (activeElement.tagName === 'TEXTAREA' || activeElement.tagName === 'INPUT');
+                        
+                        // 如果沒有活動的輸入框，且沒有其他輸入元素獲得焦點，才自動收合討論區
+                        if (!activeTextarea && !activeReplyTextarea && !isInputActive) {
+                            // 檢查是否有打開的回覆表單
+                            const openReplyForms = document.querySelectorAll(`.activity-reply-form[style*="display: block"]`);
+                            if (openReplyForms.length === 0) {
+                                // 自動收合討論區
+                                const openDiscussion = document.getElementById(currentOpenDiscussionId);
+                                if (openDiscussion && openDiscussion.style.display === 'block') {
+                                    openDiscussion.style.display = 'none';
+                                    currentOpenDiscussionId = null;
+                                    
+                                    // 移除滾動監聽器
+                                    window.removeEventListener('scroll', discussionScrollListener);
+                                    discussionScrollListener = null;
+                                    
+                                    // 顯示提示訊息
+                                    showNotification('討論區已自動收合', 'info');
+                                }
+                            }
                         }
                     }
                     
@@ -3310,7 +3282,7 @@
                 // 延遲添加滾動監聽器，避免立即觸發
                 setTimeout(() => {
                     window.addEventListener('scroll', discussionScrollListener, { passive: true });
-                }, 500);
+                }, 2000);
                 
             } else {
                 // 隱藏討論區
@@ -3337,10 +3309,10 @@
                              <img src="./img/${currentUser ? currentUser.avatar : 'ID-01'}.png" alt="頭像" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                              <span style="font-weight: bold; font-size: 16px;">${currentUser ? currentUser.name : '未登入'}</span>
                          </div>
-                         <textarea id="activity-text-${activityId}" placeholder="對這個行程有什麼想法或建議？"></textarea>
-                         <button class="btn btn-success" onclick="addActivityComment('${activityId}')" style="font-size: 12px; padding: 6px 12px;" title="發表留言">💬</button>
+                         <textarea id="activity-text-${activityId}" placeholder="對這個行程有什麼想法或建議？" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; resize: vertical; min-height: 80px; margin-bottom: 10px;"></textarea>
+                         <button class="btn btn-success" onclick="addActivityComment('${activityId}')" style="font-size: 14px; padding: 8px 15px; background-color: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer;" title="發表留言">💬 發表留言</button>
                      </div>
-                     <div id="${activityId}-comments" class="activity-comments">
+                     <div id="${activityId}-comments" class="activity-comments" style="margin-top: 20px;">
                          <!-- 留言會動態載入到這裡 -->
                      </div>
                  `;
@@ -3348,6 +3320,32 @@
                  // 更新新建立的用戶顯示
                  setTimeout(() => {
                      updateCurrentUserDisplay();
+                     
+                     // 為留言輸入框添加事件監聽器，防止滾動時自動收合
+                     const textarea = document.getElementById(`activity-text-${activityId}`);
+                     if (textarea) {
+                         textarea.addEventListener('focus', function() {
+                             // 當輸入框獲得焦點時，暫時移除滾動監聽器
+                             if (discussionScrollListener) {
+                                 window.removeEventListener('scroll', discussionScrollListener);
+                             }
+                         });
+                         
+                         textarea.addEventListener('blur', function() {
+                             // 當輸入框失去焦點時，檢查是否有其他輸入元素獲得焦點
+                             setTimeout(() => {
+                                 const activeElement = document.activeElement;
+                                 const isInputActive = activeElement && (activeElement.tagName === 'TEXTAREA' || activeElement.tagName === 'INPUT');
+                                 
+                                 // 如果沒有其他輸入元素獲得焦點，且討論區仍然開啟，才重新添加滾動監聽器
+                                 if (!isInputActive && currentOpenDiscussionId === activityId) {
+                                     setTimeout(() => {
+                                         window.addEventListener('scroll', discussionScrollListener, { passive: true });
+                                     }, 2000);
+                                 }
+                             }, 200);
+                         });
+                     }
                  }, 0);
             }
         }
@@ -3456,17 +3454,18 @@
                         <div style="font-weight: bold; font-size: 16px; margin-bottom: 2px;">${comment.author}</div>
                         <div style="color: #666; font-size: 12px;">${formatTimestamp(comment.timestamp)}</div>
                     </div>
-                    <button onclick="showActivityReplyForm('${activityId}', ${comment.id})" style="margin-left: 8px; font-size: 11px; padding: 2px 6px; background: #3498db; color: white; border: none; border-radius: 3px; cursor: pointer;" title="回復">↩️</button>
+                    <button onclick="showActivityReplyForm('${activityId}', ${comment.id})" style="margin-left: 8px; font-size: 13px; padding: 4px 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;" title="回復">↩️ 回覆</button>
                 </div>
-                <div class="activity-comment-text">${comment.text}</div>
-                <div id="activity-reply-form-${activityId}-${comment.id}" class="activity-reply-form" style="display: none; margin-top: 8px; padding: 8px; background: #ecf0f1; border-radius: 5px;">
-                    <div style="margin-bottom: 6px; padding: 4px; background: #f8f9fa; border-radius: 3px; color: #2c3e50; font-size: 11px;">
-                        回覆者：<span class="current-user-name">${currentUser ? currentUser.name : '未登入'}</span>
+                <div class="activity-comment-text" style="margin: 10px 0; line-height: 1.5; font-size: 15px;">${comment.text}</div>
+                <div id="activity-reply-form-${activityId}-${comment.id}" class="activity-reply-form" style="display: none; margin-top: 12px; padding: 12px; background: #ecf0f1; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    <div style="margin-bottom: 10px; padding: 8px; background: #f8f9fa; border-radius: 5px; color: #2c3e50; font-size: 14px; display: flex; align-items: center;">
+                        <img src="./img/${currentUser ? currentUser.avatar : 'ID-01'}.png" alt="頭像" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                        <span class="current-user-name" style="font-weight: bold;">${currentUser ? currentUser.name : '未登入'}</span>
                     </div>
-                    <textarea id="activity-reply-text-${activityId}-${comment.id}" placeholder="回復 ${comment.author} 的留言..." style="width: 100%; padding: 4px; border: 1px solid #ddd; border-radius: 3px; resize: vertical; min-height: 50px; font-size: 12px;"></textarea>
-                    <div style="margin-top: 6px;">
-                        <button onclick="submitActivityReply('${activityId}', ${comment.id})" style="padding: 4px 8px; background: #27ae60; color: white; border: none; border-radius: 3px; cursor: pointer; margin-right: 4px; font-size: 11px;" title="發表回復">💬</button>
-                        <button onclick="hideActivityReplyForm('${activityId}', ${comment.id})" style="padding: 4px 8px; background: #95a5a6; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px;" title="取消">❌</button>
+                    <textarea id="activity-reply-text-${activityId}-${comment.id}" placeholder="回復 ${comment.author} 的留言..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; resize: vertical; min-height: 60px; font-size: 14px; margin-bottom: 10px;"></textarea>
+                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                        <button onclick="hideActivityReplyForm('${activityId}', ${comment.id})" style="padding: 6px 12px; background: #95a5a6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;" title="取消">取消</button>
+                        <button onclick="submitActivityReply('${activityId}', ${comment.id})" style="padding: 6px 12px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;" title="發表回復">💬 發表回覆</button>
                     </div>
                 </div>
             `;
@@ -3498,7 +3497,32 @@
             if (replyForm) {
                 replyForm.style.display = 'block';
                 const textArea = document.getElementById(`activity-reply-text-${activityId}-${commentId}`);
-                if (textArea) textArea.focus();
+                
+                // 當顯示回覆表單時，暫時移除滾動監聽器
+                if (discussionScrollListener) {
+                    window.removeEventListener('scroll', discussionScrollListener);
+                }
+                
+                // 為回覆輸入框添加事件監聽器
+                 if (textArea) {
+                     // 移除之前的事件監聽器（如果有）
+                     textArea.removeEventListener('blur', textArea._blurHandler);
+                     
+                     // 定義並保存 blur 事件處理函數
+                     textArea._blurHandler = function() {
+                         // 當輸入框失去焦點時，重新添加滾動監聽器
+                         if (currentOpenDiscussionId === activityId) {
+                             setTimeout(() => {
+                                 window.addEventListener('scroll', discussionScrollListener, { passive: true });
+                             }, 1000);
+                         }
+                     };
+                     
+                     textArea.addEventListener('blur', textArea._blurHandler);
+                     
+                     // 設置焦點
+                     textArea.focus();
+                 }
             }
         }
         
@@ -3510,6 +3534,20 @@
                 // 清空表單
                 const textArea = document.getElementById(`activity-reply-text-${activityId}-${commentId}`);
                 if (textArea) textArea.value = '';
+                
+                // 檢查是否需要重新添加滾動監聽器
+                if (currentOpenDiscussionId === activityId && discussionScrollListener) {
+                    // 延遲添加滾動監聽器，避免立即觸發
+                    setTimeout(() => {
+                        // 檢查是否有其他輸入框正在使用
+                        const activeElement = document.activeElement;
+                        const isInputActive = activeElement && (activeElement.tagName === 'TEXTAREA' || activeElement.tagName === 'INPUT');
+                        
+                        if (!isInputActive) {
+                            window.addEventListener('scroll', discussionScrollListener, { passive: true });
+                        }
+                    }, 1000);
+                }
             }
         }
         
