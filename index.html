@@ -112,6 +112,17 @@
             background: linear-gradient(135deg, #bda896 0%, #b29d86 100%);
             transform: translateY(-2px);
         }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e57373 0%, #d32f2f 100%);
+            color: white;
+            border: 1px solid rgba(139, 115, 85, 0.2);
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
+            transform: translateY(-2px);
+        }
 
         .main-content {
             display: grid;
@@ -1569,6 +1580,7 @@
                 <button class="btn btn-info" onclick="forceUserRelogin()" title="重新設定用戶身份和頭像">👤 更新個人資訊</button>
                 <button class="btn btn-info" onclick="window.open('user-manual.html', '_blank')" title="查看使用說明">📖 使用者手冊</button>
                 <button class="btn btn-info" onclick="showPage('packing')">🎒 個人打包清單</button>
+                <button class="btn btn-danger" onclick="clearAllActivities()" title="刪除所有行程（包括預設行程）">🗑️ 清空所有行程</button>
             </div>
         </div>
         
@@ -2373,31 +2385,6 @@
                             <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity1')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="刪除行程">🗑️</button>
                         </div>
                         <div id="day1-activity1" class="activity-discussion" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="activity">
-                        <div class="activity-time">12:00</div>
-                        <div class="activity-title">🍜 午餐 - 竹香園</div>
-                        <div class="activity-details">路程約1小時45分鐘</div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                            <a href="https://maps.app.goo.gl/EEwipRYsvP4pkDuq5" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>
-                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity2')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="討論">💬</button>
-                    <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity2')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="編輯行程">✏️</button>
-                    <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity2')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day1-activity2" class="activity-discussion" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="activity">
-                        <div class="activity-time">15:00</div>
-                        <div class="activity-title">🥾 步道健走</div>
-                        <div class="activity-details">地點待確認，享受大自然的美景</div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity3')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="討論">💬</button>
-                            <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity3')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="編輯行程">✏️</button>
-                             <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity3')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day1-activity3" class="activity-discussion" style="display: none;"></div>
                     </div>
                     
                     <div class="activity">
