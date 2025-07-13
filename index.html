@@ -802,53 +802,85 @@
         .day-tab {
             display: flex;
             margin-bottom: 30px;
-            background: rgba(240, 230, 214, 0.7);
-            border-radius: 20px;
-            padding: 8px;
-            box-shadow: 0 6px 16px rgba(139, 115, 85, 0.1);
-            border: 1px solid rgba(222, 184, 135, 0.3);
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
+            border: none;
             transition: all 0.3s ease;
             width: 100%;
+            gap: 15px;
+            justify-content: center;
         }
 
         .day-tab button {
-            flex: 1;
-            padding: 16px 24px;
+            padding: 12px 24px;
             border: none;
-            background: transparent;
+            background: white;
             cursor: pointer;
-            border-radius: 16px;
-            font-weight: 600;
-            color: #8b7355;
+            border-radius: 25px;
+            font-weight: bold;
+            color: #5d4e37;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            min-width: 80px;
+            min-width: 120px;
             text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-size: 16px;
         }
 
         .day-tab button:hover {
-            background: rgba(212, 184, 150, 0.3);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(212, 184, 150, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        
+        .day-tab button:active {
+            transform: scale(0.95) !important;
+            transition: transform 0.1s ease !important;
         }
 
         .day-tab button.active {
             background: #d4b896;
             color: #5d4e37;
-            box-shadow: 0 4px 12px rgba(212, 184, 150, 0.5);
-            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(212, 184, 150, 0.4);
+            transform: scale(1.05);
+            position: relative;
+        }
+        
+        .day-tab button.active::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #d4b896, #c9a876, #d4b896);
+            border-radius: 27px;
+            z-index: -1;
+            animation: activeGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes activeGlow {
+            0% {
+                opacity: 0.7;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.02);
+            }
         }
         
         .day-tab button.active::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: 3px;
             left: 50%;
-            width: 40%;
-            height: 3px;
+            width: 30%;
+            height: 2px;
             background-color: #8b7355;
-            border-radius: 3px;
+            border-radius: 2px;
             transform: translateX(-50%);
         }
         
@@ -861,12 +893,16 @@
             z-index: 1000;
             background: rgba(252, 248, 240, 0.98);
             box-shadow: 0 4px 15px rgba(139, 115, 85, 0.2);
-            padding: 10px 30px;
-            border-radius: 0 0 20px 20px;
+            padding: 15px 30px;
+            border-radius: 0;
             animation: slideDown 0.3s ease-in-out;
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             border-bottom: 1px solid rgba(222, 184, 135, 0.5);
+            margin-bottom: 0;
+        }
+        
+        .day-tab-container.sticky-active .day-tab {
             margin-bottom: 0;
         }
         
@@ -2595,6 +2631,16 @@
 
         // 顯示特定天數的行程
         function showDay(dayNumber) {
+            // 添加點擊視覺反饋
+            const clickedButton = event.target.closest('button');
+            if (clickedButton) {
+                clickedButton.style.transform = 'scale(0.95)';
+                clickedButton.style.transition = 'transform 0.1s ease';
+                setTimeout(() => {
+                    clickedButton.style.transform = 'scale(1)';
+                }, 100);
+            }
+            
             // 隱藏所有天數內容
             document.querySelectorAll('.day-content').forEach(content => {
                 content.classList.remove('active');
@@ -2606,8 +2652,34 @@
             });
             
             // 顯示選中的天數
-            document.getElementById(`day${dayNumber}`).classList.add('active');
-            event.target.classList.add('active');
+            const selectedDay = document.getElementById(`day${dayNumber}`);
+            selectedDay.classList.add('active');
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // 自動滾動到當日第一個行程
+            setTimeout(() => {
+                const firstActivity = selectedDay.querySelector('.activity');
+                if (firstActivity) {
+                    // 如果有行程，滾動到第一個行程
+                    const offsetTop = firstActivity.offsetTop;
+                    window.scrollTo({
+                        top: offsetTop - 100, // 留一些間距以便看到日期標籤
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // 如果沒有行程，滾動到新增行程按鈕
+                    const addButton = selectedDay.querySelector('button[onclick*="showAddActivityForm"]');
+                    if (addButton) {
+                        const offsetTop = addButton.offsetTop;
+                        window.scrollTo({
+                            top: offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            }, 50); // 短暫延遲確保DOM更新完成
         }
         
         // 處理滾動事件，保持日期切換標籤的可見性
