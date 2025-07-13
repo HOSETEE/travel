@@ -392,9 +392,9 @@
             border-radius: 4px;
             border: 2px solid #d4b896;
             position: relative;
-            appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
+            appearance: none;
             background-color: #faf8f4;
             transition: all 0.2s ease;
             flex-shrink: 0;
@@ -620,9 +620,9 @@
             background-repeat: no-repeat;
             background-position: right 12px center;
             padding-right: 36px;
-            appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
+            appearance: none;
             cursor: pointer;
         }
         
@@ -1125,6 +1125,18 @@
                 max-width: calc(100% - 20px);
                 padding: 12px 20px;
                 font-size: 14px;
+                transform: translateX(calc(100vw - 20px));
+            }
+            
+            .notification.show {
+                transform: translateX(0);
+                animation: notification-pulse-mobile 0.5s ease;
+            }
+            
+            @keyframes notification-pulse-mobile {
+                0% { transform: translateX(0) scale(0.95); opacity: 0.7; }
+                50% { transform: translateX(0) scale(1.02); opacity: 1; }
+                100% { transform: translateX(0) scale(1); }
             }
         }
 
@@ -2077,6 +2089,8 @@
                     
                     .add-item-form select {
                         cursor: pointer;
+                        -webkit-appearance: none;
+                        -moz-appearance: none;
                         appearance: none;
                         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
                         background-repeat: no-repeat;
@@ -2266,8 +2280,9 @@
                 
                 /* 核取方塊樣式 */
                 .packing-item input[type="checkbox"] {
-                    appearance: none;
                     -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
                     width: 22px;
                     height: 22px;
                     border: 2px solid #deb887;
@@ -3014,6 +3029,42 @@
                 window.notificationTimer = null;
             }
             
+            // 清除之前的保險計時器
+            if (window.notificationBackupTimer) {
+                clearTimeout(window.notificationBackupTimer);
+                window.notificationBackupTimer = null;
+            }
+            
+            // 統一的隱藏函數
+            function hideNotification() {
+                console.log('隱藏通知被調用');
+                
+                // 清除所有計時器
+                if (window.notificationTimer) {
+                    clearTimeout(window.notificationTimer);
+                    window.notificationTimer = null;
+                }
+                if (window.notificationBackupTimer) {
+                    clearTimeout(window.notificationBackupTimer);
+                    window.notificationBackupTimer = null;
+                }
+                
+                // 移除所有事件監聽器（克隆節點方式）
+                const newNotification = notification.cloneNode(false);
+                notification.parentNode.replaceChild(newNotification, notification);
+                
+                // 隱藏通知
+                newNotification.classList.remove('show');
+                newNotification.innerHTML = '';
+                newNotification.style.display = 'none';
+                console.log('通知已完全隱藏');
+            }
+            
+            // 先清理通知內容和事件監聽器
+            const newNotification = notification.cloneNode(false);
+            notification.parentNode.replaceChild(newNotification, notification);
+            const notificationElement = document.getElementById('notification');
+            
             // 創建關閉按鈕
             const closeButton = document.createElement('span');
             closeButton.innerHTML = '&times;';
@@ -3025,23 +3076,36 @@
                 cursor: pointer;
                 opacity: 0.7;
                 transition: opacity 0.2s ease;
+                z-index: 1001;
+                padding: 2px 4px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.2);
             `;
+            
+            // 為關閉按鈕添加事件監聽器（支持桌面和移動設備）
             closeButton.addEventListener('mouseover', () => {
                 closeButton.style.opacity = '1';
             });
             closeButton.addEventListener('mouseout', () => {
                 closeButton.style.opacity = '0.7';
             });
-            closeButton.addEventListener('click', () => {
+            closeButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                hideNotification();
+            });
+            closeButton.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 hideNotification();
             });
             
             // 設置通知內容
-            notification.innerHTML = '';
-            notification.className = `notification ${type}`;
-            notification.classList.add('show');
-            notification.style.position = 'relative';
-            notification.style.display = 'flex'; // 確保通知可見
+            notificationElement.innerHTML = '';
+            notificationElement.className = `notification ${type}`;
+            notificationElement.classList.add('show');
+            notificationElement.style.position = 'fixed';
+            notificationElement.style.display = 'flex';
             
             // 創建消息文本節點
             const messageText = document.createElement('span');
@@ -3049,31 +3113,34 @@
             messageText.style.cssText = `
                 display: block;
                 padding-right: 30px;
+                flex: 1;
             `;
             
-            notification.appendChild(messageText);
-            notification.appendChild(closeButton);
+            notificationElement.appendChild(messageText);
+            notificationElement.appendChild(closeButton);
             
-            // 統一的隱藏函數
-            function hideNotification() {
-                if (window.notificationTimer) {
-                    clearTimeout(window.notificationTimer);
-                    window.notificationTimer = null;
+            // 添加點擊通知本身也能關閉的功能（手機友好）
+            notificationElement.addEventListener('click', (e) => {
+                if (e.target === notificationElement || e.target === messageText) {
+                    hideNotification();
                 }
-                notification.classList.remove('show');
-                // 確保通知完全隱藏
-                setTimeout(() => {
-                    if (!notification.classList.contains('show')) {
-                        notification.innerHTML = '';
-                        notification.style.display = 'none';
-                    }
-                }, 300);
-            }
+            });
             
-            // 設置自動隱藏計時器（簡化版本，確保一定會執行）
+            // 設置自動隱藏計時器
+            console.log(`設置通知自動隱藏，${duration}ms後執行`);
             window.notificationTimer = setTimeout(() => {
+                console.log('自動隱藏計時器觸發');
                 hideNotification();
             }, duration);
+            
+            // 添加額外的保險機制，防止通知卡住
+            window.notificationBackupTimer = setTimeout(() => {
+                const currentNotification = document.getElementById('notification');
+                if (currentNotification && currentNotification.classList.contains('show')) {
+                    console.log('保險機制觸發：強制隱藏通知');
+                    hideNotification();
+                }
+            }, duration + 1000);
         }
 
         // 儲存到本地存儲 (已棄用，保留作為相容性支援)
