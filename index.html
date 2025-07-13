@@ -850,10 +850,34 @@
             background-color: #8b7355;
             border-radius: 3px;
             transform: translateX(-50%);
-            width: 40%;
-            height: 3px;
-            background: #8b7355;
-            border-radius: 3px 3px 0 0;
+        }
+        
+        /* 日期切換標籤固定滾動樣式 */
+        .day-tab-container.sticky-active {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(252, 248, 240, 0.98);
+            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.2);
+            padding: 10px 30px;
+            border-radius: 0 0 20px 20px;
+            animation: slideDown 0.3s ease-in-out;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(222, 184, 135, 0.5);
+            margin-bottom: 0;
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        
+        /* 當日期切換標籤固定時，為內容添加間距 */
+        .day-tab-container.sticky-active + .day-content {
+            padding-top: 80px;
         }
 
         .day-content {
@@ -2366,10 +2390,9 @@
             <div class="main-content">
             <!-- 主要行程區域 -->
             <div class="itinerary-section">
-                <h2>🗓️ 旅行行程</h2>
                 
                 <!-- 日期切換標籤 -->
-                <div class="day-tab-container" style="display: flex; justify-content: center; align-items: center; margin-bottom: 40px; flex-wrap: wrap; gap: 15px; width: 100%;">
+                <div class="day-tab-container" style="display: flex; justify-content: center; align-items: center; margin-bottom: 40px; flex-wrap: wrap; gap: 15px; width: 100%; position: sticky; top: 0; z-index: 100; background: rgba(252, 248, 240, 0.95); padding: 15px; border-radius: 0 0 15px 15px; box-shadow: 0 4px 10px rgba(139, 115, 85, 0.1);">
                     <div class="day-tab">
                         <button class="active" onclick="showDay(1)">
                             <span style="display: block; font-size: 18px; margin-bottom: 2px;">8/8</span>
@@ -2586,6 +2609,45 @@
             document.getElementById(`day${dayNumber}`).classList.add('active');
             event.target.classList.add('active');
         }
+        
+        // 處理滾動事件，保持日期切換標籤的可見性
+        let lastScrollTop = 0;
+        let tabOriginalTop = 0;
+        let tabIsSticky = false;
+        
+        // 頁面加載完成後獲取日期切換標籤的原始位置
+        window.addEventListener('load', function() {
+            const dayTabContainer = document.querySelector('.day-tab-container');
+            if (dayTabContainer) {
+                const rect = dayTabContainer.getBoundingClientRect();
+                tabOriginalTop = rect.top + window.scrollY;
+            }
+        });
+        
+        window.addEventListener('scroll', function() {
+            const dayTabContainer = document.querySelector('.day-tab-container');
+            if (!dayTabContainer) return;
+            
+            const currentScrollTop = window.scrollY;
+            const rect = dayTabContainer.getBoundingClientRect();
+            
+            // 向下滾動且日期切換標籤接近頂部時，添加固定效果
+            if (currentScrollTop > lastScrollTop) {
+                // 向下滾動
+                if (currentScrollTop >= tabOriginalTop - 10 && !tabIsSticky) {
+                    dayTabContainer.classList.add('sticky-active');
+                    tabIsSticky = true;
+                }
+            } else {
+                // 向上滾動
+                if (currentScrollTop < tabOriginalTop - 10 && tabIsSticky) {
+                    dayTabContainer.classList.remove('sticky-active');
+                    tabIsSticky = false;
+                }
+            }
+            
+            lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // 防止負值
+        });
 
         // 切換討論區顯示
         function toggleDiscussion() {
@@ -7221,140 +7283,9 @@
         function setupDefaultActivities() {
             const timestamp = Date.now();
             const defaultActivities = {
-                'day1': [
-                    {
-                        id: 'day1-activity1',
-                        time: '09:00',
-                        title: '集合出發',
-                        details: '台北車站東三門集合，請準時到達，逾時不候。',
-                        mapUrl: 'https://maps.app.goo.gl/JGRUBBdNPRZfzKSx5',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
-                    },
-                    {
-                        id: 'day1-activity2',
-                        time: '12:00',
-                        title: '午餐',
-                        details: '享用當地特色料理。',
-                        mapUrl: '',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
-                    },
-                    {
-                        id: 'day1-activity3',
-                        time: '14:00',
-                        title: '日月潭遊湖',
-                        details: '搭乘遊艇環湖，欣賞日月潭美景。',
-                        mapUrl: 'https://maps.app.goo.gl/5zU8kX8vinQKhpVU6',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
-                    },
-                    {
-                        id: 'day1-activity4',
-                        time: '18:00',
-                        title: '晚餐',
-                        details: '飯店內用餐。',
-                        mapUrl: '',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
-                    }
-                ],
-                'day2': [
-                    {
-                        id: 'day2-activity1',
-                        time: '08:00',
-                        title: '早餐',
-                        details: '飯店內用早餐。',
-                        mapUrl: '',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
-                    },
-                    {
-                        id: 'day2-activity2',
-                        time: '10:00',
-                        title: '清境農場',
-                        details: '參觀清境農場，與綿羊互動。',
-                        mapUrl: 'https://maps.app.goo.gl/Vr2GBkxmdQF5qH8y6',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
-                    },
-                    {
-                        id: 'day2-activity3',
-                        time: '15:30',
-                        title: '下午茶',
-                        details: '享用當地特色下午茶。',
-                        mapUrl: '',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
-                    },
-                    {
-                        id: 'day2-activity4',
-                        time: '18:30',
-                        title: '晚餐',
-                        details: '飯店內用餐。',
-                        mapUrl: '',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
-                    }
-                ],
-                'day3': [
-                    {
-                        id: 'day3-activity1',
-                        time: '08:00',
-                        title: '早餐',
-                        details: '飯店內用早餐。',
-                        mapUrl: '',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
-                    },
-                    {
-                        id: 'day3-activity2',
-                        time: '09:30',
-                        title: '單車環湖',
-                        details: '騎單車環繞日月潭，欣賞湖光山色。',
-                        mapUrl: 'https://maps.app.goo.gl/5zU8kX8vinQKhpVU6',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
-                    },
-                    {
-                        id: 'day3-activity3',
-                        time: '11:00',
-                        title: '退房',
-                        details: '辦理飯店退房手續。',
-                        mapUrl: '',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
-                    },
-                    {
-                        id: 'day3-activity4',
-                        time: '12:30',
-                        title: '午餐',
-                        details: '享用當地特色料理。',
-                        mapUrl: '',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
-                    },
-                    {
-                        id: 'day3-activity5',
-                        time: '15:00',
-                        title: '賦歸',
-                        details: '踏上歸途，結束愉快的旅程。',
-                        mapUrl: '',
-                        createdAt: new Date().toISOString(),
-                        createdBy: '行程管理員',
-                        createdByAvatar: 'ID-01'
+                'day1': [],
+                'day2': [],
+                'day3': []
                     }
                 ]
             };
