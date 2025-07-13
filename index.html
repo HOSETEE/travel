@@ -349,6 +349,23 @@
             max-height: 1000px;
         }
         
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 15px;
+        }
+        
+        .collapsible-content.expanded {
+            max-height: 1000px;
+            padding: 15px;
+        }
+        
+        .category-header {
+            cursor: pointer;
+            padding: 10px 0;
+        }
+        
         .packing-item {
             display: flex;
             align-items: center;
@@ -2374,17 +2391,7 @@
                     <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #d4b896, #c9a876); border-radius: 10px; box-shadow: 0 4px 15px rgba(212, 184, 150, 0.3);">
                     <button class="btn btn-success" onclick="showAddActivityForm(1)" style="font-size: 16px; padding: 12px 24px; background: white; color: #5d4e37; border: none; border-radius: 25px; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: all 0.3s ease;" title="新增行程" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">➕ 新增行程</button>
                 </div>
-                    <div class="activity">
-                        <div class="activity-time">09:00</div>
-                        <div class="activity-title">🚗 高雄出發</div>
-                        <div class="activity-details">開始我們的日月潭之旅！</div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day1-activity1')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="討論">💬</button>
-                            <button class="btn btn-warning" onclick="showEditActivityForm(1, 'day1-activity1')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="編輯行程">✏️</button>
-                            <button class="btn btn-danger" onclick="confirmDeleteActivity(1, 'day1-activity1')" style="padding: 6px 12px; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; transition: all 0.3s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day1-activity1" class="activity-discussion" style="display: none;"></div>
-                    </div>
+                    <!-- 行程將由 JavaScript 動態加載 -->
                 </div>
 
                 <!-- 第二天行程 -->
@@ -2392,43 +2399,7 @@
                     <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #d4b896, #c9a876); border-radius: 10px; box-shadow: 0 4px 15px rgba(212, 184, 150, 0.3);">
                     <button class="btn btn-success" onclick="showAddActivityForm(2)" style="font-size: 16px; padding: 12px 24px; background: white; color: #5d4e37; border: none; border-radius: 25px; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: all 0.3s ease;" title="新增行程" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">➕ 新增行程</button>
                 </div>
-                    <div class="activity">
-                        <div class="activity-time">09:00</div>
-                        <div class="activity-title">🏄‍♀️ 日月潭立槳SUP體驗</div>
-                        <div class="activity-details">路程約10分鐘，體驗水上運動的樂趣</div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                            <a href="https://maps.app.goo.gl/5XZRuy9ZFbCBo29E7" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>
-                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity1')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="討論">💬</button>
-                            <button class="btn btn-warning" onclick="showEditActivityForm(2, 'day2-activity1')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="編輯行程">✏️</button>
-                             <button class="btn btn-danger" onclick="confirmDeleteActivity(2, 'day2-activity1')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day2-activity1" class="activity-discussion" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="activity">
-                        <div class="activity-time">12:00</div>
-                        <div class="activity-title">🍱 午餐 + 盥洗</div>
-                        <div class="activity-details">回飯店盥洗，路上隨便買回飯店吃</div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity2')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="討論">💬</button>
-                             <button class="btn btn-warning" onclick="showEditActivityForm(2, 'day2-activity2')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="編輯行程">✏️</button>
-                             <button class="btn btn-danger" onclick="confirmDeleteActivity(2, 'day2-activity2')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day2-activity2" class="activity-discussion" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="activity">
-                        <div class="activity-time">15:00</div>
-                        <div class="activity-title">☕ 下午茶 - 鹿篙咖啡莊園</div>
-                        <div class="activity-details">路程約15分鐘，享受山景咖啡</div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                            <a href="https://maps.app.goo.gl/K64H8VAq8EToSDWD9" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>
-                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day2-activity3')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="討論">💬</button>
-                             <button class="btn btn-warning" onclick="showEditActivityForm(2, 'day2-activity3')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="編輯行程">✏️</button>
-                             <button class="btn btn-danger" onclick="confirmDeleteActivity(2, 'day2-activity3')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day2-activity3" class="activity-discussion" style="display: none;"></div>
-                    </div>
+                    <!-- 行程將由 JavaScript 動態加載 -->
                 </div>
 
                 <!-- 第三天行程 -->
@@ -2436,54 +2407,7 @@
                     <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #d4b896, #c9a876); border-radius: 10px; box-shadow: 0 4px 15px rgba(212, 184, 150, 0.3);">
                     <button class="btn btn-success" onclick="showAddActivityForm(3)" style="font-size: 16px; padding: 12px 24px; background: white; color: #5d4e37; border: none; border-radius: 25px; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: all 0.3s ease;" title="新增行程" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">➕ 新增行程</button>
                 </div>
-                    <div class="activity">
-                        <div class="activity-time">06:30</div>
-                        <div class="activity-title">🥐 民宿早餐</div>
-                        <div class="activity-details">享用民宿提供的早餐</div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity1')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="討論">💬</button>
-                             <button class="btn btn-warning" onclick="showEditActivityForm(3, 'day3-activity1')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="編輯行程">✏️</button>
-                             <button class="btn btn-danger" onclick="confirmDeleteActivity(3, 'day3-activity1')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day3-activity1" class="activity-discussion" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="activity">
-                        <div class="activity-time">07:00</div>
-                        <div class="activity-title">🚴‍♀️ 單車環湖日月潭</div>
-                        <div class="activity-details">路程約10分鐘，自由參加，沒參加的人可以睡晚一點</div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                            <a href="https://maps.app.goo.gl/DYkHo7L7Q9F5DLhr9" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 24px; height: 24px;"></a>
-                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity2')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="討論">💬</button>
-                             <button class="btn btn-warning" onclick="showEditActivityForm(3, 'day3-activity2')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="編輯行程">✏️</button>
-                             <button class="btn btn-danger" onclick="confirmDeleteActivity(3, 'day3-activity2')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day3-activity2" class="activity-discussion" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="activity">
-                        <div class="activity-time">11:00</div>
-                        <div class="activity-title">🏨 退房</div>
-                        <div class="activity-details">整理行李，準備離開</div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity3')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="討論">💬</button>
-                             <button class="btn btn-warning" onclick="showEditActivityForm(3, 'day3-activity3')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="編輯行程">✏️</button>
-                             <button class="btn btn-danger" onclick="confirmDeleteActivity(3, 'day3-activity3')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day3-activity3" class="activity-discussion" style="display: none;"></div>
-                    </div>
-                    
-                    <div class="activity">
-                        <div class="activity-time">14:00</div>
-                        <div class="activity-title">👋 解散</div>
-                        <div class="activity-details">結束愉快的旅程，各自回家</div>
-                        <div class="activity-links" style="display: flex; gap: 10px; margin-top: 8px;">
-                            <button class="btn btn-primary" onclick="toggleActivityDiscussion('day3-activity5')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="討論">💬</button>
-                             <button class="btn btn-warning" onclick="showEditActivityForm(3, 'day3-activity5')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="編輯行程">✏️</button>
-                             <button class="btn btn-danger" onclick="confirmDeleteActivity(3, 'day3-activity5')" style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-weight: 500; transition: all 0.2s ease;" title="刪除行程">🗑️</button>
-                        </div>
-                        <div id="day3-activity5" class="activity-discussion" style="display: none;"></div>
-                    </div>
+                    <!-- 行程將由 JavaScript 動態加載 -->
                 </div>
 
                 <!-- 討論區域 -->
@@ -2564,15 +2488,22 @@
                 
                 <!-- 住宿資訊 -->
                 <div class="info-card">
-                    <h3>🏨 住宿資訊</h3>
-                    <h4>3JD.HOME</h4>
-                    <a href="https://maps.app.goo.gl/pYVRDqcJJx61gBGP8" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 16px; height: 16px;"></a>
-                    
-                    <div class="emergency-contact">
-                        <h4>🚨 緊急聯絡</h4>
-                        <p>民宿電話：0978-201-007</p>
-                        <p>LINE：@rtk2718v</p>
-                        <p>緊急聯絡人：老闆</p>
+                    <div class="category-header" onclick="toggleAccommodationInfo()">
+                        <h3 style="margin: 0; display: flex; align-items: center;">
+                            <span id="accommodation-toggle" style="margin-right: 8px;">▶️</span>
+                            🏨 住宿資訊
+                        </h3>
+                    </div>
+                    <div id="accommodation-content" class="collapsible-content">
+                        <h4>3JD.HOME</h4>
+                        <a href="https://maps.app.goo.gl/pYVRDqcJJx61gBGP8" target="_blank" class="link-btn" title="導航"><img src="img/googlemap.svg" alt="導航" style="width: 16px; height: 16px;"></a>
+                        
+                        <div class="emergency-contact">
+                            <h4>🚨 緊急聯絡</h4>
+                            <p>民宿電話：0978-201-007</p>
+                            <p>LINE：@rtk2718v</p>
+                            <p>緊急聯絡人：老闆</p>
+                        </div>
                     </div>
                 </div>
 
@@ -2623,16 +2554,7 @@
 
 
                 
-                <!-- 打包清單入口 -->
-                <div class="info-card">
-                    <h3 style="display: flex; justify-content: space-between; align-items: center;">
-                        🎒個人打包清單
-                    </h3>
-                    <p style="margin-bottom: 15px;">規劃你的旅行必備物品，確保不會遺漏任何重要物品。</p>
-                    <div style="text-align: center;">
-                        <button onclick="showPage('packing')" class="btn btn-primary" style="width: 100%;">查看完整打包清單</button>
-                    </div>
-                </div>
+                <!-- 打包清單入口卡片已移除，因為上方導航已有相應按鈕 -->
             </div>
         </div>
     </div>
@@ -6505,6 +6427,20 @@
                 const toggleIcon = document.getElementById('category-toggle-' + categoryId);
                 if (toggleIcon) {
                     toggleIcon.textContent = categoryItems.classList.contains('expanded') ? '🔽' : '▶️';
+                }
+            }
+        }
+        
+        // 切換住宿資訊展開/收合狀態
+        function toggleAccommodationInfo() {
+            const content = document.getElementById('accommodation-content');
+            if (content) {
+                content.classList.toggle('expanded');
+                
+                // 更新展開/收合圖標
+                const toggleIcon = document.getElementById('accommodation-toggle');
+                if (toggleIcon) {
+                    toggleIcon.textContent = content.classList.contains('expanded') ? '🔽' : '▶️';
                 }
             }
         }
